@@ -1,34 +1,30 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import AppleIcon from '@mui/icons-material/Apple';
-import { Alert, Box, Button, CircularProgress, FormControl, FormHelperText, Grid, Paper, TextField, Typography } from '@mui/material';
-import { React, useState } from 'react';
+import { Alert, AlertTitle, Box, Button, CircularProgress, FormControl, FormHelperText, Grid, Paper, TextField, Typography } from '@mui/material';
+import { React, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { loginUser } from '../../redux/apiRequest';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import { loginUser } from '../../api/login';
 const schema = yup.object().shape({
     username: yup.string().required('username là bắt buộc'),
     password: yup.string().required('Mật khẩu là bắt buộc'),
 });
 
 export default function LoginComponent() {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth)
-    const [showPassword, setShowPassword] = useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
@@ -41,7 +37,7 @@ export default function LoginComponent() {
             password: getValues('password'),
         }
         loginUser(data, dispatch, navigate);
-
+        console.log(user.login.isAmin);
     };
 
     return (
@@ -57,48 +53,15 @@ export default function LoginComponent() {
                 <Grid item xs={5}>
                     <Paper elevation={8} sx={{ p: '20px', height: '90%', borderRadius: '10px', width: '60%' }}>
                         <AppleIcon sx={{ fontSize: '200px', mb: '20px' }} />
+
+
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* <Controller
-                                name="username"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        sx={{ mt: '20px' }}
-                                        label="Username"
-                                        variant="filled"
-
-                                        fullWidth
-                                        {...field}
-                                        error={!!errors.username}
-                                        helperText={errors.username?.message}
-                                    />
-                                )}
-                            />
-
-
-                            <Controller
-                                name="password"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        sx={{ mt: '20px' }}
-                                        label="password"
-                                        variant="filled"
-
-                                        fullWidth
-                                        type='password'
-                                        {...field}
-                                        error={!!errors.password}
-                                        helperText={errors.password?.message}
-                                    />
-                                )}
-                            /> */}
-
                             <TextField
                                 fullWidth
                                 sx={{ mt: '20px' }}
                                 variant="outlined"
                                 label="Username"
+
                                 {...register('username')}
                                 error={!!errors.username}
                                 helperText={errors.username ? errors.username.message : ''}
@@ -112,12 +75,9 @@ export default function LoginComponent() {
                                 type="password"
                                 {...register('password')}
                                 error={!!errors.password}
-                                
+
                                 helperText={errors.password ? errors.password.message : ''}
                             />
-                           
-
-
                             {user.login.isFetching ? (
                                 <Button fullWidth sx={{ mt: '50px' }} variant="contained" color="primary" disabled>
                                     <CircularProgress size={'25px'} />
