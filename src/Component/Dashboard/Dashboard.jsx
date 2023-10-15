@@ -5,12 +5,22 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
-import themes from '../../theme/themes';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPLOlist } from '../../redux/apiRequest';
-import { useNavigate } from 'react-router';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { getCookie } from 'cookies-next';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import themes from '../../theme/themes';
+import 'dayjs/locale/vi';
+import dayjs from 'dayjs';
+
+import IconButton from '@mui/material/IconButton';
+import CheckIcon from '@mui/icons-material/Check';
+import DashboardCustom from './Dashboard-Custom';
+import DashboardPLO from './Dashboard-PLO';
+import PaginationCustom from '../../Layout/PaginationCustom';
+import { getPLOlist } from '../../api/plo';
 const data = [
   {
     id: 1, total: 40, name: 'Customer', icon: <SupportAgentIcon fontSize='large' />
@@ -73,18 +83,49 @@ const data4 = [
     id: 5, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '9,000,000VNĐ'
   },
 ]
+
+dayjs.locale('vi');
 export default function Dashboard() {
   const user = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(dayjs());
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleOKClick = () => {
+    if (selectedDate) {
+      // Xử lý khi người dùng xác nhận chọn tháng
+      console.log('Ngày đã chọn:', selectedDate.format('MMMM YYYY'));
+    }
+  };
   useEffect(() => {
     if (!user.login.accessToken) {
       navigate('/login')
     }
-    const token  = getCookie('token');
+    const token = getCookie('token');
+    getPLOlist(selectedDate,dispatch,token);
   }, [])
+
+
+
+
+  useEffect(() => {
+    console.log('date', selectedDate);
+  }, [selectedDate])
+  //Date and time 
+
+ 
+
+  //test
+  const [page, setPage] = useState(1);
+  const [rowPerPage, setRowRowPerPage] = useState(5);
   
+  useEffect(() => {
+    console.log('Page', page, "RpP", rowPerPage);
+  }, [page, rowPerPage])
   return (
     <Box p={'10px'}>
       <Typography variant='h2'>Trang chủ</Typography>
@@ -99,12 +140,19 @@ export default function Dashboard() {
           </Paper>
         ))}
       </Box>
-      <Typography variant='h4' sx={{ fontWeight: 'bold', mt: '50px' }}>Customer</Typography>
+      {/* <Typography variant='h4' sx={{ fontWeight: 'bold', mt: '50px' }}>Customer</Typography>
       <Box m={'50px'} display={'flex'} justifyContent={'center'}>
         <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', width: '70%' }}>
-          <Box display={'flex'} justifyContent={'space-between'}>
+          <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
             <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 customers with the most reservations</Typography>
-            <Button>Click here</Button>
+            <LocalizationProvider dateAdapter={AdapterDayjs} >
+              <DatePicker
+                label="Tháng"
+                views={['month', 'year']}
+                onChange={handleDateChange}
+                value={selectedDate}
+              />
+            </LocalizationProvider>
           </Box>
           {data2.map((item, index) => (
             <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.green.light } }}>
@@ -123,10 +171,21 @@ export default function Dashboard() {
             </Grid>
           ))}
         </Paper>
-      </Box>
-      <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px' }}>Parking lot owner</Typography>
-      <Button> Click here</Button>
-      <Grid container spacing={5} >
+      </Box> */}
+      {/* <DashboardCustom/>
+      <DashboardPLO/> */}
+
+      <PaginationCustom totalPage={10} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowRowPerPage={setRowRowPerPage} />
+      {/* <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px' }}>Parking lot owner</Typography>
+      <LocalizationProvider dateAdapter={AdapterDayjs} >
+        <DatePicker
+          label="Tháng"
+          views={['month', 'year']}
+          onChange={handleDateChange}
+          value={selectedDate}
+        />
+      </LocalizationProvider>
+      <Grid container spacing={5} mt={'3px'}>
         <Grid item xs={6}>
           <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }} >
             <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 most booked parking areas</Typography>
@@ -170,7 +229,7 @@ export default function Dashboard() {
 
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Paper elevation={5}>
         {/* <Typography display='flex' variant='h4' mt={6} justifyContent='center'> Student Join The Club Each Campus </Typography>
         <Chart

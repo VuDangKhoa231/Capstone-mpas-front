@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ChipCustom from '../../../Layout/ChipCustom'
 import TableCustom from '../../../Layout/TableCustom'
-import { getPLOlist } from '../../../redux/apiRequest'
+
 import themes from '../../../theme/themes'
 
 const data = [
@@ -75,7 +75,7 @@ export default function ListOfPLO() {
   const user = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const [selectTab, setSelectTab] = useState(0);
-  console.log(user);
+
 
   useEffect(() => {
     const data = {
@@ -84,14 +84,14 @@ export default function ListOfPLO() {
       status: 0,
     }
     if (user.login?.accessToken) {
-      getPLOlist(data, dispatch, user?.login?.accessToken)
+      // getPLOlist(data, dispatch, user?.login?.accessToken)
     }
   }, [])
 
   return (
 
     <Stack direction='column' p='10px' spacing={5}>
-      {/* Header */}
+      Header
       <Typography variant='h2'>Danh sách khách hàng</Typography>
       <Box width={'35%'}>
         <SearchBar />

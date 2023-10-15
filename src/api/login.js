@@ -1,8 +1,22 @@
-import axios from "axios"
-import axiosWrapper from "../ultis/axiosWrapper"
+import { setCookie } from "cookies-next";
+import axiosWrapper from "../ultis/axiosWrapper";
+import { loginFail, loginStart, loginSuccess } from "../redux/authSlice";
 
-const loginApi = (email, password) => {
-    return axiosWrapper.post('/user/loginUser', { id: email, password: password});
+export const loginUser = async (user, dispatch, navigate) => {
+  dispatch(loginStart());
+  try {
+    const res = await axiosWrapper.post('/user/loginUser', user);
+  
+    if (res.data !== '') {
+      dispatch(loginSuccess(res.data));
+      navigate("/");
+      setCookie('token', res.data.access_token)
+    }else {
+      dispatch(loginFail())
+    }
+  } catch (error) {
+    dispatch(loginFail());
+  }
 }
 
-export {loginApi}
+

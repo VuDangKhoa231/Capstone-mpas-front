@@ -6,7 +6,7 @@ const defaultOptions = {
   baseURL: 'https://eparking.azurewebsites.net/',
   headers: {
     'Content-Type': 'application/json',
-    "Access-Control-Allow-Origin" : '*',
+    // "Access-Control-Allow-Origin" : '*',
   },
 }
 
@@ -21,6 +21,7 @@ axiosWrapper.interceptors.request.use(async (config) => {
     const token = getCookie('token')
   
     if (token) {
+      console.log(token);
       config.headers.Authorization = `Bearer ${token}`;
     }
 
