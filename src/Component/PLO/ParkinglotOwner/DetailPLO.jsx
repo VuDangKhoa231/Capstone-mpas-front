@@ -6,6 +6,7 @@ import themes from '../../../theme/themes';
 import Rating from '../../../Layout/Rating';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import PaginationCustom from '../../../Layout/PaginationCustom';
 const data = [
     {
         id: 'PLO1', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
@@ -20,16 +21,16 @@ const data = [
                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
+                id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
+                id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
+                id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
+                id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
             },
         ]
     },
@@ -43,16 +44,16 @@ const data = [
                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
+                id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
+                id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
+                id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
+                id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
             },
         ]
     },
@@ -67,16 +68,64 @@ const data = [
                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
+                id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
+                id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
+                id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
             },
             {
-                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
+                id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
+            },
+        ]
+    },
+    {
+        id: 'PLO4', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
+            { id: 1, img: '../image/anh.png' },
+            { id: 2, img: '../image/anh.png' },
+            { id: 3, img: '../image/anh.png' },
+            { id: 4, img: '../image/anh.png' },
+        ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Dừng hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
+            {
+                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
+            },
+            {
+                id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
+            },
+            {
+                id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
+            },
+            {
+                id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
+            },
+            {
+                id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
+            },
+        ]
+    },
+    {
+        id: 'PLO5', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
+            { id: 1, img: '../image/anh.png' },
+            { id: 2, img: '../image/anh.png' },
+            { id: 3, img: '../image/anh.png' },
+            { id: 4, img: '../image/anh.png' },
+        ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Dừng hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
+            {
+                id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
+            },
+            {
+                id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
+            },
+            {
+                id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
+            },
+            {
+                id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
+            },
+            {
+                id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
             },
         ]
     },
@@ -86,7 +135,6 @@ const data = [
 
 export default function DetailPLO() {
     const { id } = useParams();
-    console.log(id);
     const [item, setItem] = useState(null);
 
     useEffect(() => {
@@ -94,7 +142,14 @@ export default function DetailPLO() {
         setItem(selectedItem);
     }, []);
 
+    //Feedback pagination
+    const [page,setPage] = useState(1);
+    const [rowPerPage, setRowPerPage] = useState(5);
 
+    useEffect(() => {
+        console.log(page, '+', rowPerPage);
+    }, [page,rowPerPage])
+    
     // gg map
     const openGoogleMaps = () => {
         if (item.locationMap) {
@@ -105,6 +160,7 @@ export default function DetailPLO() {
             window.open(googleMapsUrl, '_blank');
         }
     };
+
     return (
         <>
             {item === null ?
@@ -122,7 +178,7 @@ export default function DetailPLO() {
                         aria-label="breadcrumb"
                     >
                         <Link underline="hover" key="1" color="inherit" to="/PLO" style={{ textDecoration: 'none', color: themes.palette.primary, fontWeight: 'bold' }}>
-                            Danh sách
+                            Danh sách chủ bãi xe
                         </Link>,
                         <Typography key="3" color="text.primary" fontWeight={'bold'}>
                             {item.name}
@@ -144,45 +200,30 @@ export default function DetailPLO() {
                                     </Button>
                                 </Box>
                                 {/* realtime */}
-                                <Box p={'50px 0px 40px 0px'}>
-                                    <Typography variant='h4' fontWeight={'bold'}> Thời gian thực</Typography>
+                                <Box>
+                                    <Box display={'flex'} justifyContent={'space-around'} mt={'100px'}>
+
+                                        <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
+                                            <Typography variant='h5'>Chiều dài (m)</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.realtime.totalNumber}</Typography>
+                                        </Paper>
+
+
+                                        <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
+                                            <Typography variant='h5'>Chiều rộng (m)</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.realtime.totalNumber}</Typography>
+                                        </Paper>
+
+                                        <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
+                                            <Typography variant='h5'>Số chỗ</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.realtime.totalNumber}</Typography>
+                                        </Paper>
+                                    </Box>
                                 </Box>
-                                <Grid container spacing={1.5} >
-                                    <Grid item xs={2}>
-                                        <Paper elevation={1} square sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium }}>
-                                            <Typography>Số lượng</Typography>
-                                            <Typography variant='h5' fontWeight={'bold'}>{item.realtime.totalNumber}</Typography>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Paper elevation={1} square sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium }}>
-                                            <Typography>Ban ngày</Typography>
-                                            <Typography variant='h5' fontWeight={'bold'}>{item.realtime.totalMorning}</Typography>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Paper elevation={1} square sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium }}>
-                                            <Typography>Ban tối</Typography>
-                                            <Typography variant='h5' fontWeight={'bold'}>{item.realtime.totalEvening}</Typography>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Paper elevation={1} square sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium }}>
-                                            <Typography>Qua đêm</Typography>
-                                            <Typography variant='h5' fontWeight={'bold'}>{item.realtime.overNight}</Typography>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Paper elevation={1} square sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium }}>
-                                            <Typography>Doanh thu</Typography>
-                                            <Typography variant='h5' fontWeight={'bold'}>{item.realtime.revenue}</Typography>
-                                        </Paper>
-                                    </Grid>
-                                </Grid>
                             </Stack>
                         </Grid>
                         {/* Parking Area */}
-                        <Grid item xs={1}/>
+                        <Grid item xs={1} />
                         <Grid item xs={5}>
                             <Stack direction={'column'} spacing={1.5}>
                                 <Typography variant='h4' fontWeight={'bold'}> Thông tin bãi xe </Typography>
@@ -251,7 +292,7 @@ export default function DetailPLO() {
                         <Typography variant='h4' fontWeight={'bold'}> Hình ảnh bãi xe </Typography>
                         <Box display={'flex'} flexDirection={'row'} sx={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
                             {item.images.map((item) => (
-                                <img src={`${item.img}`} style={{ margin: '10px 30px 10px 0px' }} />
+                                <img key={item.id} src={`${item.img}`} style={{ margin: '10px 30px 10px 0px' }} />
                             ))}
                         </Box>
 
@@ -260,17 +301,18 @@ export default function DetailPLO() {
                         <Typography variant='h4' fontWeight={'bold'}> Phản hồi và đánh giá</Typography>
 
                         {item.feedback.map((item) => (
-                            <Box sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
+                            <Box key={item.id} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
                                 <Box display={'flex'} flexDirection={'row'}>
                                     <Typography variant='h6' mr={'10px'} fontWeight={'bold'}>{item.customer} </Typography>
                                     <Rating props={item.rating} />
                                 </Box>
                                 <Box display={'flex'} flexDirection={'row'}>
                                     <Typography variant='h6' mr={'10px'}>Nội dung:</Typography>
-                                    <Typography  variant='h6' color={themes.palette.grey.dark}>{item.content}</Typography>
+                                    <Typography variant='h6' color={themes.palette.grey.dark}>{item.content}</Typography>
                                 </Box>
                             </Box>
                         ))}
+                        <PaginationCustom page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={10}/>
                     </Box>
                 </Stack>}
         </>

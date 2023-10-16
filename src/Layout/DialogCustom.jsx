@@ -7,8 +7,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 
-function  DialogCustom({ open, handleClose, confirm, data, status }) {
-   
+function  DialogCustom({ open, handleClose, confirm, data, status, handleConfirm }) {
+    
     return (
         <Dialog
             open={open}
@@ -21,11 +21,11 @@ function  DialogCustom({ open, handleClose, confirm, data, status }) {
                 {status === 1 ?
                     (<>
                         <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
-                            <Typography variant='h4' sx={{ fontWeight: 'bold' }} >Xác nhận phê duyệt hồ sơ thành chủ gửi xe?</Typography>
+                            <Typography variant='h4' sx={{ fontWeight: 'bold' }} >Xác nhận phê duyệt hồ sơ thành chủ bãi xe?</Typography>
                         </DialogTitle>
                         <DialogContent>
-                            <Typography variant='h6'>Tên chủ bãi: {data && data.owner}</Typography>
-                            <Typography variant='h6'>Tên bãi: {data && data.name}</Typography>
+                            <Typography variant='h6'>Tên chủ bãi: {data && data.fullname}</Typography>
+                            <Typography variant='h6'>Tên bãi: {data && data.parkingName}</Typography>
                         </DialogContent>
                     </>) : (<>
                         <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
@@ -40,9 +40,9 @@ function  DialogCustom({ open, handleClose, confirm, data, status }) {
                 <Box display={'flex'} m={'30px'} justifyContent={'space-between'} width={'500px'}>
                     <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleClose}> Hủy</Button>
                     {confirm === true ? (<>
-                        <Button sx={{ width: '130px', backgroundColor: themes.palette.green.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.green.light, color: themes.palette.green.light } }} onClick={handleClose}> Chấp nhận</Button>                    
+                        <Button sx={{ width: '130px', backgroundColor: themes.palette.green.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.green.light, color: themes.palette.green.light } }} onClick={() => {handleConfirm(); handleClose()}}> Chấp nhận</Button>                    
                     </>) : (<>
-                        <Button sx={{ width: '130px', backgroundColor: themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.red.light, color: themes.palette.red.light } }} onClick={handleClose}> Từ chối</Button>
+                        <Button sx={{ width: '130px', backgroundColor: themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.red.light, color: themes.palette.red.light } }} onClick={() => {handleConfirm(); handleClose()}}> Từ chối</Button>
                     </>)}
                 </Box>
             </Box>

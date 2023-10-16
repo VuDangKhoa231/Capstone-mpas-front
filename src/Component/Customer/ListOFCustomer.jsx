@@ -1,11 +1,12 @@
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useGridApiRef } from '@mui/x-data-grid'
 import ChipCustom from '../../Layout/ChipCustom'
 import SearchBar from '../../Layout/SearchBar'
 import TableCustom from '../../Layout/TableCustom'
 import themes from '../../theme/themes'
+import PaginationCustom from '../../Layout/PaginationCustom'
 
 const data = [
   {
@@ -48,9 +49,9 @@ const CustomColumnTitle = ({ title }) => {
 const title = [
   { field: 'id', headerName: <CustomColumnTitle title={"ID"}/>, width: 100, hideable: false },
   { field: 'fullName', headerName: <Typography variant='h5' fontWeight={'bold'}>Tên</Typography>, width: 415, hideable: false },
-  { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310 },
+  { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310, headerAlign: 'center', align: 'center' },
   {
-    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', width: 310, valueFormatter: (params) => {
+    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', width: 310,  headerAlign: 'center', align: 'center',valueFormatter: (params) => {
       const date = new Date(params.value);
       return date.toLocaleDateString('en-GB');
     },
@@ -60,9 +61,9 @@ const title = [
       return date1.getTime() - date2.getTime();
     },
   },
-  { field: 'totalNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số xe</Typography>, type: 'number', width: 250, },
+  { field: 'totalNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số xe</Typography>, type: 'number', width: 250,  headerAlign: 'center', align: 'center'},
   {
-    field: 'status', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, type: '', width: 200, renderCell: (params) => {
+    field: 'status', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, type: '', width: 190,  headerAlign: 'center', align: 'center', renderCell: (params) => {
       const status = params.row.status;
       let label, variant, backgroundColor, color;
       if (status === 'Online') {
@@ -87,28 +88,29 @@ const title = [
 
 export default function ListOFCustomer() {
   const apiRef = useGridApiRef();
-
+  const [page,setPage] = useState(1);
+  const [rowPerPage,setRowPerPage] = useState(5);
+  const [searchValue, setSearchValue] = useState('');
+  useEffect(() => {
+      console.log(page, "+" , rowPerPage);
+  }, [page,rowPerPage])
   return (
     
       <Stack direction='column' p='10px' spacing={5}>
         {/* Header */}
         <Typography variant='h2'>Danh sách khách hàng</Typography>
-        <Grid container>
-          <Grid item xs={4}>
-            <SearchBar />
-          </Grid>
-          <Grid item xs={4} />
-        </Grid>
-        <Box justifyContent={'start'} width={'100%'} display={'flex'}>
-          <Button sx={{ mr: '30px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} > <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
-        </Box>
+       
+        <Box display={'flex'}>
+                <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+                <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
+            </Box>
         {/* Content */}
         <Box sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}>
-          <TableCustom apiRef={apiRef} columns={title} rows={data} m={'0px 15px 0px 0px'} fontSize={'25px'} rowHeight={80} sizeOption={[5, 10, 15]} defaultPageSize={5} />
+          <TableCustom apiRef={apiRef} columns={title} rows={data} m={'0px 15px 0px 0px'} fontSize={'25px'} height={'1000px'} rowHeight={80} sizeOption={[5, 10, 15]} defaultPageSize={5} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={10}/>
         </Box>
       </Stack>
    

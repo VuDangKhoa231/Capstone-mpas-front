@@ -2,18 +2,18 @@ import { Box, FormControl, InputLabel, MenuItem, Pagination, Select, Stack, Typo
 import React from 'react'
 import themes from '../theme/themes';
 
-export default function PaginationCustom({ totalPage, page, setPage, rowPerPage, setRowRowPerPage }) {
+export default function   PaginationCustom({ totalPage, page, setPage, rowPerPage, setRowPerPage }) {
 
   const handleChangePagination = (event, value) => {
     setPage(value);
   };
 
   const handleChange = (event) => {
-    setRowRowPerPage(event.target.value);
+    setRowPerPage(event.target.value);
   };
 
   return (
-    <Stack direction={'row'} spacing={3} mt={'50px'} alignItems={'center'}>
+    <Stack direction={'row'} spacing={3} p={'10px'} width={'100%'} justifyContent={'center'} alignItems={'center'}>
       <Typography variant='h6'>Số records mỗi hàng</Typography>
       <FormControl variant="standard">
         <Select

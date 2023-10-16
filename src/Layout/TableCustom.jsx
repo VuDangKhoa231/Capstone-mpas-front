@@ -1,34 +1,34 @@
-import { Box, Pagination } from "@mui/material";
-import { DataGrid, GridPagination, gridPageCountSelector, useGridApiContext, useGridSelector } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import PaginationCustom from "./PaginationCustom";
+import PropTypes from 'prop-types';
 
 
 
-function TableCustom({ rows, apiRef, columns, m, fontSize, rowHeight, sizeOption, height, page, totalPage, rowPerPage, setPage, setRowPerPage }) {
 
-
+function FooterCustom({ page, rowPerPage, setPage, setRowPerPage, totalPage }) {
   return (
-    <Box style={{ width: '100%' }}  textAlign={'center'}>
+    <Box width={'100%'}  >
+      <PaginationCustom page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={totalPage} />
+    </Box>
+  );
+}
+
+function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, totalPage, rowPerPage, setPage, setRowPerPage }) {
+  return (
+    <Box sx={{ width: '100%' }} textAlign={'center'} justifyContent={'center'}>
       <DataGrid
         rows={rows}
-        apiRef={apiRef}
         columns={columns}
-        sx={{ fontSize, m, minHeight: height }}
+        sx={{ fontSize, m}}
         pageSizeOptions={sizeOption}
         disableRowSelectionOnClick
         rowHeight={rowHeight}
         experimentalFeatures={{ columnGrouping: true }}
-        pagination={false}
-      />
-      
-      <PaginationCustom
-        page={page}
-        rowPerPage={rowPerPage}
-        setPage={setPage}
-        setRowRowPerPage={setRowPerPage}
-        totalPage={totalPage}
-        showFirstButton
-        showLastButton
+        components={{
+          Footer: (props) => <FooterCustom {...props} page={page} rowPerPage={rowPerPage} setPage={setPage} setRowPerPage={setRowPerPage} totalPage={totalPage} />
+        }}
+        
       />
     </Box>
   );
