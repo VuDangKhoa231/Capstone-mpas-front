@@ -1,18 +1,20 @@
+import { method } from "lodash";
 import { getPLOFail, getPLOStart, getPLOSuccess } from "../redux/ploSlice";
 import axiosWrapper from "../ultis/axiosWrapper";
 
  const getPLOlist = async (data, dispatch, accessToken) => {
     dispatch(getPLOStart());
-  
+    console.log('access', accessToken);
   
     try {
-      const res = await axiosWrapper.get(`/plo/getPloByParkingStatus?pageNum=1&pageSize=5&status=1`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-          
-        },
-        })
-        dispatch(getPLOSuccess(res?.data));
+      // console.log(accessToken);
+      // const res = await fetch(`https://eparking.azurewebsites.net/PLO/getParkingInformation`, {
+      //   headers: {
+      //     Authorization: `Bearer ${accessToken}`
+      //   },
+      //   method: 'GET'
+      //   })
+      //   dispatch(getPLOSuccess(res?.data));
   
       //     //  "Access-Control-Allow-Origin": "*",
       //     // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
@@ -40,7 +42,24 @@ import axiosWrapper from "../ultis/axiosWrapper";
       //  });
       // dispatch(getPLOSuccess(res.data))
       // console.log('reg', res);
-      
+      await fetch('https://eparking.azurewebsites.net/PLO/getParkingInformation', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        
+      })
+        .then(response => response.json())
+        .then(data => {
+            console.log('data', data);
+       
+        })
+        .catch(error => {
+          console.error('Lỗi khi gọi API:', error);
+          // Xử lý lỗi ở đây
+        });
+
     } catch (error) {
       dispatch(getPLOFail());
     }

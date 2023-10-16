@@ -10,21 +10,21 @@ import themes from '../../theme/themes';
 
 
 const data = [
-    // {
-    //     id: 1, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 20
-    // },
-    // {
-    //     id: 2, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 19
-    // },
-    // {
-    //     id: 3, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 18
-    // },
-    // {
-    //     id: 4, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
-    // },
-    // {
-    //     id: 5, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
-    // },
+    {
+        id: 1, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 20
+    },
+    {
+        id: 2, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 19
+    },
+    {
+        id: 3, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 18
+    },
+    {
+        id: 4, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
+    },
+    {
+        id: 5, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
+    },
 ]
 
 

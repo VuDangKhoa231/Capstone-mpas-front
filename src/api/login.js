@@ -5,7 +5,9 @@ import { loginFail, loginStart, loginSuccess } from "../redux/authSlice";
 export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
-    const res = await axiosWrapper.post('/user/loginUser', user);
+    const res = await axiosWrapper.post('https://eparking.azurewebsites.net/user/loginUser', user , {
+      method: 'POST',
+    });
   
     if (res.data !== '') {
       dispatch(loginSuccess(res.data));
@@ -14,6 +16,8 @@ export const loginUser = async (user, dispatch, navigate) => {
     }else {
       dispatch(loginFail())
     }
+
+   
   } catch (error) {
     dispatch(loginFail());
   }

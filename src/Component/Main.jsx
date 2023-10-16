@@ -9,9 +9,6 @@ export default function Main() {
     const user = useSelector((state) => state.auth)
     const navigate = useNavigate();
     useEffect(() => {
-        if (!user.login.accessToken) {
-            navigate('/login')
-        }
         const pathname = window.location.pathname;
         // Kiểm tra đường dẫn và thiết lập giá trị selectedMenuItem tương ứng
         if (pathname === '/') {
@@ -34,7 +31,6 @@ export default function Main() {
             <div style={{ flex: 1, marginLeft: '290px' }}>
                 <Navigation />
                 <Outlet />
-
             </div>
         </div>
     )
