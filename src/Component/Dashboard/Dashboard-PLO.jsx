@@ -8,6 +8,7 @@ import 'dayjs/locale/vi';
 import React, { useState } from 'react';
 import themes from '../../theme/themes';
 import dayjs from 'dayjs';
+import Chart from 'react-google-charts';
 
 
 
@@ -55,9 +56,36 @@ export default function DashboardPLO() {
         console.log(date.format('MM/YYYY'));
     };
 
+    //chart
+    const dataChart = [
+        [
+            { type: 'string', label: 'Tuần' },
+            { type: 'number', label: 'Tổng lượt đăng ký' },
+        ],
+        ["Tuần 1", 19],
+        ["Tuần 2", 8],
+        ["Tuần 3", 3],
+        ["Tuần 4", 9],
+    ];
+    
+    const dataMax = Math.max(...dataChart.slice(1).map(row => row[1]));
+    const vAxisMax = dataMax + 5;
+
+    const options = {
+        title: ` Sơ đồ lượng đăng ký bãi đỗ  tháng ${selectedDate.format('MM/YYYY')}`,
+        titleTextStyle: {
+            fontSize: 30, 
+        },
+        hAxis: { title: `Các tuần tháng ${selectedDate.format('MM/YYYY')}`,titleTextStyle: { fontSize: 20} },
+        vAxis: { title: "Số lượng người đăng ký" ,    format: '0',viewWindow: { min: 0, max: vAxisMax }, titleTextStyle: { fontSize: 20}},
+        bar: { groupWidth: '20%' },
+        legend: 'none'
+    };
+
+
     return (
         <>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px' }}>Parking lot owner</Typography>
+            <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px' }}>Chủ bãi đỗ</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs} >
                 <DatePicker
                     label="Tháng"
@@ -66,7 +94,17 @@ export default function DashboardPLO() {
                     value={selectedDate}
                 />
             </LocalizationProvider>
-            <Grid container spacing={5} mt={'3px'}>
+             
+            <Chart
+                width='100%'
+                height={'800px'}
+                chartType="ColumnChart"
+                data={dataChart}
+                options={options}
+                loader={<div>Loading Chart...</div>}
+            />
+
+            <Grid container spacing={3} mt={'3px'} mb={'10px'} >
                 <Grid item xs={6}>
                     <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }} >
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 most booked parking areas</Typography>

@@ -21,6 +21,7 @@ import DashboardCustom from './Dashboard-Custom';
 import DashboardPLO from './Dashboard-PLO';
 import PaginationCustom from '../../Layout/PaginationCustom';
 import { getPLOlist } from '../../api/plo';
+import Chart from 'react-google-charts';
 const data = [
   {
     id: 1, total: 40, name: 'Customer', icon: <SupportAgentIcon fontSize='large' />
@@ -30,59 +31,7 @@ const data = [
   }
 ]
 
-const data2 = [
-  {
-    id: 1, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 20
-  },
-  {
-    id: 2, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 19
-  },
-  {
-    id: 3, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 18
-  },
-  {
-    id: 4, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
-  },
-  {
-    id: 5, name: 'Nguyễn Văn Tâm', phone: '0987654321', reservations: 10
-  },
-]
 
-const data3 = [
-  {
-    id: 1, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', books: 200
-  },
-  {
-    id: 2, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', books: 190
-  },
-  {
-    id: 3, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', books: 180
-  },
-  {
-    id: 4, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', books: 90
-  },
-  {
-    id: 5, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', books: 70
-  },
-]
-
-const data4 = [
-  {
-    id: 1, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '25,000,000VNĐ'
-  },
-  {
-    id: 2, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '22,000,000VNĐ'
-  },
-  {
-    id: 3, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '19,000,000VNĐ'
-  },
-  {
-    id: 4, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '10,000,000VNĐ'
-  },
-  {
-    id: 5, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '9,000,000VNĐ'
-  },
-]
 
 dayjs.locale('vi');
 export default function Dashboard() {
@@ -136,7 +85,7 @@ export default function Dashboard() {
           <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }} key={item.id} >
             <Box display={'flex'} justifyContent={'center'}>
               {item.icon}
-              <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> {item.name}</Typography>
+              <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> {item.name === "Customer" ? 'Khách hàng' : "Chủ bãi xe" }</Typography>
             </Box>
             <Typography variant='h3' textAlign={'center'} mt={'20px'}>  {item.total}</Typography>
           </Paper>
@@ -144,17 +93,7 @@ export default function Dashboard() {
       </Box>
       <DashboardCustom/>
       <DashboardPLO/>
-      <Paper elevation={5}>
-        <Typography display='flex' variant='h4' mt={6} justifyContent='center'> Student Join The Club Each Campus </Typography>
-        {/* <Chart
-          width='100%'
-          height={'400px'}
-          chartType="ColumnChart"
-          data={data}
-          options={options}
-          loader={<div>Loading Chart...</div>}
-        /> */}
-      </Paper>
+    
 
     </Box>
 
