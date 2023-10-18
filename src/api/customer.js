@@ -1,12 +1,15 @@
 import { getCusFail, getCusStart, getCusSuccess } from "../redux/customerSlice";
-import { getPLOFail,  } from "../redux/ploSlice";
+import axiosWrapper from "../ultis/axiosWrapper";
 
-export const getPLOlist = async (data, dispatch, accessToken) => {
+export const getCusList = async (data, dispatch, accessToken) => {
     dispatch(getCusStart());
-  
-  
     try {
-      dispatch(getCusSuccess())
+      const res = await axiosWrapper.get(`/customer/listCustomer?pageNum=${data.pageNum}&pageSize=${data.pageSize}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+      })
+      dispatch(getCusSuccess(res?.data))
     } catch (error) {
       dispatch(getCusFail());
     }

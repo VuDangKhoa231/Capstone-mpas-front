@@ -6,9 +6,8 @@ function ChipCustom({ label, variant, color, width , icon}) {
     <Chip
       label={label}
       variant={variant}
-      color={color}
       icon={icon}
-      sx={{ width, padding: 'auto' }}
+      sx={{ width, padding: 'auto' , backgroundColor: color, color: 'white'}}
     />
   );
 }

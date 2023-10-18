@@ -1,5 +1,5 @@
-import { Box, Button, Grid, Popover, Stack, Tab, Tabs, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, CircularProgress, Grid, Popover, Stack, Tab, Tabs, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import SearchBar from '../../../Layout/SearchBar'
 import themes from '../../../theme/themes'
 import PropTypes from 'prop-types';
@@ -8,26 +8,9 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import TableCustom from '../../../Layout/TableCustom';
 import { Link } from 'react-router-dom';
 import Main from '../../Main';
-const data = [
-  {
-    id: 1, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  },
-  {
-    id: 2, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm 2', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  },
-  {
-    id: 3, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm 3', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  },
-  {
-    id: 4, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm 4', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  },
-  {
-    id: 5, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm 5', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  },
-  {
-    id: 6, parkingName: 'Khách sạn Romantic', fullName: 'Mai Hoàng Tâm 6', phoneNumber: '0357280619', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/02/2023'
-  }
-]
+import { getBrowselist } from '../../../api/browse';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const title = [
   { field: 'id', headerName: <Typography variant='h5' fontWeight={'bold'}>ID</Typography>, width: 60, hideable: false },
@@ -35,12 +18,12 @@ const title = [
     field: 'parkingName',
     headerName: (
       <div>
-        <Typography variant='h5' fontWeight={'bold'}>
-          Tên
+        <Typography variant='h5' fontWeight={'bold'} >
+          Tên bãi
         </Typography>
       </div>
     ),
-    width: 300,
+    width: 400,
     hideable: false,
   },
   {
@@ -52,12 +35,12 @@ const title = [
         </Typography>
       </div>
     ),
-    width: 270,
+    width: 380,
     hideable: false,
   },
-  { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310 },
+  { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310,headerAlign: 'center', align: 'center' },
   {
-    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', width: 210, valueFormatter: (params) => {
+    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', width: 250, headerAlign: 'center', align: 'center',valueFormatter: (params) => {
       const date = new Date(params.value);
       return date.toLocaleDateString('en-GB');
     },
@@ -69,7 +52,7 @@ const title = [
   },
   {
     field: 'approval', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
-      <Link to={`/Browse/${params.row.id}`} >
+      <Link to={`/Browse/${params.row.ploID}`} >
         <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none' }}  >
           Xem
         </Typography>
@@ -85,6 +68,20 @@ export function BrowseList(props) {
   const [rowPerPage, setRowPerPage] = useState(5)
   const [searchValue, setSearchValue] = useState("")
 
+  const user = useSelector((state) => state.auth)
+  const browseList = useSelector((state) => state.browse.browseList)
+  console.log('list', browseList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const data = {
+      searchValue: searchValue,
+      pageNum: page,
+      pageSize: rowPerPage,
+    }
+    getBrowselist(data, dispatch, user?.login.accessToken)
+    console.log(browseList);
+  }, [page, rowPerPage, searchValue])
 
   return (
     <Stack mt={5} direction={'column'} spacing={3}>
@@ -92,9 +89,15 @@ export function BrowseList(props) {
         <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
         <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
       </Box>
-      <Box mt={5}>
-        <TableCustom rows={data} columns={title} m={'0px 15px 0px 0px'} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={10} fontSize={'20px'} rowHeight={110} sizeOption={[5, 10, 15]} defaultPageSize={5} />
-      </Box>
+      {browseList?.isFetching ? (
+        <Box sx={{ display: 'flex', width: '100%', height: '50vh', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box mt={5}>
+          <TableCustom rows={browseList?.list?.data?.content} columns={title} m={'0px 15px 0px 0px'} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={browseList?.list?.data?.totalPages} fontSize={'20px'} rowHeight={110} sizeOption={[5, 10, 15]} defaultPageSize={5} />
+        </Box>
+      )}
     </Stack>
 
   )

@@ -28,16 +28,16 @@ const authSlice = createSlice({
         },
         loginSuccess: (state, action) => {
             const { access_token, Admin } = action.payload
-            state.login.isFetching = false  
+            state.login.isFetching = false
             state.login.currentUser = Admin
             state.login.error = false
             state.login.accessToken = access_token
             state.login.isAdmin = true
         },
-        isAdmin: (state) => {
-            state.login.isAdmin = false
-            state.login.isFetching = false
-        },
+        // isAdmin: (state) => {
+        //     state.login.isAdmin = false
+        //     state.login.isFetching = false
+        // },
         loginFail: (state) => {
             state.login.error = true
             state.login.isFetching = false
