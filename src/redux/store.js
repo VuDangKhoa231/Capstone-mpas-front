@@ -8,6 +8,7 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from "redux-persist/lib/storage";
 import dashboardSlice from "./dashboardSlice";
 import browseSlice from "./browseSlice";
+import withdrawalSlice from "./withdrawalSlice";
 
 
 const persisConfig = {
@@ -22,7 +23,7 @@ const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     customer: customerReducer,
     browse: browseSlice,
-
+    withdrawal: withdrawalSlice,
 });
 const persistedReducer = persistReducer(persisConfig, rootReducer);
 

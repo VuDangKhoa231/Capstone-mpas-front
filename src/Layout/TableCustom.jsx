@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PaginationCustom from "./PaginationCustom";
-import PropTypes from 'prop-types';
 
 
 
@@ -15,7 +14,7 @@ function FooterCustom({ page, rowPerPage, setPage, setRowPerPage, totalPage }) {
 }
 
 function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, totalPage, rowPerPage, setPage, setRowPerPage }) {
-  console.log('check', rows);
+
   const data = rows || [];
   let dataWithId = [];
   if (data && data.length > 0) {
@@ -24,9 +23,7 @@ function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, 
       id: (page - 1) * rowPerPage + index + 1, 
     }));
   }
-  console.log('checkDataa', data);
-  console.log('check DatawwithID', dataWithId)
-  console.log('check totalPage', totalPage)
+ 
   return (
     <Box sx={{ width: '100%' }} textAlign={'center'} justifyContent={'center'}>
       <DataGrid
@@ -34,8 +31,8 @@ function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, 
         columns={columns}
         sx={{
           fontSize, m, '.MuiDataGrid-overlayWrapper': {
-            height: '400px', // Đặt chiều cao tại đây
-            // Thêm bất kỳ thuộc tính CSS khác theo nhu cầu của bạn
+            height: '400px', 
+
           },
         }}
         pageSizeOptions={sizeOption}

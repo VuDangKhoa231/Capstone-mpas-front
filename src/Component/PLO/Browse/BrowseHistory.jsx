@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import themes from '../../../theme/themes';
 import SearchBar from '../../../Layout/SearchBar';
 import TableCustom from '../../../Layout/TableCustom';
@@ -35,7 +35,7 @@ const title = [
     },
     { field: 'fullName', headerName: (<Typography variant='h5' fontWeight={'bold'}>Chủ bãi</Typography>), width: 290, hideable: false, },
     {
-        field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 180, valueFormatter: (params) => {
+        field: 'registerContract', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 180, valueFormatter: (params) => {
             const date = new Date(params.value);
 
         }
@@ -49,7 +49,7 @@ const title = [
         ),
     },
     {
-        field: 'approveDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày phê duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 230, valueFormatter: (params) => {
+        field: 'contractDuration', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày phê duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 230, valueFormatter: (params) => {
             const date = new Date(params.value);
         }
     },
@@ -63,22 +63,31 @@ export default function BrowseHistory() {
     const browseList = useSelector((state) => state.browse.browseHistory)
     const user = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-console.log("check browseList", browseList);
+
     useEffect(() => {
 
         const data = {
-            pageNum : page,
+            pageNum : rowPerPageChanged ? 1 : page,
             pageSize: rowPerPage,
             searchValue: searchValue
         }
 
         getBrowseHistory(data, dispatch, user?.login.accessToken)
     }, [page,rowPerPage,searchValue])
-    return (
 
+    const rowPerPageChanged = useRef(false);
+    useEffect(() => {
+        if (rowPerPageChanged.current) {
+            rowPerPageChanged.current = false;
+        } else {
+            rowPerPageChanged.current = true;
+        }
+    }, [rowPerPage]);
+    
+    return (
         <Stack mt={5} direction={'column'} spacing={3}>
             <Box display={'flex'}>
-                <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+                <SearchBar  setDebounceSearchValue={setSearchValue} />
                 <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue("")}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
             </Box>
             {browseList?.isFetching ? (

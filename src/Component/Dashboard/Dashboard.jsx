@@ -4,7 +4,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import PhoneIcon from '@mui/icons-material/Phone';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { getCookie } from 'cookies-next';
@@ -22,6 +22,7 @@ import DashboardPLO from './Dashboard-PLO';
 import PaginationCustom from '../../Layout/PaginationCustom';
 import { getPLOlist } from '../../api/plo';
 import Chart from 'react-google-charts';
+import { getDashboard } from '../../api/dashboard';
 const data = [
   {
     id: 1, total: 40, name: 'Customer', icon: <SupportAgentIcon fontSize='large' />
@@ -36,66 +37,53 @@ const data = [
 dayjs.locale('vi');
 export default function Dashboard() {
   const user = useSelector((state) => state.auth)
+  const dashboard = useSelector((state) => state.dashboard.dashboard)
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(dayjs());
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleOKClick = () => {
-    if (selectedDate) {
-      // Xử lý khi người dùng xác nhận chọn tháng
-      console.log('Ngày đã chọn:', selectedDate.format('MMMM YYYY'));
-    }
-  };
 
   useEffect(() => {
-    if (!user.login.accessToken) {
-      navigate('/login')
-    }
-    const token = getCookie('token');
-
-    // getPLOlist(selectedDate,dispatch,token);
+    console.log(dashboard);
+    getDashboard(dispatch, user?.login.data)
   }, [])
 
 
 
 
-  useEffect(() => {
-    console.log('date', selectedDate);
-  }, [selectedDate])
-  //Date and time 
 
- 
 
-  //test
-  const [page, setPage] = useState(1);
-  const [rowPerPage, setRowRowPerPage] = useState(5);
-  
-  useEffect(() => {
-    console.log('Page', page, "RpP", rowPerPage);
-  }, [page, rowPerPage])
+
+
   return (
-    <Box p={'10px'}>
-      <Typography variant='h2'>Trang chủ</Typography>
-      <Box display={'flex'} justifyContent={'space-around'} mt={'20px'}>
-        {data.map((item) => (
-          <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }} key={item.id} >
-            <Box display={'flex'} justifyContent={'center'}>
-              {item.icon}
-              <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> {item.name === "Customer" ? 'Khách hàng' : "Chủ bãi xe" }</Typography>
+    <>
+      {dashboard?.isFetching ? (
+        <Box sx={{ display: 'flex', width: '100%', height: '80vh', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress />
+        </Box>
+      ) :
+        (
+          <Box p={'10px'}>
+            <Typography variant='h2'>Trang chủ</Typography >
+            <Box display={'flex'} justifyContent={'space-around'} mt={'20px'}>
+              <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }}>
+                <Box display={'flex'} justifyContent={'center'}>
+                  <SupportAgentIcon fontSize='large' />
+                  <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> Khách hàng</Typography>
+                </Box>
+                <Typography variant='h3' textAlign={'center'} mt={'20px'}> {dashboard?.data?.data.totalCustomer}</Typography>
+              </Paper>
+              <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }} >
+                <Box display={'flex'} justifyContent={'center'}>
+                  <FaceIcon fontSize='large' />
+                  <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> Chủ bãi xe</Typography>
+                </Box>
+                <Typography variant='h3' textAlign={'center'} mt={'20px'}>  {dashboard?.data?.data.totalPlo}</Typography>
+              </Paper>
             </Box>
-            <Typography variant='h3' textAlign={'center'} mt={'20px'}>  {item.total}</Typography>
-          </Paper>
-        ))}
-      </Box>
-      <DashboardCustom/>
-      <DashboardPLO/>
-    
-
-    </Box>
-
+            <DashboardCustom />
+            <DashboardPLO />
+          </Box >
+        )
+      }
+    </>
   )
 }

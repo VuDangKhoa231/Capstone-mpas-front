@@ -9,6 +9,8 @@ import TableCustom from '../../../Layout/TableCustom'
 import { getPLOlist } from '../../../api/plo'
 import themes from '../../../theme/themes'
 
+
+
 const data = [
   {
     id: "PLO1", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Đang hoạt động',
@@ -48,28 +50,28 @@ export default function ListOfPLO() {
     {
       field: 'statusName', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, headerAlign: 'center', align: 'center', width: 200, renderCell: (params) => {
         const status = params.row.statusName;
-        console.log(status);
-        let label, variant, color;
+
+        let label, variant, backgroundColor;
         if (status === "Successfully Registered") {
           label = 'Mới đăng ký';
           variant = 'filled';
-          color = '#3498db';
+           backgroundColor = '#3498db';
         } else if (status === "Opening") {
           label = "Đang hoạt động";
           variant = 'filled';
-          color = '#00cc66';
+          backgroundColor = '#00cc66';
         } else if (status === " Closing") {
           label = "Dừng hoạt động";
           variant = 'filled';
-          color = '#e74c3c';
+          backgroundColor = '#e74c3c';
         } else {
           label = "Hết hạn hợp đồng";
           variant = 'filled';
-          color = '#f39c12';
+          backgroundColor = '#f39c12';
         }
         return (
           <Box width={'100%'} display={'flex'} justifyContent={'start'}>
-            <ChipCustom label={label} variant={variant} color={color} />
+            <ChipCustom label={label} variant={variant} backgroundColor={backgroundColor} />
           </Box>
         );
       },
@@ -100,25 +102,26 @@ export default function ListOfPLO() {
   }
 
 
+  
   useEffect(() => {
     const data = {
       pageNum: page,
       pageSize: rowPerPage,
-      status: selectTab
-    }
-    if (user.login?.accessToken) {
-      getPLOlist(data, dispatch, user?.login?.accessToken)
+      status: selectTab,
+      searchValue: searchValue,
     }
 
-    console.log('PLo',plo);
-  }, [page, rowPerPage, selectTab])
+    getPLOlist(data, dispatch, user?.login?.accessToken)
+  }, [page, rowPerPage, selectTab, searchValue])
+
+
 
   return (
 
     <Stack direction='column' p='10px' spacing={5}>
       <Typography variant='h2'>Danh sách khách hàng</Typography>
       <Box width={'35%'}>
-        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+        <SearchBar setDebounceSearchValue={setSearchValue} />
       </Box>
 
       <Box justifyContent={'stretch'} width={'100%'} display={'flex'}>
@@ -142,7 +145,7 @@ export default function ListOfPLO() {
         )
         :
         (
-          <TableCustom rows={plo?.allPlo?.data?.content} columns={title} m={'0px 15px 0px 0px'} fontSize={'20px'} rowHeight={150} sizeOption={[3, 5, 10]} defaultPageSize={3} height={'400px'} page={page} rowPerPage={rowPerPage} setPage={setPage} setRowPerPage={setRowPerPage} totalPage={plo?.data?.totalPages} />
+          <TableCustom rows={plo?.allPlo?.data?.content} columns={title} m={'0px 15px 0px 0px'} fontSize={'20px'} rowHeight={110} sizeOption={[3, 5, 10]} defaultPageSize={3} height={'400px'} page={page} rowPerPage={rowPerPage} setPage={setPage} setRowPerPage={setRowPerPage} totalPage={plo?.allPlo?.data?.totalPages} />
         )
       }
     </Stack>

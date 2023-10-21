@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Grid, Popover, Stack, Tab, Tabs, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from '../../../Layout/SearchBar'
 import themes from '../../../theme/themes'
 import PropTypes from 'prop-types';
@@ -51,7 +51,7 @@ const title = [
     },
   },
   {
-    field: 'approval', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
+    field: 'approval', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 180, getActions: (params) => [
       <Link to={`/Browse/${params.row.ploID}`} >
         <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none' }}  >
           Xem
@@ -76,17 +76,26 @@ export function BrowseList(props) {
   useEffect(() => {
     const data = {
       searchValue: searchValue,
-      pageNum: page,
+      pageNum: rowPerPageChanged ? 1 : page,
       pageSize: rowPerPage,
     }
     getBrowselist(data, dispatch, user?.login.accessToken)
-    console.log(browseList);
+
   }, [page, rowPerPage, searchValue])
+
+  const rowPerPageChanged = useRef(false);
+  useEffect(() => {
+      if (rowPerPageChanged.current) {
+          rowPerPageChanged.current = false;
+      } else {
+          rowPerPageChanged.current = true;
+      }
+  }, [rowPerPage]);
 
   return (
     <Stack mt={5} direction={'column'} spacing={3}>
       <Box display={'flex'}>
-        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+        <SearchBar setDebounceSearchValue={setSearchValue} />
         <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
       </Box>
       {browseList?.isFetching ? (

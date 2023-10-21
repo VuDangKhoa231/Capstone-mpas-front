@@ -37,7 +37,7 @@ export default function LoginComponent() {
             password: getValues('password'),
         }
         loginUser(data, dispatch, navigate);
-        console.log(user.login.isAmin);
+        console.log(user.login.error);
     };
 
     return (
@@ -53,7 +53,9 @@ export default function LoginComponent() {
                 <Grid item xs={5}>
                     <Paper elevation={8} sx={{ p: '20px', height: '90%', borderRadius: '10px', width: '60%' }}>
                         <AppleIcon sx={{ fontSize: '200px', mb: '20px' }} />
-
+                        {user?.login.error &&
+                            <Alert severity="error">Sai tài khoản hoặc mật khẩu</Alert>
+                        }
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <TextField

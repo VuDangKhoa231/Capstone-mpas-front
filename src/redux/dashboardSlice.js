@@ -5,18 +5,23 @@ const dashboardSlice = createSlice ( {
     initialState: {
       dashboard: {
         data: null,
+        chart: null,
         isFetching: false,
         err: null
       },
+
       customer: {
        data: null,
        isFetching: false,
-       err: null
+       err: null,
+       chart: null,
       },
+
       plo: {
         data: null,
         isFetching: false,
-        err: null
+        err: null,
+        chart: null,
       }
     },
 

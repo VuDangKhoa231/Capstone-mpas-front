@@ -73,11 +73,16 @@ export default function DashboardCustom() {
     };
 
     useEffect(() => {
-      console.log('Call API');
+        const date = {
+            month: selectedDate.get('month') + 1,
+            year: selectedDate.get('year')
+        }
+
+     
     }, [selectedDate])
 
     return (
-        <>
+        <> 
             <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px 20px 0px' }}>Khách hàng</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs} >
                 <DatePicker

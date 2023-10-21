@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getCookie, deleteCookie } from 'cookies-next';
-import { useSelector } from "react-redux";
+import { deleteCookie, getCookie } from 'cookies-next';
 
 const defaultOptions = {
   baseURL: 'https://eparking.azurewebsites.net/',
@@ -27,7 +26,6 @@ axiosWrapper.interceptors.request.use(async (config) => {
 
     return config;
   } catch (error) {
-    // Handle errors if any
     console.log(error);
     return config;
   }
@@ -36,7 +34,6 @@ axiosWrapper.interceptors.request.use(async (config) => {
 axiosWrapper.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log({ error });
     if (error?.response?.status === 401) {
       // You need to replace the message handling code with your preferred library
       // Example using alert:

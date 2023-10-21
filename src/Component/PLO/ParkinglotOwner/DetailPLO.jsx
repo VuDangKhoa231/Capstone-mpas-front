@@ -1,5 +1,5 @@
 import { Box, Breadcrumbs, Button, Chip, CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import themes from '../../../theme/themes';
@@ -7,148 +7,19 @@ import Rating from '../../../Layout/Rating';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import PaginationCustom from '../../../Layout/PaginationCustom';
-import { getDetailPLO } from '../../../api/plo';
+import { getDetailPLO, getDetailRatingPLO } from '../../../api/plo';
 import { useDispatch, useSelector } from 'react-redux';
-// const data = [
-//     {
-//         id: 'PLO1', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
-//             { id: 1, img: '../image/anh.png' },
-//             { id: 2, img: '../image/anh.png' },
-//             { id: 3, img: '../image/anh.png' },
-//             { id: 4, img: '../image/anh.png' },
-//             { id: 5, img: '../image/anh.png' },
-//             { id: 6, img: '../image/anh.png' },
-//         ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Đang hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
-//             {
-//                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
-//             },
-//             {
-//                 id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
-//             },
-//             {
-//                 id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
-//             },
-//             {
-//                 id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
-//             },
-//             {
-//                 id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
-//             },
-//         ]
-//     },
-//     {
-//         id: 'PLO2', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
-//             { id: 1, img: '../image/anh.png' },
-//             { id: 2, img: '../image/anh.png' },
-//             { id: 3, img: '../image/anh.png' },
-//         ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Đang hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
-//             {
-//                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
-//             },
-//             {
-//                 id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
-//             },
-//             {
-//                 id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
-//             },
-//             {
-//                 id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
-//             },
-//             {
-//                 id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
-//             },
-//         ]
-//     },
-//     {
-//         id: 'PLO3', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
-//             { id: 1, img: '../image/anh.png' },
-//             { id: 2, img: '../image/anh.png' },
-//             { id: 3, img: '../image/anh.png' },
-//             { id: 4, img: '../image/anh.png' },
-//         ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Dừng hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
-//             {
-//                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
-//             },
-//             {
-//                 id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
-//             },
-//             {
-//                 id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
-//             },
-//             {
-//                 id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
-//             },
-//             {
-//                 id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
-//             },
-//         ]
-//     },
-//     {
-//         id: 'PLO4', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
-//             { id: 1, img: '../image/anh.png' },
-//             { id: 2, img: '../image/anh.png' },
-//             { id: 3, img: '../image/anh.png' },
-//             { id: 4, img: '../image/anh.png' },
-//         ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Dừng hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
-//             {
-//                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
-//             },
-//             {
-//                 id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
-//             },
-//             {
-//                 id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
-//             },
-//             {
-//                 id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
-//             },
-//             {
-//                 id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
-//             },
-//         ]
-//     },
-//     {
-//         id: 'PLO5', name: "Mai Hoàng Tâm", phone: '0872812111', NameOfParkingLot: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', contractTerm: '1 năm', contractClosingTime: '30/12/2023', realtime: { totalNumber: '1', totalMorning: '0', totalEvening: '2', overNight: '1', revenue: '12k' }, images: [
-//             { id: 1, img: '../image/anh.png' },
-//             { id: 2, img: '../image/anh.png' },
-//             { id: 3, img: '../image/anh.png' },
-//             { id: 4, img: '../image/anh.png' },
-//         ], rating: 4, locationMap: { latitude: '10.889706636010411', longitude: '106.79495520906106' }, status: 'Dừng hoạt động', morningFee: '3.000VNĐ', eveningFee: '4.000VNĐ', overNightFee: '12.000VNĐ', feedback: [
-//             {
-//                 id: '1.1', customer: 'Mai Hoàng Tâm', rating: 1, content: ' Đang stress'
-//             },
-//             {
-//                 id: '1.2', customer: 'Mai Hoàng Tâm', rating: 2, content: ' Đang stress tìm '
-//             },
-//             {
-//                 id: '1.3', customer: 'Mai Hoàng Tâm', rating: 3, content: ' Đang stress tìm chỗ '
-//             },
-//             {
-//                 id: '1.4', customer: 'Mai Hoàng Tâm', rating: 5, content: ' Đang stress tìm chỗ mà đặt được chỗ '
-//             },
-//             {
-//                 id: '1.5', customer: 'Mai Hoàng Tâm', rating: 4, content: ' Đang stress tìm chỗ mà đặt được chỗ ưng ghê'
-//             },
-//         ]
-//     },
 
-// ]
 
 
 export default function DetailPLO() {
     const { id } = useParams();
-    const [item, setItem] = useState([]);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth)
     const plo = useSelector((state) => state.plo.detailPLO)
-
+    const rating = useSelector((state) => state.plo.rating)
     useEffect(() => {
         getDetailPLO(id, dispatch, user?.login?.accessToken)
-        if (plo?.plo?.status === 200) {
-            setItem(plo?.plo.data)
-        } else {
-            setItem([])
-        }
     }, []);
 
     //Feedback pagination
@@ -156,15 +27,27 @@ export default function DetailPLO() {
     const [rowPerPage, setRowPerPage] = useState(5);
 
     useEffect(() => {
-        console.log(page, '+', rowPerPage);
-
+        const data = {
+            pageNum: rowPerPageChanged ? 1 : page,
+            pageSize: rowPerPage,
+            ploID: id
+        }
+        getDetailRatingPLO(data, dispatch, user?.login.accessToken)
     }, [page, rowPerPage])
 
-    // gg map
+    const rowPerPageChanged = useRef(false);
+    useEffect(() => {
+        if (rowPerPageChanged.current) {
+            rowPerPageChanged.current = false;
+        } else {
+            rowPerPageChanged.current = true;
+        }
+    }, [rowPerPage]);
+
     const openGoogleMaps = () => {
-        if (item.latitude && item.longtitude) {
-            // Tạo URL Google Maps với kinh độ và vĩ độ từ item.locationMap
-            const googleMapsUrl = `https://www.google.com/maps?q=${item.latitude},${item.longtitude}`;
+        if (plo?.plo.data.latitude && plo?.plo.data.longtitude) {
+            // Tạo URL Google Maps với kinh độ và vĩ độ từ  plo?.plo.data.locationMap
+            const googleMapsUrl = `https://www.google.com/maps?q=${plo?.plo.data.latitude},${plo?.plo.data.longtitude}`;
 
             // Mở Google Maps trong một tab mới
             window.open(googleMapsUrl, '_blank');
@@ -172,8 +55,8 @@ export default function DetailPLO() {
     };
 
     const contractLink = () => {
-        if (item.contractLink) {
-            window.open(item.contractLink, '_blank');
+        if (plo?.plo.data.contractLink) {
+            window.open(plo?.plo.data.contractLink, '_blank');
         }
     };
 
@@ -202,7 +85,7 @@ export default function DetailPLO() {
                             Danh sách chủ bãi xe
                         </Link>,
                         <Typography key="3" color="text.primary" fontWeight={'bold'}>
-                            {item.fullName}
+                            {plo?.plo.data.fullName}
                         </Typography>
                     </Breadcrumbs>
 
@@ -211,13 +94,13 @@ export default function DetailPLO() {
                         <Grid item xs={6}>
                             <Stack direction={'column'} spacing={1.5}>
                                 <Typography variant='h4' fontWeight={'bold'}> Chi tiết chủ bãi xe</Typography>
-                                <Typography variant='h5' fontWeight={'bold'}>Tên: {item.fullName}</Typography>
-                                <Typography variant='h6'>Số điện thoại: {item.phoneNumber}</Typography>
-                                {item.email ?
-                                    <Typography variant='h6'>Email: {item.email}</Typography>
+                                <Typography variant='h5' fontWeight={'bold'}>Tên: {plo?.plo.data.fullName}</Typography>
+                                <Typography variant='h6'>Số điện thoại: {plo?.plo.data.phoneNumber}</Typography>
+                                {plo?.plo.data.email ?
+                                    <Typography variant='h6'>Email: {plo?.plo.data.email}</Typography>
                                     : <></>}
-                                {/* <Typography variant='h6'>Thời hạn hợp đồng : {item.contractTerm}</Typography> */}
-                                <Typography variant='h6'>Thời gian kết thúc: {item.contractDuration}</Typography>
+                                {/* <Typography variant='h6'>Thời hạn hợp đồng : { plo?.plo.data.contractTerm}</Typography> */}
+                                <Typography variant='h6'>Thời gian kết thúc: {plo?.plo.data.contractDuration}</Typography>
                                 <Box pt={'20px'}>
                                     <Button variant='contained' sx={{ p: '15px', width: '300px', backgroundColor: themes.backgroundColor }} onClick={contractLink}>
                                         Xem hợp đồng
@@ -229,18 +112,18 @@ export default function DetailPLO() {
 
                                         <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                                             <Typography variant='h5'>Chiều dài (m)</Typography>
-                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.width}</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{plo?.plo.data.width}</Typography>
                                         </Paper>
 
 
                                         <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                                             <Typography variant='h5'>Chiều rộng (m)</Typography>
-                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.length}</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{plo?.plo.data.length}</Typography>
                                         </Paper>
 
                                         <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                                             <Typography variant='h5'>Số chỗ</Typography>
-                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item.slot}</Typography>
+                                            <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{plo?.plo.data.slot}</Typography>
                                         </Paper>
                                     </Box>
                                 </Box>
@@ -252,22 +135,22 @@ export default function DetailPLO() {
                             <Stack direction={'column'} spacing={1.5}>
                                 <Typography variant='h4' fontWeight={'bold'}> Thông tin bãi xe </Typography>
                                 <Box sx={{ display: 'flex' }}>
-                                    <Typography variant='h5' mr='10px' fontWeight={'bold'}>{item.parkingName}</Typography>
-                                    <Rating props={item.star} />
+                                    <Typography variant='h5' mr='10px' fontWeight={'bold'}>{plo?.plo.data.parkingName}</Typography>
+                                    <Rating props={plo?.plo.data.star} />
                                 </Box>
-                                <Typography variant='h6'>Địa chỉ: {item.address}</Typography>
+                                <Typography variant='h6'>Địa chỉ: {plo?.plo.data.address}</Typography>
                                 <Box display={'flex'}>
                                     <PersonPinCircleIcon fontSize='large' />
                                     <Button variant="text" color="primary" onClick={openGoogleMaps}>
                                         <Typography variant='h6'>
-                                            {item.latitude}, {item.longtitude}
+                                            {plo?.plo.data.latitude}, {plo?.plo.data.longtitude}
                                         </Typography>
                                     </Button>
                                 </Box>
                                 <Box display={'flex'} alignItems={'center'}>
-                                    <Typography variant='h6' marginRight={'10px'}>Trạng thái bãi xe: </Typography>
+                                    <Typography variant='h6' marginRight={'10px'}>Trạng thái bãi xe:</Typography>
 
-                                    {item.status === 'Đang hoạt động' ? <Typography variant='h6' color='green' fontWeight={'bold'}> {item.status} </Typography> : (item.status === 'Dừng hoạt động' ? <Chip label={`${item.status}`} color='error' variant="filled" /> : <Typography color='red' fontWeight={'bold'}> {item.status} </Typography>)}
+                                    {plo?.plo.data.parkingStatusID === 3 ? <Chip label={"Mới đăng ký"} color='primary' variant="filled" /> : (plo?.plo.data.parkingStatusID === 4 ? <Chip label={"Đang hoạt động"} color='success' variant="filled" /> : <Chip label={"Dừng hoạt động"} color='error' variant="filled" />)}
                                 </Box>
 
                                 {/* Fee Information  */}
@@ -276,7 +159,7 @@ export default function DetailPLO() {
                                     <Typography variant='h5' > Ban ngày</Typography>
                                     <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
                                         <Typography> Mức phí</Typography>
-                                        <Typography> {item.morningFee}</Typography>
+                                        <Typography> {plo?.plo.data.morningFee}</Typography>
                                     </Box>
                                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                         <Typography> Thời gian hoạt động</Typography>
@@ -289,7 +172,7 @@ export default function DetailPLO() {
                                     <Typography variant='h5' > Ban đêm</Typography>
                                     <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
                                         <Typography> Mức phí</Typography>
-                                        <Typography> {item.eveningFee}</Typography>
+                                        <Typography> {plo?.plo.data.eveningFee}</Typography>
                                     </Box>
                                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                         <Typography> Thời gian hoạt động</Typography>
@@ -302,7 +185,7 @@ export default function DetailPLO() {
                                     <Typography variant='h5' > Qua đêm</Typography>
                                     <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
                                         <Typography> Mức phí</Typography>
-                                        <Typography> {item.overNightFee}</Typography>
+                                        <Typography> {plo?.plo.data.overNightFee}</Typography>
                                     </Box>
                                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                         <Typography> Thời gian hoạt động</Typography>
@@ -315,35 +198,49 @@ export default function DetailPLO() {
                     <Box px={'20px'} maxWidth={'1540px'}>
                         <Typography variant='h4' fontWeight={'bold'}> Hình ảnh bãi xe </Typography>
                         <Box display={'flex'} flexDirection={'row'} sx={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
-                            {item.images ? (
-                                item.images.map((image) => (
-                                    <img key={image.id} src={`${image.img}`} style={{ margin: '10px 30px 10px 0px' }} />
+                            {plo?.plo.data?.images && plo?.plo.data.images.length > 0 ? (
+                                plo?.plo.data.images.map((image, index) => (
+                                    <img key={index} src={`${image.img}`} style={{ margin: '10px 30px 10px 0px' }} />
                                 ))
                             ) : (
-                                // Hiển thị một thông báo hoặc phản hồi khác nếu item.images là null hoặc undefined
                                 <Typography variant='h6'>Không có hình ảnh</Typography>
                             )}
                         </Box>
                     </Box>
                     <Box px={'20px'}>
                         <Typography variant='h4' fontWeight={'bold'}> Phản hồi và đánh giá</Typography>
-
-                        {/* {item.feedback.map((item) => (
-                            <Box key={item.id} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
-                                <Box display={'flex'} flexDirection={'row'}>
-                                    <Typography variant='h6' mr={'10px'} fontWeight={'bold'}>{item.customer} </Typography>
-                                    <Rating props={item.rating} />
-                                </Box>
-                                <Box display={'flex'} flexDirection={'row'}>
-                                    <Typography variant='h6' mr={'10px'}>Nội dung:</Typography>
-                                    <Typography variant='h6' color={themes.palette.grey.dark}>{item.content}</Typography>
-                                </Box>
+                        {rating?.isFetching ? (
+                            <Box sx={{ display: 'flex', width: '100%', height: '10vh', justifyContent: 'center', alignItems: 'center' }}>
+                                <CircularProgress />
                             </Box>
-                        ))} */}
-                        <PaginationCustom page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={10} />
+                        ) :
+                            (<>
+                                {/* {rating?.data.data.content.length > 0  ?
+                                    <>
+                                        {rating?.data.data.content.map((item) => (
+                                            <Box key={ plo?.plo.data.id} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
+                                                <Box display={'flex'} flexDirection={'row'}>
+                                                    <Typography variant='h6' mr={'10px'} fontWeight={'bold'}>{ plo?.plo.data.customer} </Typography>
+                                                    <Rating props={ plo?.plo.data.rating} />
+                                                </Box>
+                                                <Box display={'flex'} flexDirection={'row'}>
+                                                    <Typography variant='h6' mr={'10px'}>Nội dung:</Typography>
+                                                    <Typography variant='h6' color={themes.palette.grey.dark}>{ plo?.plo.data.content}</Typography>
+                                                </Box>
+                                            </Box>
+                                        ))}
+                                        <PaginationCustom page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={rating?.data?.data?.totalPages} />
+                                    </>
+                                    : (
+                                        <Box>
+                                            <Typography variant='h6'>Không có bình luận</Typography>
+                                        </Box>
+                                    )} */}
+                            </>)}
                     </Box>
                 </Stack>
             }
         </>
+
     )
 }

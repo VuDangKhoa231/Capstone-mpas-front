@@ -32,19 +32,19 @@ const data3 = [
 
 const data4 = [
     {
-        id: 1, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '25,000,000VNĐ'
+        id: 1, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: 25000000
     },
     {
-        id: 2, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '22,000,000VNĐ'
+        id: 2, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: 22000000
     },
     {
-        id: 3, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '19,000,000VNĐ'
+        id: 3, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: 19000000
     },
     {
-        id: 4, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '10,000,000VNĐ'
+        id: 4, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: 10000000
     },
     {
-        id: 5, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: '9,000,000VNĐ'
+        id: 5, owner: 'Nguyễn Văn Tâm', name: 'Bãi Nguyễn Văn Cừ', revenue: 9000000
     },
 ]
 
@@ -53,7 +53,6 @@ export default function DashboardPLO() {
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
-        console.log(date.format('MM/YYYY'));
     };
 
     //chart
@@ -147,7 +146,7 @@ export default function DashboardPLO() {
                                 </Grid>
                                 <Grid item xs={3} display={'flex'}>
                                     <LocalAtmIcon fontSize='medium' />
-                                    <Typography variant='h6' ml={'5px'}> {item.revenue}</Typography>
+                                    <Typography variant='h6' ml={'5px'}> {item.revenue}VNĐ</Typography>
                                 </Grid>
                             </Grid>
                         ))}

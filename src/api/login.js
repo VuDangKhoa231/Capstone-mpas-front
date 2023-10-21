@@ -5,21 +5,12 @@ import { loginFail, loginStart, loginSuccess } from "../redux/authSlice";
 export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
-    const res = await axiosWrapper.post('https://eparking.azurewebsites.net/user/loginUser', user , {
-      method: 'POST',
-    });
-  
-    if (res.data !== '') {
+    const res = await axiosWrapper.post('/user/loginUser', user )
       dispatch(loginSuccess(res.data));
       navigate("/");
-      setCookie('token', res.data.access_token)
-    }else {
-      dispatch(loginFail())
-    }
-
-   
+      setCookie('token', res.data.access_token) 
   } catch (error) {
-    dispatch(loginFail());
+    dispatch(loginFail(error));
   }
 }
 

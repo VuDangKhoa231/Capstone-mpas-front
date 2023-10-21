@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { Paper } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import DialogCustom from '../../../Layout/DialogCustom'
 import { getDetailBrowse } from '../../../api/browse'
 import themes from '../../../theme/themes'
@@ -53,18 +53,19 @@ const data = [
 
 ]
 export default function DetailBrowse() {
-  const { id } = useParams();
-  const [item, setItem] = useState(null);
+    const { id } = useParams();
+    console.log(id);
   const user = useSelector((state) => state.auth)
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const browseDetail = useSelector((state) => state.browse.detailBrowse)
-  console.log("chekc check", browseDetail);
+
+
   //Dialog
   const [openDialog, setOpenDialog] = useState(false);
-
+  const [url, setUrl] = useState('');
+  const [error, setError] = useState();
   const handleClickOpen = () => {
-    console.log(item);
     setOpenDialog(true);
   };
   const handleCloseDialog = () => {
@@ -72,27 +73,22 @@ export default function DetailBrowse() {
   };
 
 
-  useEffect(() => {
-    const selectedItem = data.find(itemData => itemData.id.toString() === id);
-    setItem(selectedItem);
-    console.log(selectedItem);
-  }, []);
 
   useEffect(() => {
-    console.log(id);
     getDetailBrowse(id, dispatch, user?.login.accessToken)
-    if (browseDetail?.browse.status === 200) {
-      setItem(browseDetail?.browse?.data)
-    } else {
-      setItem([])
-    }
-    console.log(browseDetail);
+
+    console.log(browseDetail?.browse?.data);
   }, [])
 
 
+
+
   const handleClickConfirm = () => {
-    console.log('log');
-    navigate('/browse')
+    console.log(error);
+    if (error && error !== '') {
+      // navigate('/browse')
+
+    }
   }
 
   return (
@@ -115,7 +111,7 @@ export default function DetailBrowse() {
               Danh sách kiểm duyệt
             </Link>,
             <Typography key="3" color="text.primary" fontWeight={'bold'}>
-              {item?.fullName}
+              {browseDetail?.browse?.data?.fullName}
             </Typography>
           </Breadcrumbs>
 
@@ -125,9 +121,9 @@ export default function DetailBrowse() {
             <Grid item xs={5}>
               <Stack direction={'column'} spacing={1.5}>
                 <Typography variant='h4' fontWeight={'bold'}> Chi tiết chủ bãi xe</Typography>
-                <Typography variant='h5' fontWeight={'bold'}>Tên: {item?.fullName}</Typography>
-                <Typography variant='h6'>Số điện thoại: {item?.phoneNumber}</Typography>
-                <Typography variant='h6'>Thời đăng ký : {item?.registerContract}</Typography>
+                <Typography variant='h5' fontWeight={'bold'}>Tên: {browseDetail?.browse?.data?.fullName}</Typography>
+                <Typography variant='h6'>Số điện thoại: {browseDetail?.browse?.data?.phoneNumber}</Typography>
+                <Typography variant='h6'>Thời gian đăng ký : {browseDetail?.browse?.data?.registerContract}</Typography>
 
               </Stack>
             </Grid>
@@ -137,10 +133,10 @@ export default function DetailBrowse() {
               <Stack direction={'column'} spacing={1}>
                 <Typography variant='h4' fontWeight={'bold'}> Thông tin bãi xe </Typography>
                 <Box sx={{ display: 'flex' }}>
-                  <Typography variant='h5' mr='10px' fontWeight={'bold'}>Tên bãi: {item?.parkingName}</Typography>
+                  <Typography variant='h5' mr='10px' fontWeight={'bold'}>Tên bãi: {browseDetail?.browse?.data?.parkingName}</Typography>
 
                 </Box>
-                <Typography variant='h6'>Địa chỉ: {item?.address}</Typography>
+                <Typography variant='h6'>Địa chỉ: {browseDetail?.browse?.data?.address}</Typography>
 
 
                 <Box>
@@ -148,18 +144,18 @@ export default function DetailBrowse() {
 
                     <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                       <Typography variant='h5'>Chiều dài (m)</Typography>
-                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item?.width}</Typography>
+                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{browseDetail?.browse?.data?.width}</Typography>
                     </Paper>
 
 
                     <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                       <Typography variant='h5'>Chiều rộng (m)</Typography>
-                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item?.length}</Typography>
+                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{browseDetail?.browse?.data?.length}</Typography>
                     </Paper>
 
                     <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
                       <Typography variant='h5'>Số chỗ</Typography>
-                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{item?.slot}</Typography>
+                      <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{browseDetail?.browse?.data?.slot}</Typography>
                     </Paper>
                   </Box>
                 </Box>
@@ -168,8 +164,8 @@ export default function DetailBrowse() {
           </Grid>
           <Box px={'20px'} maxWidth={'1540px'} mt={''}>
             <Typography variant='h4' fontWeight={'bold'}> Hình ảnh bãi xe </Typography>
-            {item?.images ? (
-              item?.images.map((image) => (
+            {browseDetail?.browse?.data?.images ? (
+              browseDetail?.browse?.data?.images.map((image) => (
                 <img key={image.id} src={`${image.img}`} style={{ margin: '10px 30px 10px 0px' }} />
               ))
             ) : (
@@ -180,7 +176,7 @@ export default function DetailBrowse() {
           <Box px={'20px'}>
             <Typography variant='h4' mt={'40px'} fontWeight={'bold'}> Mô tả</Typography>
             <Box sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
-              <Typography variant='h6'>{item?.description}</Typography>
+              <Typography variant='h6'>{browseDetail?.browse?.data?.description}</Typography>
             </Box>
           </Box>
 
@@ -192,7 +188,7 @@ export default function DetailBrowse() {
               </Button>
             </Box>
           </Box>
-          <DialogCustom confirm={true} data={item} handleClose={handleCloseDialog} open={openDialog} status={1} handleConfirm={handleClickConfirm} />
+          <DialogCustom confirm={true} data={browseDetail?.browse?.data} handleClose={handleCloseDialog} open={openDialog} status={1} handleConfirm={handleClickConfirm} error={error} setError={setError} setUrl={setUrl} url={url} />
         </Stack>
       }
     </>

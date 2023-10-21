@@ -8,7 +8,7 @@ export const getBrowselist = async (data, dispatch, accessToken) => {
   if(data.searchValue && data.searchValue?.trim() !== ""){
     url = `/plo/getRegistrationByParkingStatus?keywords=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
   }
-  console.log('logURRL', url);
+
   try {
 
     const res = await axiosWrapper.get(url, {
@@ -23,10 +23,10 @@ export const getBrowselist = async (data, dispatch, accessToken) => {
 }
 
 
-export const getDetailBrowse = async (ploId, dispatch, accessToken) => {
+export const getDetailBrowse = async (browseId, dispatch, accessToken) => {
   dispatch(getDetailBrowseStart());
   try {
-    const res = await axiosWrapper.get(`/plo/getRegistrationDetail?ploID=${ploId}`, {
+    const res = await axiosWrapper.get(`/plo/getRegistrationDetail?ploID=${browseId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       },
@@ -41,9 +41,9 @@ export const getDetailBrowse = async (ploId, dispatch, accessToken) => {
 export const getBrowseHistory = async (data, dispatch, accessToken) => {
     dispatch(getBrowseHistoryStart());
   
-    let url = `/plo/getRegistrationHistory?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
+    let url = `/plo/getRegistrationHistory?pageNum=${data.pageNum}&pageSize=${data.pageSize}`;
     if(data.searchValue && data.searchValue?.trim() !== ""){
-      url = `/plo/getRegistrationHistory?keywords=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
+      url = `/plo/getRegistrationHistory?keywords=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}`;
     }
     try {
       const res = await axiosWrapper.get(url, {

@@ -6,20 +6,19 @@ import SideBar from './SideBar';
 
 export default function Main() {
     const [selectedMenuItem, setSelectedMenuItem] = useState(null); // Mục đang được chọn
-    const user = useSelector((state) => state.auth)
-    const navigate = useNavigate();
+ 
     useEffect(() => {
         const pathname = window.location.pathname;
         // Kiểm tra đường dẫn và thiết lập giá trị selectedMenuItem tương ứng
         if (pathname === '/') {
             setSelectedMenuItem(1);
-        } else if (pathname === '/PLO') {
+        } else if (pathname.includes('/PLO')) {
             setSelectedMenuItem(2.1);
-        } else if (pathname === '/Browse') {
+        } else if (pathname .includes('/Browse')) {
             setSelectedMenuItem(2.2);
-        } else if (pathname === '/Withdrawal') {
+        } else if (pathname.includes('/Withdrawal')) {
             setSelectedMenuItem(2.3);
-        } else if (pathname === '/Customer') {
+        } else if (pathname.includes('/Customer')) {
             setSelectedMenuItem(3);
         }
     }, []);

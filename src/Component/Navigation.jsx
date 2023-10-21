@@ -14,7 +14,6 @@ import { logoutSuccess } from '../redux/authSlice';
 export default function Navigation() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const user = useSelector((state) => state.auth?.login.currentUser)
-    console.log(user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);

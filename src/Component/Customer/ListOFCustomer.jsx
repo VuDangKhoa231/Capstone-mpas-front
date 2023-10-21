@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { useGridApiRef } from '@mui/x-data-grid'
 import ChipCustom from '../../Layout/ChipCustom'
@@ -97,15 +97,25 @@ export default function ListOFCustomer() {
   const customer = useSelector((state) => state.customer)
   const dispatch = useDispatch();
 
-  useEffect(() => {
 
+
+  useEffect(() => {
     const data = {
-      pageNum: page,
-      pageSize: rowPerPage
+      pageNum: rowPerPageChanged ? 1 : page,
+      pageSize: rowPerPage,
+      searchValue: searchValue
     }
     getCusList(data, dispatch, user?.login?.accessToken);
   }, [page, rowPerPage, searchValue])
-
+  
+  const rowPerPageChanged = useRef(false);
+  useEffect(() => {
+      if (rowPerPageChanged.current) {
+          rowPerPageChanged.current = false;
+      } else {
+          rowPerPageChanged.current = true;
+      }
+  }, [rowPerPage]);
 
   return (
     <>
@@ -114,7 +124,7 @@ export default function ListOFCustomer() {
         <Typography variant='h2'>Danh sách khách hàng</Typography>
 
         <Box display={'flex'}>
-          <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+          <SearchBar setDebounceSearchValue={setSearchValue} />
           <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue("")}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
         </Box>
         {/* Content */}
