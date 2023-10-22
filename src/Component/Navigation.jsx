@@ -55,7 +55,7 @@ export default function Navigation() {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}>
-            <Typography sx={{ backgroundColor: '#E6E6E6' }} padding='10px'> {user?.fullName}</Typography>
+            <Typography  padding='10px'> {user?.fullName}</Typography>
             <Divider />
             <MenuItem onClick={() => handleLogout()}>
                 <Stack direction='row' spacing={2}>
@@ -71,7 +71,7 @@ export default function Navigation() {
                 <Box sx={{ flexGrow: 1 }} />
                 
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton
+                    {/* <IconButton
                         size="large"
                         aria-label="show 17 new notifications"
                         color="inherit"
@@ -79,7 +79,7 @@ export default function Navigation() {
                         <Badge badgeContent={17} color="error">
                             <NotificationsNoneIcon sx={{ color: 'black' }} />
                         </Badge>
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton
                         size="large"
                         edge="end"

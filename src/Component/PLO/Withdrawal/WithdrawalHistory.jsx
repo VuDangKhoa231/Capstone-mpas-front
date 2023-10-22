@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import ChipCustom from '../../../Layout/ChipCustom';
 import SearchBar from '../../../Layout/SearchBar';
 import TableCustom from '../../../Layout/TableCustom';
-import { getWithdrawalHistory } from '../../../api/withdrawal';
+import { getWithdrawalHistory, getWithdrawalList } from '../../../api/withdrawal';
 import themes from '../../../theme/themes';
 const data = [
     {
@@ -169,7 +169,7 @@ export default function WithdrawalHistory({ dispatch, accessToken }) {
 
     const [searchValue, setSearchValue] = useState("");
 
-    const withdrawalList = useSelector((state) => state.withdrawal.withdrawalHistory)
+    const withdrawalList = useSelector((state) => state.withdrawal.withdrawalList)
 
 
 
@@ -177,10 +177,11 @@ export default function WithdrawalHistory({ dispatch, accessToken }) {
         const data = {
             pageNum: rowPerPageChanged ? 1 : page,
             pageSize: rowPerPage,
-            searchValue: searchValue
+            searchValue: searchValue,
+            status: 2
         }
 
-        getWithdrawalHistory(data, dispatch, accessToken)
+        getWithdrawalList(data, dispatch, accessToken)
     }, [page, rowPerPage, searchValue])
 
 

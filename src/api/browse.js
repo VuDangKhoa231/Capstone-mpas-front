@@ -1,4 +1,4 @@
-import { getBrowseFail, getBrowseHistoryFail, getBrowseHistoryStart, getBrowseHistorySuccess, getBrowseStart, getBrowseSuccess, getDetailBrowseFail, getDetailBrowseStart, getDetailBrowseSuccess } from "../redux/browseSlice";
+import { getBrowseConfirmFail, getBrowseConfirmStart, getBrowseFail, getBrowseHistoryFail, getBrowseHistoryStart, getBrowseHistorySuccess, getBrowseStart, getBrowseSuccess, getDetailBrowseFail, getDetailBrowseStart, getDetailBrowseSuccess, getWBrowseConfirmSuccess } from "../redux/browseSlice";
 import { getDetailPLOFail, getDetailPLOStart, getDetailPLOSuccess } from "../redux/ploSlice";
 import axiosWrapper from "../ultis/axiosWrapper";
 
@@ -10,7 +10,6 @@ export const getBrowselist = async (data, dispatch, accessToken) => {
   }
 
   try {
-
     const res = await axiosWrapper.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -56,3 +55,18 @@ export const getBrowseHistory = async (data, dispatch, accessToken) => {
       dispatch(getBrowseHistoryFail())
     }
   }
+
+  export const confirmBrowse = async (data, dispatch, accessToken) => {
+    dispatch(getBrowseConfirmStart());
+
+    await axiosWrapper.put(`/plo/updatePloStatus`, data,{
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+    }).then((res) => {
+        dispatch(getWBrowseConfirmSuccess(res?.data));
+    }).catch((error) => {
+        dispatch(getBrowseConfirmFail());
+    })
+
+}

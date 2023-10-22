@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { Paper } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import DialogCustom from '../../../Layout/DialogCustom'
-import { getDetailBrowse } from '../../../api/browse'
+import { confirmBrowse, getDetailBrowse } from '../../../api/browse'
 import themes from '../../../theme/themes'
 const data = [
   {
@@ -53,8 +53,7 @@ const data = [
 
 ]
 export default function DetailBrowse() {
-    const { id } = useParams();
-    console.log(id);
+  const { id } = useParams();
   const user = useSelector((state) => state.auth)
   const dispatch = useDispatch();
 
@@ -65,6 +64,7 @@ export default function DetailBrowse() {
   const [openDialog, setOpenDialog] = useState(false);
   const [url, setUrl] = useState('');
   const [error, setError] = useState();
+  const navigate = useNavigate()
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -84,11 +84,13 @@ export default function DetailBrowse() {
 
 
   const handleClickConfirm = () => {
-    console.log(error);
-    if (error && error !== '') {
-      // navigate('/browse')
-
+    const data = {
+      newStatus: 3,
+      ploId: id
     }
+    confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
+      navigate('/Browse')
+    })
   }
 
   return (

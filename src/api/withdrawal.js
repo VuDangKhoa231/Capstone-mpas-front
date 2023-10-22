@@ -3,7 +3,7 @@ import { getWithdrawalConfirmFail, getWithdrawalConfirmStart, getWithdrawalConfi
 import axiosWrapper from "../ultis/axiosWrapper";
 
 export const getWithdrawalList = async (data, dispatch, accessToken) => {
-    let url = `ploTransaction/getListWithdrawalByStatus?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=1`;
+    let url = `ploTransaction/searchWithdrawalByKeyword?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=${data.status}`;
     if (data.searchValue && data.searchValue.trim() !== "") {
         url = `ploTransaction/searchWithdrawalByKeyword?keyword=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=${data.status}`
     }
@@ -25,25 +25,24 @@ export const getWithdrawalList = async (data, dispatch, accessToken) => {
 
 
 
-export const getWithdrawalHistory = async (data, dispatch, accessToken) => {
-    let url = `ploTransaction/getListWithdrawalByStatus?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
-    if (data.searchValue && data.searchValue.trim() !== "") {
-        url = `ploTransaction/searchWithdrawalByKeyword?keyword=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`
-    }
+// export const getWithdrawalHistory = async (data, dispatch, accessToken) => {
+//     let url = `ploTransaction/getListWithdrawalByStatus?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
+//     if (data.searchValue && data.searchValue.trim() !== "") {
+//         url = `ploTransaction/searchWithdrawalByKeyword?keyword=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`
+//     }
+//     dispatch(getWithdrawalHistoryStart());
+//     try {
+//         const res = await axiosWrapper.get(url, {
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`
+//             },
+//         })
+//         dispatch(getWithdrawalHistorySuccess(res?.data));
 
-    dispatch(getWithdrawalHistoryStart());
-    try {
-        const res = await axiosWrapper.get(url, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            },
-        })
-        dispatch(getWithdrawalHistorySuccess(res?.data));
-
-    } catch (error) {
-        dispatch(getWithdrawalHistoryFail());
-    }
-}
+//     } catch (error) {
+//         dispatch(getWithdrawalHistoryFail());
+//     }
+// }
 
 
 export const confirmWithdrawal = async (data, dispatch, accessToken) => {

@@ -192,16 +192,24 @@ function WithdrawalList({ dispatch, accessToken }) {
       status: confirm ? 3 : 4,
       transactionID: selectedItem.transactionID,
     }
-    confirmWithdrawal(data, dispatch, accessToken)
+    confirmWithdrawal(data, dispatch, accessToken).then((res) => {
+      const data = {
+        pageNum: rowPerPageChanged ? 1 : page,
+        pageSize: rowPerPage,
+        searchValue: searchValue
+      }
+      getWithdrawalList(data, dispatch, accessToken)
+    })
+
   }
 
 
   useEffect(() => {
-    console.log('log trước');
     const data = {
       pageNum: rowPerPageChanged ? 1 : page,
       pageSize: rowPerPage,
-      searchValue: searchValue
+      searchValue: searchValue,
+      status: 1
     }
 
     getWithdrawalList(data, dispatch, accessToken)

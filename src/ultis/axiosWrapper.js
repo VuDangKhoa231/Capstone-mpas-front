@@ -2,7 +2,7 @@ import axios from "axios";
 import { deleteCookie, getCookie } from 'cookies-next';
 
 const defaultOptions = {
-  baseURL: 'https://eparking.azurewebsites.net/',
+  baseURL: 'https://eparkingcapstone.azurewebsites.net/',
   headers: {
     'Content-Type': 'application/json',
     // "Access-Control-Allow-Origin" : '*',

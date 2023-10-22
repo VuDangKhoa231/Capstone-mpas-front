@@ -5,10 +5,12 @@ import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/vi';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import themes from '../../theme/themes';
 import dayjs from 'dayjs';
 import Chart from 'react-google-charts';
+import { getDashboardPLO, getDashboardPLOParking, getDashboardPLOTop5ParkingRevenue } from '../../api/dashboard';
+import { useSelector } from 'react-redux';
 
 
 
@@ -48,9 +50,12 @@ const data4 = [
     },
 ]
 
-export default function DashboardPLO() {
+export default function DashboardPLO({dispatch, accessToken}) {
     const [selectedDate, setSelectedDate] = useState(dayjs());
-
+    const dashboardPLOParking = useSelector((state) => state.dashboard.ploParking)
+    const dashboardPLOParkingRevenue = useSelector((state) => state.dashboard.ploParkingRevenue)
+    console.log(dashboardPLOParking);
+    console.log('ok nè', dashboardPLOParkingRevenue);
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -81,6 +86,14 @@ export default function DashboardPLO() {
         legend: 'none'
     };
 
+    useEffect(() => {
+        const data = {
+            month: selectedDate.get('month') + 1,
+            year: selectedDate.get('year')
+        }
+     getDashboardPLOParking(data, dispatch, accessToken )
+     getDashboardPLOTop5ParkingRevenue(data, dispatch, accessToken)
+    }, [selectedDate])
 
     return (
         <>
@@ -107,23 +120,23 @@ export default function DashboardPLO() {
                 <Grid item xs={6}>
                     <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }} >
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 most booked parking areas</Typography>
-                        {data3.map((item, index) => (
+                        {dashboardPLOParking?.data?.map((item, index) => (
                             <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
                                 <Grid item xs={6} display={'flex'}>
                                     <Typography variant='h6' mr={'20px'}>{index + 1}</Typography>
-                                    <Typography variant='h6'>{item.name}</Typography>
+                                    <Typography variant='h6'>{item.parkingName}</Typography>
                                 </Grid>
-                                <Grid item xs={5} display={'flex'}>
+                                <Grid item xs={5} display={'flex'} alignItems={'center'}>
                                     <AccountCircleIcon fontSize='medium' />
-                                    <Typography variant='h6' ml={'5px'}> {item.owner}</Typography>
+                                    <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
                                 </Grid>
-                                <Grid item xs={1} display={'flex'}>
+                                <Grid item xs={1} display={'flex'} alignItems={'center'}>
                                     <WorkspacePremiumIcon fontSize='medium' />
-                                    <Typography variant='h6' ml={'5px'}> {item.books}</Typography>
+                                    <Typography variant='h6' ml={'5px'}> {item.total}</Typography>
                                 </Grid>
                             </Grid>
                         ))}
-                        {data3.length === 0 &&
+                        {dashboardPLOParking?.data?.length === 0 &&
                             <Stack justifyContent={'center'} p={'20px'} textAlign={'center'}>
                                 <img src='../image/no-results.png' style={{ width: '27%' }} />
                                 <Typography variant='h5'>NOT FOUND DATA!</Typography>
@@ -132,26 +145,26 @@ export default function DashboardPLO() {
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }} >
+                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }}>
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 parking lots with the highest revenue</Typography>
-                        {data4.map((item, index) => (
+                        {dashboardPLOParkingRevenue?.data?.map((item, index) => (
                             <Grid container key={index} display={'flex'} justifyContent={'space-between'} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
-                                <Grid item xs={5} display={'flex'}>
+                                <Grid item xs={5} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
                                     <Typography variant='h6' mr={'20px'}>{index + 1}</Typography>
-                                    <Typography variant='h6'>{item.name}</Typography>
+                                    <Typography variant='h6'>{item.parkingName}</Typography>
                                 </Grid>
-                                <Grid item xs={4} display={'flex'}>
+                                <Grid item xs={4} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
                                     <AccountCircleIcon fontSize='medium' />
-                                    <Typography variant='h6' ml={'5px'}> {item.owner}</Typography>
+                                    <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
                                 </Grid>
-                                <Grid item xs={3} display={'flex'}>
+                                <Grid item xs={3} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
                                     <LocalAtmIcon fontSize='medium' />
                                     <Typography variant='h6' ml={'5px'}> {item.revenue}VNĐ</Typography>
                                 </Grid>
                             </Grid>
                         ))}
-                        {data4.length === 0 &&
-                            <Stack justifyContent={'center'} p={'20px'} textAlign={'center'}>
+                        {dashboardPLOParkingRevenue?.data?.length === 0 &&
+                            <Stack justifyContent={'center'} p={'20px'} alignItems={'center'}>
                                 <img src='../image/no-results.png' style={{ width: '27%' }} />
                                 <Typography variant='h5'>NOT FOUND DATA!</Typography>
                             </Stack>

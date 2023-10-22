@@ -7,7 +7,7 @@ function ChipCustom({ label, variant, backgroundColor,color, width , icon}) {
       label={label}
       variant={variant}
       icon={icon}
-      color={color}
+      // color={color}
       sx={{ width, padding: 'auto' , backgroundColor: backgroundColor, color: color ? color : 'white'}}
     />
   );

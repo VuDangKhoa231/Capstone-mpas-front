@@ -5,7 +5,6 @@ const dashboardSlice = createSlice ( {
     initialState: {
       dashboard: {
         data: null,
-        chart: null,
         isFetching: false,
         err: null
       },
@@ -14,18 +13,23 @@ const dashboardSlice = createSlice ( {
        data: null,
        isFetching: false,
        err: null,
-       chart: null,
       },
 
-      plo: {
+      ploParking: {
         data: null,
         isFetching: false,
         err: null,
-        chart: null,
+      },
+
+      ploParkingRevenue: {
+        data: null,
+        isFetching: false,
+        err: null,
       }
     },
 
     reducers: {
+        //DashboardTotal
         getDashboardStart: (state) => {
             state.dashboard.isFetching = true
         },
@@ -38,6 +42,7 @@ const dashboardSlice = createSlice ( {
             state.dashboard.err = true
         },
 
+        //Customer
         getDashboardCusStart: (state) => {
             state.customer.isFetching = true
         },
@@ -50,19 +55,36 @@ const dashboardSlice = createSlice ( {
             state.customer.err = true
         },
 
-        getDashboardPLOStart: (state) => {
-            state.plo.isFetching = true
+
+        // ploParking
+        getDashboardPLOParkingStart: (state) => {
+            state.ploParking.isFetching = true
         },
-        getDashboardPLOSuccess: (state, action) => {
-            state.plo.isFetching = false
-            state.plo.data = action.payload
+        
+        getDashboardPLOParkingSuccess: (state, action) => {
+            state.ploParking.isFetching = false
+            state.ploParking.data = action.payload
         },
-        getDashboarPLOFail : (state) => {
-            state.plo.isFetching = false
-            state.plo.err = true
+        
+        getDashboardPLOParkingFail : (state) => {
+            state.ploParking.isFetching = false
+            state.ploParking.err = true
+        },
+
+        // ploParkingRevenue
+        getDashboardPLOParkingRevenueStart: (state) => {
+            state.ploParkingRevenue.isFetching = true
+        },
+        getDashboardPLOParkingRevenueSuccess: (state, action) => {
+            state.ploParkingRevenue.isFetching = false
+            state.ploParkingRevenue.data = action.payload
+        },
+        getDashboardPLOParkingRevenueFail : (state) => {
+            state.ploParkingRevenue.isFetching = false
+            state.ploParkingRevenue.err = true
         },
     }
 })
-export const { getDashboardStart, getDashboardSuccess, getDashboardFail ,getDashboardPLOStart, getDashboardPLOSuccess,getDashboarPLOFail,getDashboardCusFail, getDashboardCusStart , getDashboardCusSuccess } = dashboardSlice.actions;
+export const { getDashboardStart, getDashboardSuccess, getDashboardFail,getDashboardCusFail, getDashboardCusStart , getDashboardCusSuccess, getDashboardPLOParkingFail, getDashboardPLOParkingRevenueStart, getDashboardPLOParkingStart, getDashboardPLOParkingSuccess,getDashboardPLOParkingRevenueFail,getDashboardPLOParkingRevenueSuccess } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
