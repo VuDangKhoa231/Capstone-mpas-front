@@ -1,15 +1,11 @@
-import { Box, Button, CircularProgress, Grid, Popover, Stack, Tab, Tabs, Typography } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
-import SearchBar from '../../../Layout/SearchBar'
-import themes from '../../../theme/themes'
-import PropTypes from 'prop-types';
-import DialogCustom from '../../../Layout/DialogCustom'
-import { useGridApiRef } from '@mui/x-data-grid';
-import TableCustom from '../../../Layout/TableCustom';
-import { Link } from 'react-router-dom';
-import Main from '../../Main';
-import { getBrowselist } from '../../../api/browse';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import SearchBar from '../../../Layout/SearchBar';
+import TableCustom from '../../../Layout/TableCustom';
+import { getBrowselist } from '../../../api/browse';
+import themes from '../../../theme/themes';
 
 
 const title = [
@@ -40,15 +36,8 @@ const title = [
   },
   { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310,headerAlign: 'center', align: 'center' },
   {
-    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', width: 250, headerAlign: 'center', align: 'center',valueFormatter: (params) => {
-      const date = new Date(params.value);
-      return date.toLocaleDateString('en-GB');
-    },
-    sortComparator: (v1, v2, cellParams1, cellParams2) => {
-      const date1 = new Date(v1);
-      const date2 = new Date(v2);
-      return date1.getTime() - date2.getTime();
-    },
+    field: 'registerContract', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày gửi</Typography>, type: 'Date', width: 250, headerAlign: 'center', align: 'center'
+    
   },
   {
     field: 'approval', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 180, getActions: (params) => [
@@ -69,27 +58,28 @@ export function BrowseList(props) {
   const [searchValue, setSearchValue] = useState("")
   const user = useSelector((state) => state.auth)
   const browseList = useSelector((state) => state.browse.browseList)
-  console.log('list', browseList);
   const dispatch = useDispatch();
+  const [count ,setCount] = useState(0)
 
   useEffect(() => {
     const data = {
       searchValue: searchValue,
-      pageNum: rowPerPageChanged ? 1 : page,
+      pageNum: page,
       pageSize: rowPerPage,
     }
-    getBrowselist(data, dispatch, user?.login.accessToken)
+    if(count !== 0){
+      getBrowselist(data, dispatch, user?.login.accessToken)
+    }
+  
+  }, [page, count, searchValue])
 
-  }, [page, rowPerPage, searchValue])
-
-  const rowPerPageChanged = useRef(false);
   useEffect(() => {
-      if (rowPerPageChanged.current) {
-          rowPerPageChanged.current = false;
-      } else {
-          rowPerPageChanged.current = true;
-      }
-  }, [rowPerPage]);
+    if (page !== 1) {
+        setPage(1)
+    }
+    setCount(count + 1)
+}, [rowPerPage]);
+ 
 
   return (
     <Stack mt={5} direction={'column'} spacing={3}>

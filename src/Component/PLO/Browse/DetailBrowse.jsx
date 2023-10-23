@@ -65,6 +65,9 @@ export default function DetailBrowse() {
   const [url, setUrl] = useState('');
   const [error, setError] = useState();
   const navigate = useNavigate()
+  const [contractLink, setContractLink] = useState('');
+  const [contractDuration, setContractDuration] = useState(3);
+
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -76,8 +79,6 @@ export default function DetailBrowse() {
 
   useEffect(() => {
     getDetailBrowse(id, dispatch, user?.login.accessToken)
-
-    console.log(browseDetail?.browse?.data);
   }, [])
 
 
@@ -85,13 +86,33 @@ export default function DetailBrowse() {
 
   const handleClickConfirm = () => {
     const data = {
+      contractDuration: contractDuration,
+      contractLink: contractLink,
+      latitude: 11111111,
+      longtitude: 99999999,
       newStatus: 3,
-      ploId: id
+      ploId: id,
     }
-    confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
-      navigate('/Browse')
-    })
+    // confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
+    //   navigate('/Browse')
+    // })
+    if (contractLink && isURLValid(contractLink)) {
+      // confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
+      //   navigate('/Browse')
+      // })
+      console.log('chạy', data);
+    } 
+    
   }
+
+  const isURLValid = (url) => {
+    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+    return urlPattern.test(url);
+  };
+
+
+
+
 
   return (
     <>
@@ -164,16 +185,19 @@ export default function DetailBrowse() {
               </Stack>
             </Grid>
           </Grid>
-          <Box px={'20px'} maxWidth={'1540px'} mt={''}>
+          <Box px={'20px'} maxWidth={'1540px'} mt={''} >
             <Typography variant='h4' fontWeight={'bold'}> Hình ảnh bãi xe </Typography>
+
             {browseDetail?.browse?.data?.images ? (
-              browseDetail?.browse?.data?.images.map((image) => (
-                <img key={image.id} src={`${image.img}`} style={{ margin: '10px 30px 10px 0px' }} />
+              browseDetail?.browse?.data?.images.map((image, index) => (
+                <img key={index} src={`${image.imageLink}`} width={'400px'} height={'300px'} style={{ margin: '10px 30px 10px 0px' }} />
               ))
             ) : (
               // Hiển thị một thông báo hoặc phản hồi khác nếu item.images là null hoặc undefined
               <Typography variant='h6'>Không có hình ảnh</Typography>
             )}
+
+
           </Box>
           <Box px={'20px'}>
             <Typography variant='h4' mt={'40px'} fontWeight={'bold'}> Mô tả</Typography>
@@ -186,11 +210,11 @@ export default function DetailBrowse() {
             <Box mt={'30px'} p={'30px'} textAlign={'center'}>
               <Typography variant='h4' mb={'40px'} fontWeight={'bold'}>Phê duyệt hoạt động?</Typography>
               <Button variant='contained' sx={{ p: '15px', width: '300px', backgroundColor: '#E8C300' }} onClick={handleClickOpen}>
-                Xem hợp đồng
+                Duyệt
               </Button>
             </Box>
           </Box>
-          <DialogCustom confirm={true} data={browseDetail?.browse?.data} handleClose={handleCloseDialog} open={openDialog} status={1} handleConfirm={handleClickConfirm} error={error} setError={setError} setUrl={setUrl} url={url} />
+          <DialogCustom confirm={true} data={browseDetail?.browse?.data} handleClose={handleCloseDialog} open={openDialog} status={1} handleConfirm={handleClickConfirm} url={contractLink} setUrl={setContractLink} setContractLink={setContractLink} selectedValue={contractDuration} setSelectedValue={setContractDuration} />
         </Stack>
       }
     </>

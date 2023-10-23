@@ -44,17 +44,22 @@ export default function LoginComponent() {
         <Box sx={{ backgroundColor: "#6EC2F7", width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
 
             <Grid container width={'100%'} height={'100%'} alignContent={'center'} textAlign={'center'} display={'flex'} >
-                <Grid item xs={5} color='white'>
+                <Grid item xs={6} color='white'>
                     <Typography variant='h3'> Welcome To</Typography>
-                    <AppleIcon sx={{ fontSize: '500px' }} />
+                    <Box>
+                        <img src='../image/Parking-rafiki.png' width={'75%'} />
+                    </Box>
+
                     <Typography variant='h3'> PARCO</Typography>
                 </Grid>
-                <Grid item xs={2} />
-                <Grid item xs={5}>
-                    <Paper elevation={8} sx={{ p: '20px', height: '90%', borderRadius: '10px', width: '60%' }}>
+                <Grid item xs={1} />
+                <Grid item xs={5} display={'flex'} justifyContent={'center'} margin={'auto'}>
+                    <Paper elevation={8} sx={{ p: '20px', height: '600px', borderRadius: '10px', width: '60%', }}>
                         <AppleIcon sx={{ fontSize: '200px', mb: '20px' }} />
-                        {user?.login.error &&
+                        {user?.login.error ?
                             <Alert severity="error">Sai tài khoản hoặc mật khẩu</Alert>
+                            :
+                            <div style={{ height: '49px' }}></div>
                         }
 
                         <form onSubmit={handleSubmit(onSubmit)}>

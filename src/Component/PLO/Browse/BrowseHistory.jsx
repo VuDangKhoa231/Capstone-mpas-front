@@ -63,31 +63,31 @@ export default function BrowseHistory() {
     const browseList = useSelector((state) => state.browse.browseHistory)
     const user = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-
+    const [count, setCount] = useState(0)
     useEffect(() => {
 
         const data = {
-            pageNum : rowPerPageChanged ? 1 : page,
+            pageNum: page,
             pageSize: rowPerPage,
             searchValue: searchValue
         }
-
-        getBrowseHistory(data, dispatch, user?.login.accessToken)
-    }, [page,rowPerPage,searchValue])
-
-    const rowPerPageChanged = useRef(false);
-    useEffect(() => {
-        if (rowPerPageChanged.current) {
-            rowPerPageChanged.current = false;
-        } else {
-            rowPerPageChanged.current = true;
+        if (count !== 0) {
+            getBrowseHistory(data, dispatch, user?.login.accessToken)
         }
+    }, [page, searchValue, count])
+
+
+    useEffect(() => {
+        if (page !== 1) {
+            setPage(1)
+        }
+        setCount(count + 1)
     }, [rowPerPage]);
-    
+
     return (
         <Stack mt={5} direction={'column'} spacing={3}>
             <Box display={'flex'}>
-                <SearchBar  setDebounceSearchValue={setSearchValue} />
+                <SearchBar setDebounceSearchValue={setSearchValue} />
                 <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue("")}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
             </Box>
             {browseList?.isFetching ? (

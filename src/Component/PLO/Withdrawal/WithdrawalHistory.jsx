@@ -170,28 +170,28 @@ export default function WithdrawalHistory({ dispatch, accessToken }) {
     const [searchValue, setSearchValue] = useState("");
 
     const withdrawalList = useSelector((state) => state.withdrawal.withdrawalList)
-
-
+    const [count, setCount] = useState(0)
 
     useEffect(() => {
+
         const data = {
-            pageNum: rowPerPageChanged ? 1 : page,
+            pageNum: page,
             pageSize: rowPerPage,
             searchValue: searchValue,
             status: 2
         }
 
-        getWithdrawalList(data, dispatch, accessToken)
-    }, [page, rowPerPage, searchValue])
-
-
-    const rowPerPageChanged = useRef(false);
-    useEffect(() => {
-        if (rowPerPageChanged.current) {
-            rowPerPageChanged.current = false;
-        } else {
-            rowPerPageChanged.current = true;
+        if (count !== 0) {
+            getWithdrawalList(data, dispatch, accessToken);
         }
+    }, [page, searchValue, count])
+
+
+    useEffect(() => {
+        if (page !== 1) {
+            setPage(1)
+        }
+        setCount(count + 1)
     }, [rowPerPage]);
 
     return (

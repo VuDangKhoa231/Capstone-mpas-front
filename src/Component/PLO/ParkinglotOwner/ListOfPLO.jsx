@@ -55,7 +55,7 @@ export default function ListOfPLO() {
         if (status === "Successfully Registered") {
           label = 'Mới đăng ký';
           variant = 'filled';
-           backgroundColor = '#3498db';
+          backgroundColor = '#3498db';
         } else if (status === "Opening") {
           label = "Đang hoạt động";
           variant = 'filled';
@@ -101,8 +101,9 @@ export default function ListOfPLO() {
     setRowPerPage(5)
   }
 
+  const [count, setCount] = useState(0)
 
-  
+
   useEffect(() => {
     const data = {
       pageNum: page,
@@ -110,11 +111,19 @@ export default function ListOfPLO() {
       status: selectTab,
       searchValue: searchValue,
     }
+    if (count !== 0) {
+      getPLOlist(data, dispatch, user?.login?.accessToken)
+    }
 
-    getPLOlist(data, dispatch, user?.login?.accessToken)
-  }, [page, rowPerPage, selectTab, searchValue])
+  }, [page, count, selectTab, searchValue])
 
 
+  useEffect(() => {
+    if (page !== 1) {
+      setPage(1)
+    }
+    setCount(count + 1)
+  }, [rowPerPage]);
 
   return (
 

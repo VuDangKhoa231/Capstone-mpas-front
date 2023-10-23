@@ -26,23 +26,24 @@ export default function DetailPLO() {
     //Feedback pagination
     const [page, setPage] = useState(1);
     const [rowPerPage, setRowPerPage] = useState(5);
-
+    const [count, setCount] = useState(0)
     useEffect(() => {
         const data = {
-            pageNum: rowPerPageChanged ? 1 : page,
+            pageNum:   page,
             pageSize: rowPerPage,
             ploID: id
         }
-        getDetailRatingPLO(data, dispatch, user?.login.accessToken)
-    }, [page, rowPerPage])
-
-    const rowPerPageChanged = useRef(false);
-    useEffect(() => {
-        if (rowPerPageChanged.current) {
-            rowPerPageChanged.current = false;
-        } else {
-            rowPerPageChanged.current = true;
+        if (count !== 0) {
+            getDetailRatingPLO(data, dispatch, user?.login.accessToken)
         }
+    }, [page, rowPerPage, count])
+
+
+    useEffect(() => {
+        if (page !== 1) {
+            setPage(1)
+        }
+        setCount(count + 1)
     }, [rowPerPage]);
 
     const openGoogleMaps = () => {
@@ -60,8 +61,6 @@ export default function DetailPLO() {
             window.open(plo?.plo?.data?.contractLink, '_blank');
         }
     };
-
-
 
 
 
@@ -211,7 +210,7 @@ export default function DetailPLO() {
                         <Box display={'flex'} flexDirection={'row'} sx={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
                             {plo?.plo?.data?.images && plo?.plo?.data?.images.length > 0 ? (
                                 plo?.plo?.data?.images.map((image, index) => (
-                                    <img key={index} src={`${image.img}`} style={{ margin: '10px 30px 10px 0px' }} />
+                                    <img key={index} src={`${image.imageLink}`} width={'400px'} height={'300px'} style={{ margin: '10px 30px 10px 0px' }} />
                                 ))
                             ) : (
                                 <Typography variant='h6'>Không có hình ảnh</Typography>
@@ -226,9 +225,9 @@ export default function DetailPLO() {
                             </Box>
                         ) :
                             (<>
-                                {rating?.data.data.content.length > 0 ?
+                                {rating?.data?.data?.content?.length > 0 ?
                                     <>
-                                        {rating?.data.data.content.map((item) => {
+                                        {rating?.data?.data?.content?.map((item, index) => {
                                             const dateObject = new Date(item.feedbackDate);
 
                                             // Lấy giờ, phút và giây
@@ -242,7 +241,7 @@ export default function DetailPLO() {
                                             const year = dateObject.getUTCFullYear();
                                             const formattedDate = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
                                             return (
-                                                <Box key={plo?.plo.data.id} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
+                                                <Box key={index} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
                                                     <Grid container>
                                                         <Grid item xs={7} display={'flex'} flexDirection={'row'}>
                                                             <Typography variant='h6' mr={'10px'} fontWeight={'bold'}>{item.fullName} </Typography>

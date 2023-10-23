@@ -193,35 +193,36 @@ function WithdrawalList({ dispatch, accessToken }) {
       transactionID: selectedItem.transactionID,
     }
     confirmWithdrawal(data, dispatch, accessToken).then((res) => {
-      const data = {
-        pageNum: rowPerPageChanged ? 1 : page,
+      const data1 = {
+        pageNum: page,
         pageSize: rowPerPage,
-        searchValue: searchValue
+        searchValue: searchValue, 
+        status: 1
       }
-      getWithdrawalList(data, dispatch, accessToken)
+      getWithdrawalList(data1, dispatch, accessToken)
     })
-
   }
 
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     const data = {
-      pageNum: rowPerPageChanged ? 1 : page,
+      pageNum: page,
       pageSize: rowPerPage,
       searchValue: searchValue,
       status: 1
     }
-
-    getWithdrawalList(data, dispatch, accessToken)
-  }, [page, rowPerPage, searchValue])
-
-  const rowPerPageChanged = useRef(false);
-  useEffect(() => {
-    if (rowPerPageChanged.current) {
-      rowPerPageChanged.current = false;
-    } else {
-      rowPerPageChanged.current = true;
+    if (count !== 0) {
+      getWithdrawalList(data, dispatch, accessToken)
     }
+  }, [page, count, searchValue])
+
+
+  useEffect(() => {
+    if (page !== 1) {
+      setPage(1)
+    }
+    setCount(count + 1)
   }, [rowPerPage]);
 
   return (

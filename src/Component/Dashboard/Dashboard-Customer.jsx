@@ -13,49 +13,54 @@ import { getDashboardCus } from '../../api/dashboard';
 
 
 const dataOrigin = [
-    {
-        fullname: 'Tháng 1', total: 19
-    },
-    {
-        fullname: 'Tháng 2', total: 10
-    },
-    {
-        fullname: 'Tháng 3', total: 3
-    },
-    {
-        fullname: 'Tháng 4', total: 25
-    },
-    {
-        fullname: 'Tháng 5', total: 8
-    },
-    {
-        fullname: 'Tháng 6', total: 10
-    },
-    {
-        fullname: 'Tháng 7', total: 20
-    },
-    {
-        fullname: 'Tháng 8', total: 3
-    },
-    {
-        fullname: 'Tháng 9', total: 16
-    },
-    {
-        fullname: 'Tháng 10', total: 5
-    },
-    {
-        fullname: 'Tháng 11', total: 24
-    },
-    {
-        fullname: 'Tháng 12', total: 19
-    },
-
     // {
-    //     fullname: 'Tuần 3', total: 3
+    //     fullname: 'Tháng 1', total: 19
     // },
     // {
-    //     fullname: 'Tuần 4', total: 9
+    //     fullname: 'Tháng 2', total: 10
     // },
+    // {
+    //     fullname: 'Tháng 3', total: 3
+    // },
+    // {
+    //     fullname: 'Tháng 4', total: 25
+    // },
+    // {
+    //     fullname: 'Tháng 5', total: 8
+    // },
+    // {
+    //     fullname: 'Tháng 6', total: 10
+    // },
+    // {
+    //     fullname: 'Tháng 7', total: 20
+    // },
+    // {
+    //     fullname: 'Tháng 8', total: 3
+    // },
+    // {
+    //     fullname: 'Tháng 9', total: 16
+    // },
+    // {
+    //     fullname: 'Tháng 10', total: 5
+    // },
+    // {
+    //     fullname: 'Tháng 11', total: 24
+    // },
+    // {
+    //     fullname: 'Tháng 12', total: 19
+    // },
+    {
+        fullname: 'Tuần 1', total: 3
+    },
+    {
+        fullname: 'Tuần 2', total: 9
+    },
+    {
+        fullname: 'Tuần 3', total: 6
+    },
+    {
+        fullname: 'Tuần 4', total: 10
+    },
 ]
 
 const dataChart = dataOrigin.map(item => [item.fullname, item.total]);

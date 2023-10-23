@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Grid, Snackbar, Stack, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useGridApiRef } from '@mui/x-data-grid'
@@ -10,6 +10,7 @@ import PaginationCustom from '../../Layout/PaginationCustom'
 import { getCusList } from '../../api/customer'
 import { useDispatch, useSelector } from 'react-redux'
 import Chart from 'react-google-charts'
+import SnackbarCutom from '../../Layout/SnakeBarCustom'
 
 
 const CustomColumnTitle = ({ title }) => {
@@ -104,7 +105,7 @@ export default function ListOFCustomer() {
         </Box>
         {/* Content */}
         {customer?.customerList?.isFetching ? (
-          <Box sx={{ display: 'flex', width: '100%', height: '80vh', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', width: '100%', height: '60vh', justifyContent: 'center', alignItems: 'center' }}>
             <CircularProgress />
           </Box>
         ) : (
@@ -117,6 +118,7 @@ export default function ListOFCustomer() {
           </Box>
         )}
       </Stack >
+      <Snackbar/>
     </>
 
   )
