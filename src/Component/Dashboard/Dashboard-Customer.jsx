@@ -8,87 +8,48 @@ import React, { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 import themes from '../../theme/themes';
 import { useSelector } from 'react-redux';
-import { getDashboardCus } from '../../api/dashboard';
+import { getChartCustomer, getDashboardCus } from '../../api/dashboard';
 
 
 
-const dataOrigin = [
-    // {
-    //     fullname: 'Tháng 1', total: 19
-    // },
-    // {
-    //     fullname: 'Tháng 2', total: 10
-    // },
-    // {
-    //     fullname: 'Tháng 3', total: 3
-    // },
-    // {
-    //     fullname: 'Tháng 4', total: 25
-    // },
-    // {
-    //     fullname: 'Tháng 5', total: 8
-    // },
-    // {
-    //     fullname: 'Tháng 6', total: 10
-    // },
-    // {
-    //     fullname: 'Tháng 7', total: 20
-    // },
-    // {
-    //     fullname: 'Tháng 8', total: 3
-    // },
-    // {
-    //     fullname: 'Tháng 9', total: 16
-    // },
-    // {
-    //     fullname: 'Tháng 10', total: 5
-    // },
-    // {
-    //     fullname: 'Tháng 11', total: 24
-    // },
-    // {
-    //     fullname: 'Tháng 12', total: 19
-    // },
-    {
-        fullname: 'Tuần 1', total: 3
-    },
-    {
-        fullname: 'Tuần 2', total: 9
-    },
-    {
-        fullname: 'Tuần 3', total: 6
-    },
-    {
-        fullname: 'Tuần 4', total: 10
-    },
-]
-
-const dataChart = dataOrigin.map(item => [item.fullname, item.total]);
-
-dataChart.unshift([
-    { type: 'string', label: 'Tháng' },
-    { type: 'number', label: 'Tổng lượt đăng ký' },
-]);
 
 
-const dataMax = Math.max(...dataChart.slice(1).map(row => row[1]));
-const vAxisMax = dataMax + 5;
 
-
-export default function DashboardCustom({dispatch, accessToken}) {
-    dayjs.locale('vi'); 
+export default function DashboardCustomer({ dispatch, accessToken }) {
+    dayjs.locale('vi');
     const [selectedDate, setSelectedDate] = useState(dayjs());
+    const minDate = dayjs('2018-01-01');
+    const maxDate = dayjs();
     const dashboardCustom = useSelector((state) => state.dashboard.customer)
-    const options = {
-        title: ` Sơ đồ lượng khách hàng đăng ký tháng ${selectedDate.format('MM/YYYY')}`,
-        titleTextStyle: {
-            fontSize: 30,
-        },
-        hAxis: { title: `Các tuần tháng ${selectedDate.format('MM/YYYY')}`, titleTextStyle: { fontSize: 20 } },
-        vAxis: { title: "Số lượng người đăng ký", format: '0', viewWindow: { min: 0, max: vAxisMax }, titleTextStyle: { fontSize: 20 } },
-        bar: { groupWidth: '20%' },
-        legend: 'none'
-    };
+    const dashboardChart = useSelector((state) => state.dashboard.customerChart)
+
+
+
+    const dataChart = dashboardChart?.data?.map(item => [item.weekName, item.total]);
+    let options = null;
+    if (dataChart) {
+        dataChart && dataChart.unshift([
+            { type: 'string', label: 'Tháng' },
+            { type: 'number', label: 'Tổng lượt đăng ký' },
+        ]);
+
+
+        const dataMax = Math.max(...dataChart.slice(1).map(row => row[1]));
+        const vAxisMax = dataMax + 5;
+        options = {
+            title: ` Sơ đồ lượng khách hàng đăng ký tháng ${selectedDate.format('MM/YYYY')}`,
+            titleTextStyle: {
+                fontSize: 30,
+            },
+            hAxis: { title: `Các tuần tháng ${selectedDate.format('MM/YYYY')}`, titleTextStyle: { fontSize: 20 } },
+            vAxis: { title: "Số lượng người đăng ký", format: '0', viewWindow: { min: 0, max: vAxisMax }, titleTextStyle: { fontSize: 20 } },
+            bar: { groupWidth: '20%' },
+            legend: 'none'
+        };
+    }
+
+
+
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -99,21 +60,24 @@ export default function DashboardCustom({dispatch, accessToken}) {
             month: selectedDate.get('month') + 1,
             year: selectedDate.get('year')
         }
-
-     getDashboardCus(data, dispatch, accessToken )
+        getChartCustomer(data, dispatch, accessToken);
+        getDashboardCus(data, dispatch, accessToken);
     }, [selectedDate])
 
     return (
-        <> 
+        <>
             <Typography variant='h4' sx={{ fontWeight: 'bold', m: '50px 0px 20px 0px' }}>Khách hàng</Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs} >
                 <DatePicker
                     label="Tháng"
                     views={['month', 'year']}
+                    maxDate={maxDate}
+                    minDate={minDate}
                     onChange={handleDateChange}
                     value={selectedDate}
                 />
             </LocalizationProvider>
+
 
 
             <Chart
@@ -124,6 +88,8 @@ export default function DashboardCustom({dispatch, accessToken}) {
                 options={options}
                 loader={<div>Loading Chart...</div>}
             />
+
+
 
             <Box m={'50px'} display={'flex'} justifyContent={'center'}>
                 <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', width: '70%' }}>

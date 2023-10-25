@@ -88,19 +88,13 @@ export default function DetailBrowse() {
     const data = {
       contractDuration: contractDuration,
       contractLink: contractLink,
-      latitude: 11111111,
-      longtitude: 99999999,
       newStatus: 3,
       ploId: id,
     }
-    // confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
-    //   navigate('/Browse')
-    // })
     if (contractLink && isURLValid(contractLink)) {
-      // confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
-      //   navigate('/Browse')
-      // })
-      console.log('chạy', data);
+      confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
+        navigate('/Browse')
+      })
     } 
     
   }

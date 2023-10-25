@@ -49,7 +49,7 @@ const title = [
         ),
     },
     {
-        field: 'contractDuration', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày phê duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 230, valueFormatter: (params) => {
+        field: 'browseContract', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày phê duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 230, valueFormatter: (params) => {
             const date = new Date(params.value);
         }
     },

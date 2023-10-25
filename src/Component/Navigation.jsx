@@ -3,33 +3,30 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Avatar, Badge, Box, Divider, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { deleteCookie } from 'cookies-next';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logoutSuccess } from '../redux/authSlice';
+import Notifications from './Notication';
 
 
 
 
 export default function Navigation() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const user = useSelector((state) => state.auth?.login.currentUser)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+    
+    const [isNotificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
+    
     const isMenuOpen = Boolean(anchorEl);
-    const handleProfileMenuOpen = (event) => {
+    //Menu
+    const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
     const handleMenuClose = () => {
         setAnchorEl(null);
-        handleMobileMenuClose();
     };
 
     const handleLogout = () => {
@@ -38,6 +35,10 @@ export default function Navigation() {
         navigate('/login');
     }
 
+    //Noti
+    const handleNotificationClick = () => {
+        setNotificationDrawerOpen(!isNotificationDrawerOpen);
+    };
     
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -71,22 +72,23 @@ export default function Navigation() {
                 <Box sx={{ flexGrow: 1 }} />
                 
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    {/* <IconButton
+                    <IconButton
                         size="large"
                         aria-label="show 17 new notifications"
                         color="inherit"
+                        onClick={handleNotificationClick}
                     >
-                        <Badge badgeContent={17} color="error">
-                            <NotificationsNoneIcon sx={{ color: 'black' }} />
+                        <Badge badgeContent={1} color="error">
+                            <NotificationsNoneIcon sx={{ color: 'black' }}  fontSize='medium'/>
                         </Badge>
-                    </IconButton> */}
+                    </IconButton>
                     <IconButton
                         size="large"
                         edge="end"
                         aria-label="account of current user"
                         aria-controls={menuId}
                         aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
+                        onClick={handleMenuOpen}
                         color="inherit"
                     >
                         <Avatar />
@@ -95,6 +97,7 @@ export default function Navigation() {
                 
             </Toolbar>
             {renderMenu}
+            <Notifications openNoti={isNotificationDrawerOpen} onClose={handleNotificationClick} />
         </AppBar>
     )
 }

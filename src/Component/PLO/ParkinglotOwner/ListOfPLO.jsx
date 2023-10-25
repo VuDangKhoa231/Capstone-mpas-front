@@ -70,16 +70,16 @@ export default function ListOfPLO() {
           backgroundColor = '#f39c12';
         }
         return (
-          <Box width={'100%'} display={'flex'} justifyContent={'start'}>
+          <Box width={'100%'} display={'flex'} justifyContent={'center'}>
             <ChipCustom label={label} variant={variant} backgroundColor={backgroundColor} />
           </Box>
         );
       },
     },
     {
-      field: 'address', headerName: <Typography variant='h5' fontWeight={'bold'}>Địa chỉ bãi xe</Typography>, headerAlign: 'center', width: 340, renderCell: (params) => (
-        <div style={{ whiteSpace: 'normal', wordWrap: 'break-word', textAlign: 'start' }}>
-          {params.value}
+      field: 'address', headerName: <Typography variant='h5' fontWeight={'bold'}>Địa chỉ bãi xe</Typography>, headerAlign: 'center', align: 'center' , width: 340, renderCell: (params) => (
+        <div style={{ whiteSpace: 'normal', wordWrap: 'break-word', textAlign: 'center', justifyContent: 'center', width: '90%'}}>
+          {params.value} 
         </div>
       ),
     },

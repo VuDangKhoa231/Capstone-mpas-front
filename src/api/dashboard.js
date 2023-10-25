@@ -1,7 +1,7 @@
-import { getDashboardCusFail, getDashboardCusStart, getDashboardCusSuccess, getDashboardFail, getDashboardPLOParkingFail, getDashboardPLOParkingRevenueFail, getDashboardPLOParkingRevenueStart, getDashboardPLOParkingRevenueSuccess, getDashboardPLOParkingStart, getDashboardPLOParkingSuccess, getDashboardStart, getDashboardSuccess } from "../redux/dashboardSlice";
+import { getChartCustomerFail, getChartCustomerStart, getChartCustomerSuccess, getChartPLOFail, getChartPLOStart, getChartPLOSuccess, getDashboardCusFail, getDashboardCusStart, getDashboardCusSuccess, getDashboardFail, getDashboardPLOParkingFail, getDashboardPLOParkingRevenueFail, getDashboardPLOParkingRevenueStart, getDashboardPLOParkingRevenueSuccess, getDashboardPLOParkingStart, getDashboardPLOParkingSuccess, getDashboardStart, getDashboardSuccess } from "../redux/dashboardSlice";
 import axiosWrapper from "../ultis/axiosWrapper";
 
-export const getDashboard = async (dispatch,accessToken) => {
+export const getDashboard = async (dispatch, accessToken) => {
     dispatch(getDashboardStart());
     try {
         const res = await axiosWrapper.get('/custAndPlo/getTotalCustAndPlo', {
@@ -59,12 +59,31 @@ export const getDashboardPLOTop5ParkingRevenue = async (data, dispatch, accessTo
 }
 
 
-export const chartCustomer = async (data, dispatch) => {
- 
+export const getChartCustomer = async (data, dispatch) => {
+    let url = `/customer/registerChartCustomer?month=0${data.month}&year=${data.year}`
+    if (data.month > 9) {
+        url = `/customer/registerChartCustomer?month=${data.month}&year=${data.year}`
+    }
+    dispatch(getChartCustomerStart())
     try {
-       
+        const res = await axiosWrapper.get(url)
+        dispatch(getChartCustomerSuccess(res?.data))
     } catch (error) {
-       
+        dispatch(getChartCustomerFail())
+    }
+}
+
+export const getChartPLO = async (data, dispatch) => {
+    let url = `/plo/getChartPLO?month=0${data.month}&year=${data.year}`
+    if (data.month > 9) {
+        url = `/plo/getChartPLO?month=${data.month}&year=${data.year}`
+    }
+    dispatch(getChartPLOStart())
+    try {
+        const res = await axiosWrapper.get(url)
+        dispatch(getChartPLOSuccess(res?.data))
+    } catch (error) {
+        dispatch(getChartPLOFail())
     }
 }
 

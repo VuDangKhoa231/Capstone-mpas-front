@@ -29,15 +29,7 @@ const title = [
   { field: 'fullName', headerName: <Typography variant='h5' fontWeight={'bold'}>Tên</Typography>, width: 415, hideable: false },
   { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 310, headerAlign: 'center', align: 'center' },
   {
-    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', width: 310, headerAlign: 'center', align: 'center', valueFormatter: (params) => {
-      const date = new Date(params.value);
-      return date.toLocaleDateString('en-GB');
-    },
-    sortComparator: (v1, v2, cellParams1, cellParams2) => {
-      const date1 = new Date(v1);
-      const date2 = new Date(v2);
-      return date1.getTime() - date2.getTime();
-    },
+    field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', width: 310, headerAlign: 'center', align: 'center',
   },
   { field: 'totalNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số xe</Typography>, type: 'number', width: 250, headerAlign: 'center', align: 'center' },
   {
