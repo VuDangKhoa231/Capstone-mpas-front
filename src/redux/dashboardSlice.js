@@ -1,26 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const dashboardSlice = createSlice ( {
+const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState: {
-      dashboard: {
-        data: null,
-        isFetching: false,
-        err: null
-      },
-      customer: {
-       data: null,
-       isFetching: false,
-       err: null
-      },
-      plo: {
-        data: null,
-        isFetching: false,
-        err: null
-      }
+        dashboard: {
+            data: null,
+            isFetching: false,
+            err: null
+        },
+
+        customer: {
+            data: null,
+            isFetching: false,
+            err: null,
+        },
+
+        customerChart: {
+            data: null,
+            isFetching: false,
+            err: null,
+        },
+
+        ploParking: {
+            data: null,
+            isFetching: false,
+            err: null,
+        },
+
+        ploParkingRevenue: {
+            data: null,
+            isFetching: false,
+            err: null,
+        },
+
+
+        ploChart: {
+            data: null,
+            isFetching: false,
+            err: null,
+        },
     },
 
     reducers: {
+        //DashboardTotal
         getDashboardStart: (state) => {
             state.dashboard.isFetching = true
         },
@@ -28,11 +50,12 @@ const dashboardSlice = createSlice ( {
             state.dashboard.isFetching = false
             state.dashboard.data = action.payload
         },
-        getDashboardFail : (state) => {
+        getDashboardFail: (state) => {
             state.dashboard.isFetching = false
             state.dashboard.err = true
         },
 
+        //Customer
         getDashboardCusStart: (state) => {
             state.customer.isFetching = true
         },
@@ -40,24 +63,67 @@ const dashboardSlice = createSlice ( {
             state.customer.isFetching = false
             state.customer.data = action.payload
         },
-        getDashboardCusFail : (state) => {
+        getDashboardCusFail: (state) => {
             state.customer.isFetching = false
             state.customer.err = true
         },
 
-        getDashboardPLOStart: (state) => {
-            state.plo.isFetching = true
+        //CustomerChart 
+        getChartCustomerStart: (state) => {
+            state.customerChart.isFetching = true
         },
-        getDashboardPLOSuccess: (state, action) => {
-            state.plo.isFetching = false
-            state.plo.data = action.payload
+        getChartCustomerSuccess: (state, action) => {
+            state.customerChart.isFetching = false
+            state.customerChart.data = action.payload
         },
-        getDashboarPLOFail : (state) => {
-            state.plo.isFetching = false
-            state.plo.err = true
+        getChartCustomerFail: (state) => {
+            state.customerChart.isFetching = false
+            state.customerChart.err = true
         },
+
+        // ploParking
+        getDashboardPLOParkingStart: (state) => {
+            state.ploParking.isFetching = true
+        },
+
+        getDashboardPLOParkingSuccess: (state, action) => {
+            state.ploParking.isFetching = false
+            state.ploParking.data = action.payload
+        },
+
+        getDashboardPLOParkingFail: (state) => {
+            state.ploParking.isFetching = false
+            state.ploParking.err = true
+        },
+
+        // ploParkingRevenue
+        getDashboardPLOParkingRevenueStart: (state) => {
+            state.ploParkingRevenue.isFetching = true
+        },
+        getDashboardPLOParkingRevenueSuccess: (state, action) => {
+            state.ploParkingRevenue.isFetching = false
+            state.ploParkingRevenue.data = action.payload
+        },
+        getDashboardPLOParkingRevenueFail: (state) => {
+            state.ploParkingRevenue.isFetching = false
+            state.ploParkingRevenue.err = true
+        },
+
+        //ploChart 
+        getChartPLOStart: (state) => {
+            state.ploChart.isFetching = true
+        },
+        getChartPLOSuccess: (state, action) => {
+            state.ploChart.isFetching = false
+            state.ploChart.data = action.payload
+        },
+        getChartPLOFail: (state) => {
+            state.ploChart.isFetching = false
+            state.ploChart.err = true
+        },
+
     }
 })
-export const { getDashboardStart, getDashboardSuccess, getDashboardFail ,getDashboardPLOStart, getDashboardPLOSuccess,getDashboarPLOFail,getDashboardCusFail, getDashboardCusStart , getDashboardCusSuccess } = dashboardSlice.actions;
+export const { getDashboardStart, getDashboardSuccess, getDashboardFail, getDashboardCusFail, getDashboardCusStart, getDashboardCusSuccess, getDashboardPLOParkingFail, getDashboardPLOParkingRevenueStart, getDashboardPLOParkingStart, getDashboardPLOParkingSuccess, getDashboardPLOParkingRevenueFail, getDashboardPLOParkingRevenueSuccess, getChartCustomerFail, getChartCustomerStart, getChartCustomerSuccess, getChartPLOFail, getChartPLOStart, getChartPLOSuccess } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

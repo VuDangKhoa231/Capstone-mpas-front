@@ -3,34 +3,30 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Avatar, Badge, Box, Divider, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { deleteCookie } from 'cookies-next';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logoutSuccess } from '../redux/authSlice';
+import Notifications from './Notication';
 
 
 
 
 export default function Navigation() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const user = useSelector((state) => state.auth?.login.currentUser)
-    console.log(user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+    
+    const [isNotificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
+    
     const isMenuOpen = Boolean(anchorEl);
-    const handleProfileMenuOpen = (event) => {
+    //Menu
+    const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
     const handleMenuClose = () => {
         setAnchorEl(null);
-        handleMobileMenuClose();
     };
 
     const handleLogout = () => {
@@ -39,6 +35,10 @@ export default function Navigation() {
         navigate('/login');
     }
 
+    //Noti
+    const handleNotificationClick = () => {
+        setNotificationDrawerOpen(!isNotificationDrawerOpen);
+    };
     
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -56,7 +56,7 @@ export default function Navigation() {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}>
-            <Typography sx={{ backgroundColor: '#E6E6E6' }} padding='10px'> {user?.fullName}</Typography>
+            <Typography  padding='10px'> {user?.fullName}</Typography>
             <Divider />
             <MenuItem onClick={() => handleLogout()}>
                 <Stack direction='row' spacing={2}>
@@ -76,9 +76,10 @@ export default function Navigation() {
                         size="large"
                         aria-label="show 17 new notifications"
                         color="inherit"
+                        onClick={handleNotificationClick}
                     >
-                        <Badge badgeContent={17} color="error">
-                            <NotificationsNoneIcon sx={{ color: 'black' }} />
+                        <Badge badgeContent={1} color="error">
+                            <NotificationsNoneIcon sx={{ color: 'black' }}  fontSize='medium'/>
                         </Badge>
                     </IconButton>
                     <IconButton
@@ -87,7 +88,7 @@ export default function Navigation() {
                         aria-label="account of current user"
                         aria-controls={menuId}
                         aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
+                        onClick={handleMenuOpen}
                         color="inherit"
                     >
                         <Avatar />
@@ -96,6 +97,7 @@ export default function Navigation() {
                 
             </Toolbar>
             {renderMenu}
+            <Notifications openNoti={isNotificationDrawerOpen} onClose={handleNotificationClick} />
         </AppBar>
     )
 }

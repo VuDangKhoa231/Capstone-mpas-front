@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import ListOFCustomer from './Component/Customer/ListOFCustomer';
-import Dashboard from './Component/Dashboard/Dashboard';
+import Dashboard from './Component/Dashboard';
 import LoginComponent from './Component/Login/LoginComponent';
 import Main from './Component/Main';
 import Browse from './Component/PLO/Browse';

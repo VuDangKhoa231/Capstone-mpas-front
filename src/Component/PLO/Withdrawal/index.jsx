@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import themes from '../../../theme/themes';
 import WithdrawalHistory from './WithdrawalHistory';
 import WithdrawalList from './WithdrawalList';
+import { useDispatch, useSelector } from 'react-redux';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,6 +50,8 @@ export default function Index() {
     setValue(newValue);
   };
 
+  const user = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
 
   return (
 
@@ -69,10 +72,10 @@ export default function Index() {
 
 
         <CustomTabPanel value={value} index={0}>
-          <WithdrawalList />
+          <WithdrawalList accessToken={user?.login.accessToken} dispatch={dispatch} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <WithdrawalHistory />
+          <WithdrawalHistory accessToken={user?.login.accessToken} dispatch={dispatch} />
         </CustomTabPanel>
       </Box>
     </Stack>

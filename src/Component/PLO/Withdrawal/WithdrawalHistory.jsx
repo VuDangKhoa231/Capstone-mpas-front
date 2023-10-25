@@ -1,13 +1,15 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useGridApiRef } from '@mui/x-data-grid';
+import { useSelector } from 'react-redux';
 import ChipCustom from '../../../Layout/ChipCustom';
-import TableCustom from '../../../Layout/TableCustom';
-import themes from '../../../theme/themes';
 import SearchBar from '../../../Layout/SearchBar';
+import TableCustom from '../../../Layout/TableCustom';
+import { getWithdrawalHistory, getWithdrawalList } from '../../../api/withdrawal';
+import themes from '../../../theme/themes';
 const data = [
     {
         id: 1, name: 'Khách sạn Romantic 1', owner: 'Mai Hoàng Tâm 1', requestedAmount: 1200000, balanceInTheAccount: 6000000, phone: '0357280619', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/20/2023', status: 'Chấp nhận', infor: [
@@ -86,17 +88,11 @@ const title = [
         width: 335,
         hideable: false,
         renderCell: (params) => (
-            <div style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' , textAlign: 'start'}}>
-                <Typography variant='h6'>{params.row.name}</Typography>
-                <Typography variant='body1' color={themes.palette.grey.dark}>{params.row.location}</Typography>
+            <div style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', textAlign: 'start' }}>
+                <Typography variant='h6'>{params.row.parkingName}</Typography>
+                <Typography variant='body1' color={themes.palette.grey.dark}>{params.row.address}</Typography>
             </div>
         ),
-        sortComparator: (v1, v2, cellParams1, cellParams2) => {
-            if (cellParams1.row && cellParams1.row.name && cellParams2.row && cellParams2.row.name) {
-                return cellParams1.row.name.localeCompare(cellParams2.row.name);
-            }
-            return 0;
-        },
     },
     {
         field: 'name_phone',
@@ -111,27 +107,21 @@ const title = [
         hideable: false,
         renderCell: (params) => (
             <div style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', textAlign: 'start' }}>
-                <Typography variant='h6'>{params.row.owner}</Typography>
-                <Typography variant='body1' color={themes.palette.grey.dark}>{params.row.phone}</Typography>
+                <Typography variant='h6'>{params.row.fullName}</Typography>
+                <Typography variant='body1' color={themes.palette.grey.dark}>{params.row.phoneNumber}</Typography>
             </div>
         ),
-        sortComparator: (v1, v2, cellParams1, cellParams2) => {
-            if (cellParams1.row && cellParams1.row.owner && cellParams2.row && cellParams2.row.owner) {
-                return cellParams1.row.name.localeCompare(cellParams2.row.name);
-            }
-            return 0;
-        },
     },
     {
-        field: 'infor',
+        field: 'transactionMethod',
         headerName: <Typography variant='h5' fontWeight={'bold'}>Thông tin</Typography>,
         width: 190,
         headerAlign: 'center',
         disableSort: true,
         renderCell: (params) => (
             <div>
-                {params.value.map((item) => (
-                    <div key={item.id} style={{ marginBottom: '8px', textAlign: 'start' }}>
+                {params.value && params.value.map((item, index) => (
+                    <div key={index} style={{ marginBottom: '8px', textAlign: 'start' }}>
                         <Typography variant='h6'>{item.bankNumber}</Typography>
                         <Typography variant='h6' color={themes.palette.grey.dark} >{item.bankName}</Typography>
                     </div>
@@ -140,39 +130,23 @@ const title = [
         ),
     },
     {
-        field: 'approveDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center',width: 220, valueFormatter: (params) => {
-            const date = new Date(params.value);
-            return date.toLocaleDateString('en-GB');
-        },
-        sortComparator: (v1, v2, cellParams1, cellParams2) => {
-            const date1 = new Date(v1);
-            const date2 = new Date(v2);
-            return date1.getTime() - date2.getTime();
-        },
+        field: 'transactionResultDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày duyệt</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 220,
     },
     {
-        field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date',headerAlign: 'center', align: 'center', width: 230, valueFormatter: (params) => {
-            const date = new Date(params.value);
-            return date.toLocaleDateString('en-GB');
-        },
-        sortComparator: (v1, v2, cellParams1, cellParams2) => {
-            const date1 = new Date(v1);
-            const date2 = new Date(v2);
-            return date1.getTime() - date2.getTime();
-        },
+        field: 'transactionDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', headerAlign: 'center', align: 'center', width: 230,
     },
     {
-        field: 'status', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, type: '', width: 200, headerAlign: 'center', align: 'center',renderCell: (params) => {
-            const status = params.row.status;
+        field: 'statusName', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, type: '', width: 200, headerAlign: 'center', align: 'center', renderCell: (params) => {
+            const status = params.row.statusName;
             let label, variant, color, icon;
             if (status === 'Chấp nhận') {
                 label = status;
-                icon = <CheckCircleOutlineIcon color='success' />;
+                icon = <CheckCircleIcon color='success' />;
                 variant = 'outlined';
                 color = 'success';
             } else {
                 label = status;
-                icon = <CancelOutlinedIcon color='error' />;
+                icon = <CancelIcon color='error' />;
                 variant = 'outlined';
                 color = 'error';
             }
@@ -186,7 +160,7 @@ const title = [
     },
 ];
 
-export default function WithdrawalHistory() {
+export default function WithdrawalHistory({ dispatch, accessToken }) {
 
     const apiRef = useGridApiRef();
 
@@ -194,14 +168,45 @@ export default function WithdrawalHistory() {
     const [rowPerPage, setRowPerPage] = useState(5);
 
     const [searchValue, setSearchValue] = useState("");
-   
+
+    const withdrawalList = useSelector((state) => state.withdrawal.withdrawalList)
+    const [count, setCount] = useState(0)
+
+    useEffect(() => {
+
+        const data = {
+            pageNum: page,
+            pageSize: rowPerPage,
+            searchValue: searchValue,
+            status: 2
+        }
+
+        if (count !== 0) {
+            getWithdrawalList(data, dispatch, accessToken);
+        }
+    }, [page, searchValue, count])
+
+
+    useEffect(() => {
+        if (page !== 1) {
+            setPage(1)
+        }
+        setCount(count + 1)
+    }, [rowPerPage]);
+
     return (
         <Stack mt={5} direction={'column'} spacing={3}>
             <Box display={'flex'}>
-                <SearchBar searchValue={searchValue} setSearchValue={setSearchValue}/>
-                <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
+                <SearchBar setDebounceSearchValue={setSearchValue} />
+                <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue('')}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
             </Box>
-            <TableCustom rows={data} columns={title} m={'0px 15px 0px 0px'} height={'30px'} fontSize={'20px'} rowHeight={150} sizeOption={[3, 5, 10]} defaultPageSize={3} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage}/>
+            {withdrawalList?.isFetching ?
+                <Box sx={{ display: 'flex', width: '100%', height: '50vh', justifyContent: 'center', alignItems: 'center' }}>
+                    <CircularProgress />
+                </Box>
+                :
+                <TableCustom rows={withdrawalList?.list?.data?.content} totalPage={withdrawalList?.list?.data?.totalPages} columns={title} m={'0px 15px 0px 0px'} height={'30px'} fontSize={'20px'} rowHeight={150} sizeOption={[5, 10, 15]} defaultPageSize={5} page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} />
+            }
         </Stack>
     )
 }

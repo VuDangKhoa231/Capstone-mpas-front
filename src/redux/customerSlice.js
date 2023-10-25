@@ -3,29 +3,24 @@ import { createSlice } from "@reduxjs/toolkit"
 const customerSlice = createSlice ( {
     name: 'customer',
     initialState: {
-      customer: {
+      customerList: {
         customers: null,
         isFetching: false,
-        err: null
+        err: null,
       },
-      detailPLO: {
-       plo: null,
-       isFetching: false,
-       err: null
-      }
     },
 
     reducers: {
         getCusStart: (state) => {
-            state.customer.isFetching = true
+            state.customerList.isFetching = true
         },
         getCusSuccess: (state, action) => {
-            state.customer.isFetching = false
-            state.customer.customers = action.payload
+            state.customerList.isFetching = false
+            state.customerList.customers = action.payload
         },
         getCusFail : (state) => {
-            state.customer.isFetching = false
-            state.customer.err = true
+            state.customerList.isFetching = false
+            state.customerList.err = true
         },
     }
 })

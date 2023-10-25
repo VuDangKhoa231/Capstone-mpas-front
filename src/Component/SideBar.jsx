@@ -8,13 +8,13 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Drawer, List, ListI
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import themes from '../theme/themes';
-
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 const Menu = [
     {
         id: 1, name: 'Trang chủ', logo: <DashboardIcon fontSize='large' />, path: '/', children: null
     },
     {
-        id: 2, name: 'Chũ bãi xe', logo: <FaceIcon fontSize='large' />, path: '', children: [
+        id: 2, name: 'Chũ bãi xe', logo: '', path: '', children: [
             {
                 id: 2.1, name: 'Danh sách', logo: <FiberManualRecordIcon fontSize='16px' />, path: '/PLO'
             },
@@ -25,7 +25,7 @@ const Menu = [
             }]
     },
     {
-        id: 3, name: 'Khách hàng', logo: <SupportAgentIcon fontSize='large' />, path: '/Customer', children: null
+        id: 3, name: 'Khách hàng', logo: <PeopleAltIcon fontSize='large' />, path: '/Customer', children: null
     }
 
 ]
@@ -43,23 +43,24 @@ const SideBar = ({ selectedMenuItem, setSelectedMenuItem }) => {
                 </Box>
                 {Menu.map((item) => (
                     item.children !== null ? (
-                        <Accordion key={item.id} disableGutters elevation={0} defaultExpanded sx={{ backgroundColor: themes.backgroundColor, color: 'white', '&.Mui-expanded': { minHeight: 'auto'}}} > 
+                        <Accordion key={item.id} disableGutters elevation={0} defaultExpanded sx={{ backgroundColor: themes.backgroundColor, color: 'white', '&.Mui-expanded': { minHeight: 'auto' } }} >
                             <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
-                                <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                    {item.logo}
+                                <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center', p: '10px' }}>
+                                    <img src='../../image/motorcycle-white.png' style={{width: '35px'}} />
                                     <Typography variant="h6">{item.name}</Typography>
                                 </Stack>
                             </AccordionSummary>
                             <AccordionDetails sx={{ py: 0, px: 2 }}>
                                 <List>
-                                    {   item.children.map((item) => (
+                                    {item.children.map((item) => (
                                         <Link key={item.id} to={item.path} style={{ textDecoration: 'none', color: 'white' }}>
                                             <ListItem button onClick={() => setSelectedMenuItem(item.id)}>
-                                            <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center' , textDecoration: 'none' , color: selectedMenuItem !== item.id ? 'white' : themes.backgroundColor, backgroundColor: selectedMenuItem !== item.id ? themes.backgroundColor : 'white', width: '100%', borderRadius: '10px', p: '10px'}}>
+                                                <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: selectedMenuItem !== item.id ? 'white' : themes.backgroundColor, backgroundColor: selectedMenuItem !== item.id ? themes.backgroundColor : 'white', width: '100%', borderRadius: '10px', p: '10px' }}>
                                                     {item.logo}
                                                     <Typography variant="h6">{item.name}</Typography>
                                                 </Stack>
                                             </ListItem>
+
                                         </Link>
                                     ))}
                                 </List>
@@ -68,7 +69,7 @@ const SideBar = ({ selectedMenuItem, setSelectedMenuItem }) => {
                     ) : (
                         <Link key={item.id} to={item.path} style={{ textDecoration: 'none', color: 'white' }} >
                             <ListItem button onClick={() => setSelectedMenuItem(item.id)}>
-                                <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center' , textDecoration: 'none' , color: selectedMenuItem !== item.id ? 'white' : themes.backgroundColor, backgroundColor: selectedMenuItem !== item.id ? themes.backgroundColor : 'white', width: '100%', borderRadius: '10px', p: '10px'}}>
+                                <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: selectedMenuItem !== item.id ? 'white' : themes.backgroundColor, backgroundColor: selectedMenuItem !== item.id ? themes.backgroundColor : 'white', width: '100%', borderRadius: '10px', p: '10px' }}>
                                     {item.logo}
                                     <Typography variant="h6">{item.name}</Typography>
                                 </Stack>

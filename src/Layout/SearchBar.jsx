@@ -1,14 +1,23 @@
-import React from 'react';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import debounce from 'lodash/debounce';
+import React, { useRef, useState } from 'react';
+export default function SearchBar({ setDebounceSearchValue }) {
+    const [searchValue, setSearchValue] = useState("");
+    const typingTimeoutRef = useRef();
 
-export default function SearchBar({searchValue, setSearchValue}) {
-   
+
     const handleChange = (e) => {
         setSearchValue(e.target.value)
-        console.log(e.target.value);
-    }
+        
+        if(typingTimeoutRef.current){
+            clearTimeout(typingTimeoutRef.current)
+        };
+        typingTimeoutRef.current = setTimeout(() => {
+            setDebounceSearchValue(e.target.value)
+        }, 2000)
+    };
+
+
 
     return (
         <div style={{ width: '500px', display: 'flex', alignItems: 'center' }}>
@@ -19,13 +28,13 @@ export default function SearchBar({searchValue, setSearchValue}) {
                 size="small"
                 value={searchValue}
                 onChange={handleChange}
-                // InputProps={{
-                //     endAdornment: (
-                //         <IconButton onClick={handleChange}>
-                //             <SearchIcon />
-                //         </IconButton>
-                //     ),
-                // }}
+            // InputProps={{
+            //     endAdornment: (
+            //         <IconButton onClick={handleChange}>
+            //             <SearchIcon />
+            //         </IconButton>
+            //     ),
+            // }}
             />
         </div>
     );

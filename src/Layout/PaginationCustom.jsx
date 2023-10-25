@@ -29,7 +29,7 @@ export default function   PaginationCustom({ totalPage, page, setPage, rowPerPag
           <MenuItem value={20}>20</MenuItem>
         </Select>
       </FormControl>
-      <Pagination size='large' color='primary' count={totalPage} page={page} onChange={handleChangePagination} showFirstButton  showLastButton/>
+      <Pagination size='large' color='primary' count={totalPage || 0} page={page} onChange={handleChangePagination} showFirstButton  showLastButton/>
     </Stack>
 
   )
