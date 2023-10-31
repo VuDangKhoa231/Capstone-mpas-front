@@ -9,6 +9,7 @@ import storage from "redux-persist/lib/storage";
 import dashboardSlice from "./dashboardSlice";
 import browseSlice from "./browseSlice";
 import withdrawalSlice from "./withdrawalSlice";
+import notificationSlice from "./notificationSlice";
 
 
 const persisConfig = {
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     customer: customerReducer,
     browse: browseSlice,
     withdrawal: withdrawalSlice,
+    notification: notificationSlice,
 });
 const persistedReducer = persistReducer(persisConfig, rootReducer);
 

@@ -38,15 +38,15 @@ const SideBar = ({ selectedMenuItem, setSelectedMenuItem }) => {
             anchor="left"
         >
             <List sx={{ backgroundColor: themes.backgroundColor, color: 'white', minHeight: '98.3vh' }}>
-                <Box sx={{ height: '6vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <DiamondIcon />
+                <Box sx={{ height: '6vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }} mb={'20px'}>
+                    <img src='../image/logo.png' width={'20%'} />
                 </Box>
                 {Menu.map((item) => (
                     item.children !== null ? (
                         <Accordion key={item.id} disableGutters elevation={0} defaultExpanded sx={{ backgroundColor: themes.backgroundColor, color: 'white', '&.Mui-expanded': { minHeight: 'auto' } }} >
                             <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
                                 <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center', p: '10px' }}>
-                                    <img src='../../image/motorcycle-white.png' style={{width: '35px'}} />
+                                    <img src='../../image/motorcycle-white.png' style={{ width: '35px' }} />
                                     <Typography variant="h6">{item.name}</Typography>
                                 </Stack>
                             </AccordionSummary>

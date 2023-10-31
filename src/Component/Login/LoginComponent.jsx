@@ -24,7 +24,6 @@ export default function LoginComponent() {
 
     // const dispatch = useDispatch();
     const onSubmit = async (e) => {
-
         const data = {
             id: getValues('username'),
             password: getValues('password'),
