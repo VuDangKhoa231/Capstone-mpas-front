@@ -251,10 +251,7 @@ export default function DetailPLO() {
                                                             <Typography variant='h6'>{formattedDate}</Typography>
                                                         </Grid>
                                                     </Grid>
-                                                    {/* <Box display={'flex'} flexDirection={'row'}>
-                                                <Typography variant='h6' mr={'10px'} fontWeight={'bold'}>{item.fullName} </Typography>
-                                                <Rating props={item.star} />
-                                            </Box> */}
+                                                
                                                     <Box display={'flex'} flexDirection={'row'}>
                                                         <Typography variant='h6' mr={'10px'}>Nội dung:</Typography>
                                                         <Typography variant='h6' color={themes.palette.grey.dark}>{item.content}</Typography>

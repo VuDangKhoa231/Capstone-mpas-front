@@ -20,7 +20,7 @@ export default function DashboardPLO({ dispatch, accessToken }) {
     const dashboardPLOParking = useSelector((state) => state.dashboard.ploParking)
     const dashboardPLOParkingRevenue = useSelector((state) => state.dashboard.ploParkingRevenue)
     const dashboardChart = useSelector((state) => state.dashboard.ploChart)
-    console.log(dashboardChart);
+
     //chart
 
     const dataChart = dashboardChart?.data?.map(item => [item.weekName, item.total]);

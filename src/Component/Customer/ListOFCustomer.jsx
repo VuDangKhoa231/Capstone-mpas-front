@@ -1,16 +1,12 @@
-import { Box, Button, CircularProgress, Grid, Snackbar, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Snackbar, Stack, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { useGridApiRef } from '@mui/x-data-grid'
+import { useDispatch, useSelector } from 'react-redux'
 import ChipCustom from '../../Layout/ChipCustom'
 import SearchBar from '../../Layout/SearchBar'
 import TableCustom from '../../Layout/TableCustom'
-import themes from '../../theme/themes'
-import PaginationCustom from '../../Layout/PaginationCustom'
 import { getCusList } from '../../api/customer'
-import { useDispatch, useSelector } from 'react-redux'
-import Chart from 'react-google-charts'
-import SnackbarCutom from '../../Layout/SnakeBarCustom'
+import themes from '../../theme/themes'
 
 
 const CustomColumnTitle = ({ title }) => {

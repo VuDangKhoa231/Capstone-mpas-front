@@ -5,6 +5,7 @@ import SearchBar from '../../../Layout/SearchBar';
 import themes from '../../../theme/themes';
 import BrowseHistory from './BrowseHistory';
 import { BrowseList } from './BrowseList';
+
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 

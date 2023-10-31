@@ -11,8 +11,7 @@ import ListOfPLO from './Component/PLO/ParkinglotOwner/ListOfPLO';
 import Withdrawal from './Component/PLO/Withdrawal';
 import ProtectRouter from './ultis/ProtectRouter';
 import DetailBrowse from './Component/PLO/Browse/DetailBrowse';
-
-
+import './firebase/messaging_init_in_sw';
 function App() {
   const user = useSelector((state) => state.auth)
   

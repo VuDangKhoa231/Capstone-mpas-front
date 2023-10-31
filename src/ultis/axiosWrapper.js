@@ -1,8 +1,11 @@
 import axios from "axios";
 import { deleteCookie, getCookie } from 'cookies-next';
 
+
+
+
 const defaultOptions = {
-  baseURL: 'https://eparkingcapstone.azurewebsites.net/',
+  baseURL: 'https://eparkingcapstone.azurewebsites.net/' ,
   headers: {
     'Content-Type': 'application/json',
     // "Access-Control-Allow-Origin" : '*',
@@ -20,7 +23,6 @@ axiosWrapper.interceptors.request.use(async (config) => {
     const token = getCookie('token')
   
     if (token) {
-      console.log(token);
       config.headers.Authorization = `Bearer ${token}`;
     }
 

@@ -4,7 +4,7 @@ import NotiCard from './NotiCard'
 
 
 
-const data = [
+const dataFake = [
 
     {
         "notiID": 4,
@@ -19,7 +19,7 @@ const data = [
         "notiID": 5,
         "recipient_type": "CUSTOMER",
         "recipient_id": "CU0934328813",
-        "sender_type": "PLO",
+        "sender_type": "CUS",
         "senderName": "Nguyen Thinh",
         "content": "to cus2",
         "created_at": "2023-10-18T10:11:49.000+00:00"
@@ -35,15 +35,15 @@ const data = [
     }
 
 ]
-export default function Index({ openNoti, onClose }) {
+export default function Index({ openNoti, onClose , data}) {
 
     return (
         <Drawer anchor="right" open={openNoti} onClose={onClose}>
             <div style={{ width: 300, padding: 16 }}>
                 <Typography variant='h4'>Thông báo</Typography>
                 <Stack>
-                    {data?.map((item) => (
-                        <NotiCard item={item}/>
+                    {data?.map((item,index) => (
+                        <NotiCard key={index} item={item}/>
                     ))}
                 </Stack>
             </div>
