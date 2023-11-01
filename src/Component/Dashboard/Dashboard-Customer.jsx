@@ -92,21 +92,21 @@ export default function DashboardCustomer({ dispatch, accessToken }) {
 
 
             <Box m={'50px'} display={'flex'} justifyContent={'center'}>
-                <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', width: '70%' }}>
+                <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', width: '70%', minHeight: '280px'  }}>
                     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 khách hàng có nhiều lượt đặt chỗ nhiều nhất {selectedDate.format('MM/YYYY')}</Typography>
                     </Box>
                     {dashboardCustom?.data?.data.map((item, index) => (
                         <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.green.light } }}>
-                            <Grid item xs={6} display={'flex'}>
+                            <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <Typography variant='h5' mr={'20px'}>{index + 1}</Typography>
                                 <Typography variant='h5'>{item.fullName}</Typography>
                             </Grid>
-                            <Grid item xs={5} display={'flex'}>
+                            <Grid item xs={5} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <PhoneIcon fontSize='medium' />
                                 <Typography variant='h5' ml={'5px'}> {item.phoneNumber}</Typography>
                             </Grid>
-                            <Grid item xs={1} display={'flex'}>
+                            <Grid item xs={1} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'} alignItems={'center'}> 
                                 <WorkspacePremiumIcon fontSize='medium' />
                                 <Typography variant='h5' ml={'5px'}> {item.total}</Typography>
                             </Grid>

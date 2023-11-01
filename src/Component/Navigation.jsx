@@ -59,11 +59,13 @@ export default function Navigation() {
     //Noti
     const handleNotificationClick = () => {
         setNotificationDrawerOpen(!isNotificationDrawerOpen);
+        if(!isNotificationDrawerOpen){
+            getNotification(dispatch, user?.login?.accessToken);
+        }
     };
 
     useEffect(() => {
-        getNotification(dispatch);
-        console.log('noti', noti);
+        getNotification(dispatch, user?.login?.accessToken);
     }, [])
 
     const menuId = 'primary-search-account-menu';

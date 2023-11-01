@@ -89,19 +89,19 @@ export default function DashboardPLO({ dispatch, accessToken }) {
 
             <Grid container spacing={3} mt={'3px'} mb={'10px'} >
                 <Grid item xs={6}>
-                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }} >
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 most booked parking areas</Typography>
+                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' ,minHeight: '280px'  }} >
+                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 bãi đỗ có lượng đặt cao nhất {selectedDate.format('MM/YYYY')}</Typography>
                         {dashboardPLOParking?.data?.map((item, index) => (
                             <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
-                                <Grid item xs={6} display={'flex'}>
-                                    <Typography variant='h6' mr={'20px'}>{index + 1}</Typography>
+                                <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                    <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
                                     <Typography variant='h6'>{item.parkingName}</Typography>
                                 </Grid>
-                                <Grid item xs={5} display={'flex'} alignItems={'center'}>
+                                <Grid item xs={5} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                                     <AccountCircleIcon fontSize='medium' />
                                     <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
                                 </Grid>
-                                <Grid item xs={1} display={'flex'} alignItems={'center'}>
+                                <Grid item xs={1} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'}> 
                                     <WorkspacePremiumIcon fontSize='medium' />
                                     <Typography variant='h6' ml={'5px'}> {item.total}</Typography>
                                 </Grid>
@@ -116,19 +116,20 @@ export default function DashboardPLO({ dispatch, accessToken }) {
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' }}>
-                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 parking lots with the highest revenue</Typography>
+                    <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', minHeight: '280px' }}>
+                        <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 bãi đỗ có doanh thu cao nhất {selectedDate.format('MM/YYYY')}</Typography>
                         {dashboardPLOParkingRevenue?.data?.map((item, index) => (
                             <Grid container key={index} display={'flex'} justifyContent={'space-between'} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
-                                <Grid item xs={5} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                    <Typography variant='h6' mr={'20px'}>{index + 1}</Typography>
-                                    <Typography variant='h6'>{item.parkingName}</Typography>
+                                <Grid item xs={5} display={'flex'}>
+                                    <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
+                                    <Typography variant='h6' sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.parkingName}</Typography>
                                 </Grid>
-                                <Grid item xs={4} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                <Grid item xs={4} display={'flex'} alignItems={'center'}>
                                     <AccountCircleIcon fontSize='medium' />
-                                    <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
+                                    <Typography variant='h6' ml={'5px'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}> {item.fullName}</Typography>
                                 </Grid>
-                                <Grid item xs={3} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                <Grid item xs={0.2}/>
+                                <Grid item xs={2.8} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'}>
                                     <LocalAtmIcon fontSize='medium' />
                                     <Typography variant='h6' ml={'5px'}> {item.revenue}VNĐ</Typography>
                                 </Grid>

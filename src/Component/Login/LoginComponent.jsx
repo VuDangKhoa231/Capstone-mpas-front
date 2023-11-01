@@ -1,12 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert, Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material';
-import { React } from 'react';
+import { React, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { loginUser } from '../../api/login';
+import ToastMessage from '../../Layout/ToastMessage';
 const schema = yup.object().shape({
     username: yup.string().required('username là bắt buộc'),
     password: yup.string().required('Mật khẩu là bắt buộc'),
@@ -17,18 +18,18 @@ export default function LoginComponent() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth)
-
+    const [open,setOpen] = useState(false);
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
 
-    // const dispatch = useDispatch();
     const onSubmit = async (e) => {
-        const data = {
-            id: getValues('username'),
-            password: getValues('password'),
-        }
-        loginUser(data, dispatch, navigate);
+    
+            const data = {
+                id: getValues('username'),
+                password: getValues('password'),
+            }
+            loginUser(data, dispatch, navigate)
     };
 
     return (
@@ -45,6 +46,7 @@ export default function LoginComponent() {
                 </Grid>
                 <Grid item xs={1} />
                 <Grid item xs={5} display={'flex'} justifyContent={'center'} margin={'auto'}>
+                    {/* <ToastMessage open={open} setOpen={setOpen}/> */}
                     <Paper elevation={8} sx={{ p: '20px', height: '600px', borderRadius: '10px', width: '60%', }}>
 
                         <Box sx={{ height: '200px' }} justifyContent={'center'} alignItems={'center'} display={'flex'}>

@@ -157,7 +157,7 @@ export default function DetailPLO() {
 
                                 <Typography variant='h4' paddingTop={'50px'} fontWeight={'bold'}> Thông tin phí và phương thức đỗ xe  </Typography>
                                 {
-                                    plo?.plo?.data?.eveningFee &&
+                                    plo?.plo?.data?.morningFee != 0 &&
                                     <Box>
                                         <Typography variant='h5' > Ban ngày</Typography>
                                         <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
@@ -173,7 +173,7 @@ export default function DetailPLO() {
                                     </Box>
                                 }
                                 {
-                                    plo?.plo?.data?.eveningFee &&
+                                    plo?.plo?.data?.eveningFee != 0 &&
                                     <Box>
                                         <Typography variant='h5' > Ban đêm</Typography>
                                         <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
@@ -189,7 +189,7 @@ export default function DetailPLO() {
                                     </Box>
                                 }
                                 {
-                                    plo?.plo?.data?.overNightFee &&
+                                    plo?.plo?.data?.overNightFee != 0 &&
                                     <Box>
                                         <Typography variant='h5' > Qua đêm</Typography>
                                         <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
