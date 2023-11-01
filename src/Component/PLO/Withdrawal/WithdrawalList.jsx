@@ -228,8 +228,8 @@ function WithdrawalList({ dispatch, accessToken }) {
   return (
     <Stack mt={5} direction={'column'} spacing={3}>
       <Box display={'flex'}>
-        <SearchBar setDebounceSearchValue={setSearchValue} />
-        <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue('')}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
+        <SearchBar setDebounceSearchValue={setSearchValue} /> 
+        <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue("")}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
       </Box>
       {withdrawalList?.isFetching ?
         (

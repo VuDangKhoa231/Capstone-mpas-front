@@ -14,7 +14,7 @@ const Menu = [
         id: 1, name: 'Trang chủ', logo: <DashboardIcon fontSize='large' />, path: '/', children: null
     },
     {
-        id: 2, name: 'Chũ bãi xe', logo: '', path: '', children: [
+        id: 2, name: 'Chủ bãi xe', logo: '', path: '', children: [
             {
                 id: 2.1, name: 'Danh sách', logo: <FiberManualRecordIcon fontSize='16px' />, path: '/PLO'
             },
@@ -33,9 +33,11 @@ const SideBar = ({ selectedMenuItem, setSelectedMenuItem }) => {
     const expand = useState()
     return (
         <Drawer
-            sx={{ position: 'fixed' }}
+            sx={{ position: '' }}
             variant="permanent"
             anchor="left"
+            zindex={99}
+           
         >
             <List sx={{ backgroundColor: themes.backgroundColor, color: 'white', minHeight: '98.3vh' }}>
                 <Box sx={{ height: '6vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }} mb={'20px'}>

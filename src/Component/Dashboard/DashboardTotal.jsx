@@ -23,7 +23,7 @@ export default function DashboardTotal({ dispatch, accessToken }) {
       ) :
         (
           <Box display={'flex'} justifyContent={'space-around'} mt={'20px'}>
-            <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }}>
+            <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', width: '400px' }}>
               <Box display={'flex'} justifyContent={'center'}>
 
                 <PeopleAltIcon fontSize='large' />
@@ -31,7 +31,7 @@ export default function DashboardTotal({ dispatch, accessToken }) {
               </Box>
               <Typography variant='h3' textAlign={'center'} mt={'20px'}> {dashboard?.data?.data.totalCustomer}</Typography>
             </Paper>
-            <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', minWidth: '400px' }} >
+            <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', width: '400px' }} >
 
               <Box display={'flex'} justifyContent={'center'}>
                 <img src='../image/motorcycle-black.png' style={{ width: '40px' , height: '40px'}} />

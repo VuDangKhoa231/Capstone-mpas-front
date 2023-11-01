@@ -1,11 +1,9 @@
 import TextField from '@mui/material/TextField';
 import debounce from 'lodash/debounce';
 import React, { useRef, useState } from 'react';
-export default function SearchBar({ setDebounceSearchValue }) {
+export default function SearchBar({ setDebounceSearchValue, isClear }) {
     const [searchValue, setSearchValue] = useState("");
     const typingTimeoutRef = useRef();
-
-
     const handleChange = (e) => {
         setSearchValue(e.target.value)
         
@@ -27,15 +25,7 @@ export default function SearchBar({ setDebounceSearchValue }) {
                 variant="outlined"
                 size="small"
                 value={searchValue}
-                onChange={handleChange}
-            // InputProps={{
-            //     endAdornment: (
-            //         <IconButton onClick={handleChange}>
-            //             <SearchIcon />
-            //         </IconButton>
-            //     ),
-            // }}
-            />
+                onChange={handleChange}/>
         </div>
     );
 }

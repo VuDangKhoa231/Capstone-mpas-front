@@ -19,7 +19,7 @@ function App() {
     <Routes>
       <Route path="/login" element={!user.login.accessToken ? <LoginComponent /> : <Navigate to={`/`} replace={true} />} />
       <Route element={<ProtectRouter />}>
-        <Route path='/' element={<Main />} >
+        <Route path='/' element={<Main/>} >
           <Route index element={<Dashboard />} />
           <Route path="/PLO" element={<ListOfPLO />} exact/> 
           <Route path="/PLO/:id" element={<DetailPLO />}/>

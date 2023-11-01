@@ -43,12 +43,30 @@ export default function ListOfPLO() {
 
 
   const title = [
-    // { field: 'count', headerName: <Typography variant='h5' fontWeight={'bold'}>ID</Typography>, width: 60, hideable: false, valueGetter: (params) => params.rowIndex + 1, },
+    { field: 'id', headerName: <Typography variant='h5' fontWeight={'bold'}>ID</Typography>, width: 50, hideable: false },
     { field: 'fullName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}> Tên  </Typography> </div>), width: 300, hideable: false, },
-    { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 240, headerAlign: 'center', align: 'center' },
-    { field: 'parkingName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}>Tên bãi đỗ</Typography> </div>), width: 300 },
+    { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 210, headerAlign: 'center', align: 'center' },
+    { field: 'parkingName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}>Tên bãi đỗ</Typography> </div>), width: 300 ,renderCell: (params) => (
+      <div
+      style={{
+        whiteSpace: 'normal',
+        wordWrap: 'break-word',
+        textAlign: 'center',
+        justifyContent: 'center',
+        width: '95%',
+        maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
+        overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
+        textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        WebkitLineClamp: 3,
+      }}
+    >
+      {params.value}
+    </div>
+    ), },
     {
-      field: 'statusName', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, headerAlign: 'center', align: 'center', width: 200, renderCell: (params) => {
+      field: 'statusName', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, headerAlign: 'center', align: 'center', width: 180, renderCell: (params) => {
         const status = params.row.statusName;
 
         let label, variant, backgroundColor;
@@ -60,8 +78,8 @@ export default function ListOfPLO() {
           label = "Đang hoạt động";
           variant = 'filled';
           backgroundColor = '#00cc66';
-        } else if (status === " Closing") {
-          label = "Dừng hoạt động";
+        } else if (status === "Closed") {
+          label = "Tạm dừnng hoạt động";
           variant = 'filled';
           backgroundColor = '#e74c3c';
         } else {
@@ -78,16 +96,30 @@ export default function ListOfPLO() {
     },
     {
       field: 'address', headerName: <Typography variant='h5' fontWeight={'bold'}>Địa chỉ bãi xe</Typography>, headerAlign: 'center', align: 'center' , width: 340, renderCell: (params) => (
-        <div style={{ whiteSpace: 'normal', wordWrap: 'break-word', textAlign: 'center', justifyContent: 'center', width: '90%'}}>
-          {params.value} 
-        </div>
+        <div
+        style={{
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+          textAlign: 'center',
+          justifyContent: 'center',
+          width: '95%',
+          maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
+          overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
+          textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
+          display: '-webkit-box',
+          WebkitBoxOrient: 'vertical',
+          WebkitLineClamp: 3,
+        }}
+      >
+        {params.value}
+      </div>
       ),
     },
 
     {
-      field: 'id', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
+       headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
         <Link to={`/PLO/${params.row.ploID}`}>
-          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none' }}  >
+          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', overflowWrap: 'break-word',textOverflow: 'ellipsis', maxLines: 3 }}  >
             Xem
           </Typography>
         </Link>
@@ -128,7 +160,7 @@ export default function ListOfPLO() {
   return (
 
     <Stack direction='column' p='10px' spacing={5}>
-      <Typography variant='h2'>Danh sách khách hàng</Typography>
+      <Typography variant='h2'>Danh sách Chủ bãi xe</Typography>
       <Box width={'35%'}>
         <SearchBar setDebounceSearchValue={setSearchValue} />
       </Box>

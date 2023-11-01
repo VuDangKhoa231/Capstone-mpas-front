@@ -1,49 +1,22 @@
-import { Drawer, Stack, Typography } from '@mui/material'
+import { Box, Divider, Drawer, Stack, Typography } from '@mui/material'
 import React from 'react'
 import NotiCard from './NotiCard'
+import themes from '../../theme/themes'
 
 
 
-const dataFake = [
-
-    {
-        "notiID": 4,
-        "recipient_type": "CUSTOMER",
-        "recipient_id": "CU0934328813",
-        "sender_type": "PLO",
-        "senderName": "Nguyen Thinh",
-        "content": "to cus1",
-        "created_at": "2023-10-18T10:11:49.000+00:00"
-    },
-    {
-        "notiID": 5,
-        "recipient_type": "CUSTOMER",
-        "recipient_id": "CU0934328813",
-        "sender_type": "CUS",
-        "senderName": "Nguyen Thinh",
-        "content": "to cus2",
-        "created_at": "2023-10-18T10:11:49.000+00:00"
-    },
-    {
-        "notiID": 6,
-        "recipient_type": "CUSTOMER",
-        "recipient_id": "CU0934328813",
-        "sender_type": "PLO",
-        "senderName": "Nguyen Thinh",
-        "content": "to cus3",
-        "created_at": "2023-10-18T10:11:49.000+00:00"
-    }
-
-]
-export default function Index({ openNoti, onClose , data}) {
+export default function Index({ openNoti, onClose, data }) {
 
     return (
         <Drawer anchor="right" open={openNoti} onClose={onClose}>
-            <div style={{ width: 300, padding: 16 }}>
+            <div style={{ width: 300, padding: 5 }}>
                 <Typography variant='h4'>Thông báo</Typography>
                 <Stack>
-                    {data?.map((item,index) => (
-                        <NotiCard key={index} item={item}/>
+                    {data?.map((item, index) => (
+                        <Box key={index} sx={{ transition: 'background-color 0.3s', '&:hover': { backgroundColor: themes.palette.grey[300], }, }}>
+                            <NotiCard key={index} item={item} />
+                            <Divider sx={{ width: '100%' }} />
+                        </Box>
                     ))}
                 </Stack>
             </div>

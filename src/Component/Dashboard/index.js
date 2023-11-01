@@ -9,11 +9,7 @@ import DashboardTotal from './DashboardTotal'
 export default function Index() {
     const user = useSelector((state) => state.auth)
     const dispatch = useDispatch();
-   
-    useEffect(() => {
-  
-     
-    }, []);
+
 
 
     return (

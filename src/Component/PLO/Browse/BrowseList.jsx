@@ -85,7 +85,7 @@ export function BrowseList(props) {
     <Stack mt={5} direction={'column'} spacing={3}>
       <Box display={'flex'}>
         <SearchBar setDebounceSearchValue={setSearchValue} />
-        <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => searchValue('')}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
+        <Button sx={{ ml: '26px', px: '50px', backgroundColor: themes.palette.grey.light, color: 'black' }} onClick={() => setSearchValue("")}> <Typography variant='body1' textTransform={'none'}> Tất cả</Typography></Button>
       </Box>
       {browseList?.isFetching ? (
         <Box sx={{ display: 'flex', width: '100%', height: '50vh', justifyContent: 'center', alignItems: 'center' }}>

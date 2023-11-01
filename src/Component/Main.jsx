@@ -5,11 +5,10 @@ import Navigation from './Navigation';
 import SideBar from './SideBar';
 
 export default function Main() {
-    const [selectedMenuItem, setSelectedMenuItem] = useState(null); // Mục đang được chọn
+    const [selectedMenuItem, setSelectedMenuItem] = useState(null); 
  
     useEffect(() => {
         const pathname = window.location.pathname;
-        // Kiểm tra đường dẫn và thiết lập giá trị selectedMenuItem tương ứng
         if (pathname === '/') {
             setSelectedMenuItem(1);
         } else if (pathname.includes('/PLO')) {
@@ -25,7 +24,7 @@ export default function Main() {
 
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div>
             <SideBar selectedMenuItem={selectedMenuItem} setSelectedMenuItem={setSelectedMenuItem} />
             <div style={{ flex: 1, marginLeft: '290px' }}>
                 <Navigation />
