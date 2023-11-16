@@ -5,7 +5,7 @@ import { deleteCookie, getCookie } from 'cookies-next';
 
 
 const defaultOptions = {
-  baseURL: 'https://eparkingcapstone.azurewebsites.net/' ,
+  baseURL: 'https://parco.monoinfinity.net/' ,
   headers: {
     'Content-Type': 'application/json',
     // "Access-Control-Allow-Origin" : '*',
