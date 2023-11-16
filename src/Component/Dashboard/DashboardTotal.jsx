@@ -25,7 +25,6 @@ export default function DashboardTotal({ dispatch, accessToken }) {
           <Box display={'flex'} justifyContent={'space-around'} mt={'20px'}>
             <Paper elevation={6} sx={{ p: '20px 40px 20px 40px', width: '400px' }}>
               <Box display={'flex'} justifyContent={'center'}>
-
                 <PeopleAltIcon fontSize='large' />
                 <Typography variant='h4' sx={{ fontWeight: 'bold', ml: '20px' }}> Khách hàng</Typography>
               </Box>
