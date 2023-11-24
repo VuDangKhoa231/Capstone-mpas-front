@@ -1,6 +1,6 @@
 import PhoneIcon from '@mui/icons-material/Phone';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -18,7 +18,7 @@ import { getChartCustomer, getDashboardCus } from '../../api/dashboard';
 export default function DashboardCustomer({ dispatch, accessToken }) {
     dayjs.locale('vi');
     const [selectedDate, setSelectedDate] = useState(dayjs());
-    const minDate = dayjs('2018-01-01');
+    const minDate = dayjs('2023-08-01');
     const maxDate = dayjs();
     const dashboardCustom = useSelector((state) => state.dashboard.customer)
     const dashboardChart = useSelector((state) => state.dashboard.customerChart)
@@ -100,7 +100,9 @@ export default function DashboardCustomer({ dispatch, accessToken }) {
                         <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.green.light } }}>
                             <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <Typography variant='h5' mr={'20px'}>{index + 1}</Typography>
+                                <Tooltip title={`${item.fullName}`} placement="top">
                                 <Typography variant='h5'>{item.fullName}</Typography>
+                                </Tooltip>
                             </Grid>
                             <Grid item xs={5} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <PhoneIcon fontSize='medium' />

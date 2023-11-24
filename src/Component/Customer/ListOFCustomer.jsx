@@ -27,7 +27,7 @@ const title = [
   {
     field: 'registrationDate', headerName: <Typography variant='h5' fontWeight={'bold'}>Ngày đăng ký</Typography>, type: 'Date', width: 310, headerAlign: 'center', align: 'center',
   },
-  { field: 'totalNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số xe</Typography>, type: 'number', width: 250, headerAlign: 'center', align: 'center' },
+  { field: 'totalNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số xe</Typography>, type: 'number', width: 240, headerAlign: 'center', align: 'center' },
   {
     field: 'status', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, type: '', width: 190, headerAlign: 'center', align: 'center', renderCell: (params) => {
       const status = params.row.status;
@@ -60,25 +60,25 @@ export default function ListOFCustomer() {
   const user = useSelector((state) => state.auth)
   const customer = useSelector((state) => state.customer)
   const dispatch = useDispatch();
-
+  const [count, setCount] = useState(1)
 
 
   useEffect(() => {
     const data = {
-      pageNum: rowPerPageChanged ? 1 : page,
+      pageNum: page,
       pageSize: rowPerPage,
       searchValue: searchValue
     }
-    getCusList(data, dispatch, user?.login?.accessToken);
+    if (count !== 0) {
+      getCusList(data, dispatch, user?.login?.accessToken);
+    }
   }, [page, rowPerPage, searchValue])
-  
-  const rowPerPageChanged = useRef(false);
+
   useEffect(() => {
-      if (rowPerPageChanged.current) {
-          rowPerPageChanged.current = false;
-      } else {
-          rowPerPageChanged.current = true;
-      }
+    if (page !== 1) {
+      setPage(1)
+    }
+    setCount(count + 1)
   }, [rowPerPage]);
 
   return (
@@ -106,7 +106,7 @@ export default function ListOFCustomer() {
           </Box>
         )}
       </Stack >
-      <Snackbar/>
+      <Snackbar />
     </>
 
   )

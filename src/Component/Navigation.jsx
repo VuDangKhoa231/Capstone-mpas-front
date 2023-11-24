@@ -84,14 +84,11 @@ export default function Navigation() {
         const queryMessages = query(messageRef);
         const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
             let message = [];
-         
             snapshot.forEach((doc) => {
                 message.push({ ...doc.data() });
             })
             setDateChat(message);
         })
-
-
         return () => {
             unsubscribe();
         }
@@ -132,15 +129,6 @@ export default function Navigation() {
                 <Box sx={{ flexGrow: 1 }} />
 
                 <Stack direction={'row'}>
-                    {/* <IconButton
-                        size="large"
-                        color="inherit"
-                        onClick={handleNotificationClick}
-                    >
-                        <Badge badgeContent={noti?.data?.length} color="error">
-                            <NotificationsNoneIcon sx={{ color: 'black' }} fontSize='medium' />
-                        </Badge>
-                    </IconButton> */}
                     <IconButton
                         size="large"
                         edge="end"

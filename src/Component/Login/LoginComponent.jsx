@@ -18,18 +18,16 @@ export default function LoginComponent() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth)
-    const [open,setOpen] = useState(false);
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = async (e) => {
-    
-            const data = {
-                id: getValues('username'),
-                password: getValues('password'),
-            }
-            loginUser(data, dispatch, navigate)
+    const onSubmit = (e) => {
+        const data = {
+            id: getValues('username'),
+            password: getValues('password'),
+        }
+        loginUser(data, dispatch, navigate)
     };
 
     return (
@@ -46,13 +44,10 @@ export default function LoginComponent() {
                 </Grid>
                 <Grid item xs={1} />
                 <Grid item xs={5} display={'flex'} justifyContent={'center'} margin={'auto'}>
-                    {/* <ToastMessage open={open} setOpen={setOpen}/> */}
                     <Paper elevation={8} sx={{ p: '20px', height: '600px', borderRadius: '10px', width: '60%', }}>
-
                         <Box sx={{ height: '200px' }} justifyContent={'center'} alignItems={'center'} display={'flex'}>
                             <img src='../image/logo.png' width={'20%'} />
                         </Box>
-
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <TextField
                                 fullWidth
@@ -87,14 +82,16 @@ export default function LoginComponent() {
                             )}
 
                         </form>
+                             
                         <Box mt={'30px'}>
-                            {user?.login.error ?
-                                <Alert severity="error">Sai tài khoản hoặc mật khẩu</Alert>
+                            {user?.login.error && user?.login.error === 1 ?
+                                <Alert severity="error">Đây không phải là tài khoản Admin</Alert>
                                 :
-                                <div style={{ height: '49px' }}></div>
+                                user?.login.error === 2 ?
+                                    <Alert severity="error">Sai tài khoản hoặc mật khẩu</Alert>
+                                    : <div style={{ height: '49px' }}></div>
                             }
                         </Box>
-
                     </Paper>
                 </Grid>
             </Grid>

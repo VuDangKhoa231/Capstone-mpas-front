@@ -9,6 +9,7 @@ import TableCustom from '../../../Layout/TableCustom';
 import themes from '../../../theme/themes';
 import { confirmWithdrawal, getWithdrawalList } from '../../../api/withdrawal';
 import { useDispatch, useSelector } from 'react-redux';
+import ToastMessage from '../../../Layout/ToastMessage';
 // const data = [
 //   {
 //     id: 1, name: 'Khách sạn Romantic 1', owner: 'Mai Hoàng Tâm 1', requestedAmount: 1200000, balanceInTheAccount: 6000000, phone: '0357280619', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', registrationDate: '12/02/2023', approveDate: '12/20/2023', status: 'Chấp nhận', infor: [
@@ -78,14 +79,12 @@ function WithdrawalList({ dispatch, accessToken }) {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-
   //Search
   const [searchValue, setSearchValue] = useState("");
 
   //Pagination
   const [page, setPage] = useState(1)
   const [rowPerPage, setRowPerPage] = useState(5)
-
 
   //TitleOFTable
   const title = [
@@ -141,7 +140,7 @@ function WithdrawalList({ dispatch, accessToken }) {
     {
       field: 'transactionMethod',
       headerName: <Typography variant='h5' fontWeight={'bold'}>Thông tin</Typography>,
-      headerAlign: 'center', align: 'center',
+      headerAlign: 'center', align: 'start',
       width: 200,
       disableSort: true,
       renderCell: (params) => (
@@ -182,6 +181,8 @@ function WithdrawalList({ dispatch, accessToken }) {
   };
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    return <ToastMessage open={true} message={'Phê duyệt thành công'}/>
+
   };
   const [selectedItem, setSelectItem] = useState(null);
   const [confirm, setConfirm] = useState(true)

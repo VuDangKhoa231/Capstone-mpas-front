@@ -32,7 +32,6 @@ function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, 
         sx={{
           fontSize, m, '.MuiDataGrid-overlayWrapper': {
             height: '400px', 
-
           },
         }}
         pageSizeOptions={sizeOption}

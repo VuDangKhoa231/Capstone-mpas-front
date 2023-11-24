@@ -1,7 +1,7 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -15,7 +15,7 @@ import themes from '../../theme/themes';
 
 export default function DashboardPLO({ dispatch, accessToken }) {
     const [selectedDate, setSelectedDate] = useState(dayjs());
-    const minDate = dayjs('2018-01-01');
+    const minDate = dayjs('2023-08-01');
     const maxDate = dayjs();
     const dashboardPLOParking = useSelector((state) => state.dashboard.ploParking)
     const dashboardPLOParkingRevenue = useSelector((state) => state.dashboard.ploParkingRevenue)
@@ -95,11 +95,15 @@ export default function DashboardPLO({ dispatch, accessToken }) {
                             <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
                                 <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                                     <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
+                                    <Tooltip title={`${item.parkingName}`} placement="top">
                                     <Typography variant='h6'>{item.parkingName}</Typography>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={5} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                                     <AccountCircleIcon fontSize='medium' />
+                                    <Tooltip title={`${item.fullName}`} placement="top">
                                     <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={1} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'}> 
                                     <WorkspacePremiumIcon fontSize='medium' />
@@ -122,11 +126,15 @@ export default function DashboardPLO({ dispatch, accessToken }) {
                             <Grid container key={index} display={'flex'} justifyContent={'space-between'} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
                                 <Grid item xs={5} display={'flex'}>
                                     <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
+                                    <Tooltip title={`${item.parkingName}`} placement="top">
                                     <Typography variant='h6' sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.parkingName}</Typography>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={4} display={'flex'} alignItems={'center'}>
                                     <AccountCircleIcon fontSize='medium' />
+                                    <Tooltip title={`${item.fullName}`} placement="top">
                                     <Typography variant='h6' ml={'5px'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}> {item.fullName}</Typography>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item xs={0.2}/>
                                 <Grid item xs={2.8} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'}>

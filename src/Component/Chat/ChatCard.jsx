@@ -22,8 +22,7 @@ export default function ChatCard({ item }) {
                 console.log('doc', doc.data());
             });
         });
-    
-      
+
         return () => unsubscribe();
     }, [item])
 
@@ -48,11 +47,12 @@ export default function ChatCard({ item }) {
                     {lastMessage.toId === user?.adminID && lastMessage.read === "" && <FiberManualRecordIcon sx={{ color: '#89BF04' }} />}
                 </Grid>
             </Grid>
-            {lastMessage.read !== "" || lastMessage.fromId === user?.adminID &&
+            {lastMessage.read !== "" && lastMessage.fromId === user?.adminID &&
                 <Box sx={{display: 'flex' , justifyContent: 'flex-end'}}>
                      {console.log('test', lastMessage.sent)}
                     <Typography variant='body2' >  {getLastMessageTime({time: lastMessage.sent})}</Typography>
                 </Box>}
+                
         </Box>
     )
 }

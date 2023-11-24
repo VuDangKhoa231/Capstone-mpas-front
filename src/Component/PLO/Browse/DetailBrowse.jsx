@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import DialogCustom from '../../../Layout/DialogCustom'
 import { confirmBrowse, getDetailBrowse } from '../../../api/browse'
 import themes from '../../../theme/themes'
+import ToastMessage from '../../../Layout/ToastMessage'
 const data = [
   {
     id: 1, fullname: "Mai Hoàng Tâm", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
@@ -73,6 +74,7 @@ export default function DetailBrowse() {
   };
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    navigate('/Browse')
   };
 
 
