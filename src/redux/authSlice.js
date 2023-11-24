@@ -1,9 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCookie } from "cookies-next";
-
-
-
-
 
 const authSlice = createSlice({
     name: 'auth',
@@ -33,9 +28,14 @@ const authSlice = createSlice({
             state.login.error = null
             state.login.accessToken = access_token
         },
-        loginFail: (state, action) => {
+        loginFail1: (state) => {
             state.login.isFetching = false
-            state.login.error = true
+            state.login.error = 1
+        },
+
+        loginFail2 : (state) => {
+            state.login.isFetching = false
+            state.login.error = 2
         },
 
         logoutSuccess: (state) => {
@@ -46,6 +46,6 @@ const authSlice = createSlice({
         },
     }
 })
-export const { loginStart, loginFail, loginSuccess, logoutSuccess, logoutFail, logoutStart, isAdmin } = authSlice.actions;
+export const { loginStart, loginFail1, loginSuccess, logoutSuccess, logoutFail, logoutStart, isAdmin , loginFail2} = authSlice.actions;
 
 export default authSlice.reducer;

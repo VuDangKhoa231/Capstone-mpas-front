@@ -10,7 +10,7 @@ export default function Index({ openChat, onClose, data }) {
     const [selectedUser, setSelectedUser] = useState();
     const [isOpen, setIsOpen] = useState(false);
 
-
+    console.log('data', data)   ;
     return (
         <>
             <Drawer anchor="right" open={openChat} onClose={onClose}>
@@ -27,8 +27,6 @@ export default function Index({ openChat, onClose, data }) {
                                         </Box>
                                     )
                                 })}
-
-
                             </>
                             :
                             <Box display={'flex'} justifyContent={'center'} height={'90vh'} alignItems={'center'}>

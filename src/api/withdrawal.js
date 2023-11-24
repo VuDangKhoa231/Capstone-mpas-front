@@ -23,28 +23,6 @@ export const getWithdrawalList = async (data, dispatch, accessToken) => {
 }
 
 
-
-
-// export const getWithdrawalHistory = async (data, dispatch, accessToken) => {
-//     let url = `ploTransaction/getListWithdrawalByStatus?pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`;
-//     if (data.searchValue && data.searchValue.trim() !== "") {
-//         url = `ploTransaction/searchWithdrawalByKeyword?keyword=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&status=2`
-//     }
-//     dispatch(getWithdrawalHistoryStart());
-//     try {
-//         const res = await axiosWrapper.get(url, {
-//             headers: {
-//                 Authorization: `Bearer ${accessToken}`
-//             },
-//         })
-//         dispatch(getWithdrawalHistorySuccess(res?.data));
-
-//     } catch (error) {
-//         dispatch(getWithdrawalHistoryFail());
-//     }
-// }
-
-
 export const confirmWithdrawal = async (data, dispatch, accessToken) => {
     dispatch(getWithdrawalConfirmStart());
 

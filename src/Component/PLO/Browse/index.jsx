@@ -54,16 +54,15 @@ export default function Index() {
           
             {/* Content */}
             <Box width={'100%'}>
-                <Grid container>
-                    <Grid item xs={3}>
+             
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                 <Tab label="Yêu cầu" {...a11yProps(0)} />
                                 <Tab label="Lịch sử phê duyệt" {...a11yProps(1)} />
                             </Tabs>
                         </Box>
-                    </Grid>
-                </Grid>
+                  
+             
                 <CustomTabPanel value={value} index={0}>
                     <BrowseList/>
                 </CustomTabPanel>
