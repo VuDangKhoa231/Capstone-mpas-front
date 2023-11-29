@@ -4,7 +4,7 @@ import SearchBar from '../../../Layout/SearchBar';
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DialogCustom from '../../../Layout/DialogCustom';
+import {DialogCustom} from '../../../Layout/DialogCustom';
 import TableCustom from '../../../Layout/TableCustom';
 import themes from '../../../theme/themes';
 import { confirmWithdrawal, getWithdrawalList } from '../../../api/withdrawal';
@@ -148,7 +148,7 @@ function WithdrawalList({ dispatch, accessToken }) {
           {params.value && params.value.map((item) => (
             <div key={item.id} style={{ marginBottom: '8px', textAlign: 'start' }}>
               <Typography variant='h6'>{item.bankNumber}</Typography>
-              <Typography variant='h6' color={themes.palette.grey.dark} >{item.bankName}</Typography>
+              <Typography variant='h6' color={themes.palette.grey.dark} >{item.bankCode}</Typography>
             </div>
           ))}
         </div>
@@ -181,8 +181,6 @@ function WithdrawalList({ dispatch, accessToken }) {
   };
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    return <ToastMessage open={true} message={'Phê duyệt thành công'}/>
-
   };
   const [selectedItem, setSelectItem] = useState(null);
   const [confirm, setConfirm] = useState(true)

@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Dialog, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../../../Layout/SearchBar'
 
@@ -8,27 +8,7 @@ import ChipCustom from '../../../Layout/ChipCustom'
 import TableCustom from '../../../Layout/TableCustom'
 import { getPLOlist } from '../../../api/plo'
 import themes from '../../../theme/themes'
-
-
-
-const data = [
-  {
-    id: "PLO1", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Đang hoạt động',
-  },
-  {
-    id: "PLO2", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Đang hoạt động',
-  },
-  {
-    id: "PLO3", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Dừng hoạt động',
-  },
-  {
-    id: "PLO4", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Dừng hoạt động',
-  },
-  {
-    id: "PLO5", fullName: "Mai Hoàng Tâm", phoneNumber: '0872812111', parkingName: 'Bãi Hoàng Tâm', address: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', status: 'Dừng hoạt động',
-  },
-
-]
+import { DialogCustom2 } from '../../../Layout/DialogCustom'
 
 
 export default function ListOfPLO() {
@@ -41,30 +21,35 @@ export default function ListOfPLO() {
   const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
 
+  //Dialog 
+  const [open, setOpen] = useState(false);
+
 
   const title = [
     { field: 'id', headerName: <Typography variant='h5' fontWeight={'bold'}>ID</Typography>, width: 50, hideable: false },
     { field: 'fullName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}> Tên  </Typography> </div>), width: 300, hideable: false, },
     { field: 'phoneNumber', headerName: <Typography variant='h5' fontWeight={'bold'}>Số điện thoại</Typography>, width: 210, headerAlign: 'center', align: 'center' },
-    { field: 'parkingName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}>Tên bãi đỗ</Typography> </div>), width: 300 ,renderCell: (params) => (
-      <div
-      style={{
-        whiteSpace: 'normal',
-        wordWrap: 'break-word',
-        textAlign: 'center',
-        justifyContent: 'center',
-        width: '95%',
-        maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
-        overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
-        textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        WebkitLineClamp: 3,
-      }}
-    >
-      {params.value}
-    </div>
-    ), },
+    {
+      field: 'parkingName', headerName: (<div> <Typography variant='h5' fontWeight={'bold'}>Tên bãi đỗ</Typography> </div>), width: 300, renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+            textAlign: 'center',
+            justifyContent: 'center',
+            width: '95%',
+            maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
+            overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
+            textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
     {
       field: 'statusName', headerName: <Typography variant='h5' fontWeight={'bold'} >Trạng thái</Typography>, headerAlign: 'center', align: 'center', width: 180, renderCell: (params) => {
         const status = params.row.statusName;
@@ -95,31 +80,31 @@ export default function ListOfPLO() {
       },
     },
     {
-      field: 'address', headerName: <Typography variant='h5' fontWeight={'bold'}>Địa chỉ bãi xe</Typography>, headerAlign: 'center', align: 'center' , width: 340, renderCell: (params) => (
+      field: 'address', headerName: <Typography variant='h5' fontWeight={'bold'}>Địa chỉ bãi xe</Typography>, headerAlign: 'center', align: 'center', width: 340, renderCell: (params) => (
         <div
-        style={{
-          whiteSpace: 'normal',
-          wordWrap: 'break-word',
-          textAlign: 'center',
-          justifyContent: 'center',
-          width: '95%',
-          maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
-          overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
-          textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
-          display: '-webkit-box',
-          WebkitBoxOrient: 'vertical',
-          WebkitLineClamp: 3,
-        }}
-      >
-        {params.value}
-      </div>
+          style={{
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+            textAlign: 'center',
+            justifyContent: 'center',
+            width: '95%',
+            maxHeight: '4em', // Giới hạn chiều cao của ô là 3 dòng
+            overflow: 'hidden', // Ẩn nội dung vượt quá chiều cao giới hạn
+            textOverflow: 'ellipsis', // Hiển thị dấu ba chấm khi nội dung quá dài
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+          }}
+        >
+          {params.value}
+        </div>
       ),
     },
 
     {
-       headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
+      headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
         <Link to={`/PLO/${params.row.ploID}`}>
-          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', overflowWrap: 'break-word',textOverflow: 'ellipsis', maxLines: 3 }}  >
+          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', overflowWrap: 'break-word', textOverflow: 'ellipsis', maxLines: 3 }}  >
             Xem
           </Typography>
         </Link>
@@ -158,26 +143,32 @@ export default function ListOfPLO() {
   }, [rowPerPage]);
 
   return (
-
-    <Stack direction='column' p='10px' spacing={5}>
+    <Stack direction='column' p='10px' spacing={2}>
       <Typography variant='h2'>Danh sách Chủ bãi xe</Typography>
       <Box width={'35%'}>
         <SearchBar setDebounceSearchValue={setSearchValue} />
       </Box>
+      <Grid container>
+        <Grid item xs={9.86}>
+          <Box justifyContent={'stretch'} width={'100%'} display={'flex'}>
+            <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 1 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 1 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(1)}>
+              <Typography variant='body1' textTransform={'none'}> Còn hợp đồng </Typography>
+            </Button>
+            <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 2 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 2 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(2)}>
+              <Typography variant='body1' textTransform={'none'}> Hết hạn hợp đồng </Typography>
+            </Button>
+            <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 0 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 0 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(0)}>
+              <Typography variant='body1' textTransform={'none'}> Tất cả </Typography>
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item xs={2.14}>
+          <Button sx={{ mr: '30px', px: '50px', backgroundColor: themes.backgroundColor, color: 'white', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => setOpen(true)}>
+            <Typography variant='body1' textTransform={'none'}>Tra cứu theo biển số </Typography>
+          </Button>
+        </Grid>
+      </Grid>
 
-      <Box justifyContent={'stretch'} width={'100%'} display={'flex'}>
-        <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 1 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 1 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(1)}>
-          <Typography variant='body1' textTransform={'none'}> Còn hợp đồng </Typography>
-        </Button>
-        <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 2 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 2 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(2)}>
-          <Typography variant='body1' textTransform={'none'}> Hết hạn hợp đồng </Typography>
-        </Button>
-        <Button sx={{ mr: '30px', px: '50px', backgroundColor: selectTab === 0 ? themes.backgroundColor : themes.palette.grey.light, color: selectTab === 0 ? 'white' : 'black', border: '1px solid transparent', ':hover': { borderColor: themes.backgroundColor, color: themes.backgroundColor } }} onClick={() => handleSelectTab(0)}>
-          <Typography variant='body1' textTransform={'none'}> Tất cả </Typography>
-        </Button>
-
-
-      </Box>
       {plo?.isFetching ?
         (
           <Box sx={{ display: 'flex', width: '100%', height: '50vh', justifyContent: 'center', alignItems: 'center' }}>
@@ -189,6 +180,7 @@ export default function ListOfPLO() {
           <TableCustom rows={plo?.allPlo?.data?.content} columns={title} m={'0px 15px 0px 0px'} fontSize={'20px'} rowHeight={110} sizeOption={[3, 5, 10]} defaultPageSize={3} height={'400px'} page={page} rowPerPage={rowPerPage} setPage={setPage} setRowPerPage={setRowPerPage} totalPage={plo?.allPlo?.data?.totalPages} />
         )
       }
+      <DialogCustom2 open={open} setOpen={setOpen} accessToken={user?.login?.accessToken} />
     </Stack>
 
   )

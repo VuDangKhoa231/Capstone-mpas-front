@@ -1,58 +1,14 @@
 import { Box, Breadcrumbs, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { Paper } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import DialogCustom from '../../../Layout/DialogCustom'
+import {DialogCustom} from '../../../Layout/DialogCustom'
 import { confirmBrowse, getDetailBrowse } from '../../../api/browse'
 import themes from '../../../theme/themes'
-import ToastMessage from '../../../Layout/ToastMessage'
-const data = [
-  {
-    id: 1, fullname: "Mai Hoàng Tâm", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
-      { id: 1, img: '../image/anh.png' },
-      { id: 2, img: '../image/anh.png' },
-      { id: 3, img: '../image/anh.png' },
-      { id: 4, img: '../image/anh.png' },
-      { id: 5, img: '../image/anh.png' },
-      { id: 6, img: '../image/anh.png' },
-    ], description: 'Chất lượng tốt, khu vực bao an ninh, không lo mất cắp',
-  },
-  {
-    id: 2, fullname: "Mai Hoàng Tâm 2", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
-      { id: 1, img: '../image/anh.png' },
-      { id: 2, img: '../image/anh.png' },
-      { id: 3, img: '../image/anh.png' },
-    ], description: 'Chất lượng tốt, khu vực bao an ninh, không lo mất cắp',
-  },
-  {
-    id: 3, fullname: "Mai Hoàng Tâm 3", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
-      { id: 1, img: '../image/anh.png' },
-      { id: 2, img: '../image/anh.png' },
-      { id: 3, img: '../image/anh.png' },
-      { id: 4, img: '../image/anh.png' },
-    ], description: 'Chất lượng tốt, khu vực bao an ninh, không lo mất cắp',
-  },
-  {
-    id: 4, fullname: "Mai Hoàng Tâm 4", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
-      { id: 1, img: '../image/anh.png' },
-      { id: 2, img: '../image/anh.png' },
-      { id: 3, img: '../image/anh.png' },
-      { id: 4, img: '../image/anh.png' },
-    ], description: 'Chất lượng tốt, khu vực bao an ninh, không lo mất cắp',
-  },
-  {
-    id: 5, fullname: "Mai Hoàng Tâm 5", phone: '0872812111', parkingName: 'Bãi Hoàng Tâm', location: '681A Đ. Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM', width: '30', longth: '30', slot: '30', registrationDate: '30/12/2023', images: [
-      { id: 1, img: '../image/anh.png' },
-      { id: 2, img: '../image/anh.png' },
-      { id: 3, img: '../image/anh.png' },
-      { id: 4, img: '../image/anh.png' },
-    ], description: 'Chất lượng tốt, khu vực bao an ninh, không lo mất cắp',
-  },
 
-]
+
 export default function DetailBrowse() {
   const { id } = useParams();
   const user = useSelector((state) => state.auth)

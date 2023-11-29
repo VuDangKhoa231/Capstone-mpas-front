@@ -25,16 +25,17 @@ export const getWithdrawalList = async (data, dispatch, accessToken) => {
 
 export const confirmWithdrawal = async (data, dispatch, accessToken) => {
     dispatch(getWithdrawalConfirmStart());
-
-    await axiosWrapper.put(`ploTransaction/updateWithdrawalStatus?status=${data.status}&transactionID=${data.transactionID}`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        },
-    }).then((res) => {
+    console.log('dataa nè', accessToken);
+    const url = `ploTransaction/updateWithdrawalStatus?status=${data.status}&transactionID=${data.transactionID}`;
+    try {
+        const res = await axiosWrapper.put(url, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+        })
         dispatch(getWithdrawalConfirmSuccess(res?.data));
-    }).catch((error) => {
+    } catch (error) {
         dispatch(getWithdrawalConfirmFail());
-    })
-
+    }
 }
 

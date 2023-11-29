@@ -6,8 +6,6 @@ export const getPLOlist = async (data, dispatch, accessToken) => {
   if (data.searchValue && data.searchValue.trim() !== "") {
     url = `/plo/searchListPloByKeywords?keyword=${data.searchValue}&pageNum=${data.pageNum}&pageSize=${data.pageSize}&parkingStatus=${data.status}`
   }
-
-
   dispatch(getPLOStart());
   try {
     const res = await axiosWrapper.get(url, {
@@ -54,6 +52,22 @@ export const getDetailRatingPLO = async (data, dispatch, accessToken) => {
   } catch (error) {
     dispatch(getDetailRatingPLOFail())
   }
-
 }
 
+
+export const getHistoryByLicencePlate = async (licencePlate, accessToken) => {
+  try {
+    const res = await axiosWrapper.get(`plo/getMotorbikeHistoryOfAdmin?licensePlate=${licencePlate}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      },
+    })
+    if(res.data.status === 200) {
+      console.log(res.data.data);
+      return res.data.data;
+    } 
+    return 'lỗi 404';
+  } catch (error) {
+    console.log(error);
+  }
+}
