@@ -1,8 +1,11 @@
-import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, LinearProgress, MenuItem, Select, Slide, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, LinearProgress, MenuItem, Modal, Select, Slide, Stack, TextField, Typography } from '@mui/material';
 import React, { forwardRef, useState } from 'react';
 import themes from '../theme/themes';
 import { useSelector } from 'react-redux';
-
+import SearchIcon from '@mui/icons-material/Search';
+import TableCustom from './TableCustom';
+import { getHistoryByLicencePlate } from '../api/plo';
+import { set } from 'lodash';
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -125,4 +128,135 @@ function DialogCustom({ open, handleClose, confirm, data, status, handleConfirm,
     )
 }
 
-export default DialogCustom;
+function DialogCustom2({ open, setOpen, accessToken }) {
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState('');
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const handleInputChange = (event) => {
+        setSearchValue(event.target.value);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setSearchValue('');
+        setData(null);
+        setError(null);
+    }
+
+    const handleSearch = async (e) => {
+        if (searchValue) {
+            getHistoryByLicencePlate(searchValue, accessToken).then((res) => {
+                console.log('res1', res);
+                if(res !== 'lỗi 404'){
+                    setSearchResult(searchValue);
+                    setData(res)
+                    setError(null);
+                } else {
+                    setData(null);
+                    setError('Không tìm thấy thông tin!!');
+                }
+            })
+        }
+    }
+
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 800, // Adjust the width as needed
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    borderRadius: '8px',
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }} id="modal-title">
+                    Tra cứu lịch sử đỗ xe
+                </Typography>
+                <Box display="flex" alignItems="center" mt={2}>
+                    <TextField
+                        color="primary"
+                        sx={{ flexGrow: 1, mr: 2 }}
+                        label="Nhập biển số xe"
+                        variant="outlined"
+                        size="small"
+                        value={searchValue}
+                        onChange={handleInputChange}
+                    />
+                    <IconButton onClick={handleSearch}>
+                        <SearchIcon />
+                    </IconButton>
+                </Box>
+                <Box mt={2}>
+                    {data === null ? (
+                        <Box textAlign="center" alignSelf="center" height="200px">
+                               {error === null ? ( <Typography variant="h5">Hiện chưa nhập biển số</Typography>) : ( <Typography variant="h5">{error}</Typography>)}
+                        </Box>
+                    ) : (
+                        <Box height={'300px'}>
+                            <Box display={'flex'} justifyContent={'space-between'}>
+                                <Typography variant="h6">
+                                    Biển số xe: {searchResult}
+                                </Typography>
+                                <Typography variant="h6">
+                                    Khách hàng: {data?.customerName}{' '}
+                                </Typography>
+                                <Typography variant="h6">
+                                    Tổng đặt chỗ: {data?.totalBooking}{' '}
+                                </Typography>
+                            </Box>
+
+
+                            <Grid container mt={2} maxHeight={'300px'} pr={2}>
+                                <Grid item xs={1} >
+                                    <Typography variant='body1'>STT</Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography variant='body1'>Tên bãi đỗ</Typography>
+                                </Grid>
+                                <Grid item xs={3} textAlign={'end'}>
+                                    <Typography variant='body1'>Thời gian vào bãi</Typography>
+                                </Grid>
+                                <Grid item xs={3} textAlign={'end'}>
+                                    <Typography variant='body1'>Thời gian ra bãi</Typography>
+                                </Grid>
+                            </Grid>
+                            <Stack direction="column" sx={{ maxHeight: '250px', overflowY: 'auto' }}>
+                                {data && data?.reservationHistory.map((item, index) => (
+                                    <Grid container key={index} width={'100%'} py={1} sx={{ backgroundColor: index % 2 !== 0 ? themes.palette.grey.light : 'transparent' }}>
+                                        <Grid item xs={1} pl={1}>
+                                            <Typography variant='body1'>{index + 1}</Typography>
+                                        </Grid>
+                                        <Grid item xs={5}>
+                                            <Typography variant='body1'>{item.ploName}</Typography>
+                                        </Grid>
+                                        <Grid item xs={3} textAlign="end">
+                                            <Typography variant='body1'>{item.checkIn}</Typography>
+                                        </Grid>
+                                        <Grid item xs={3} textAlign="end">
+                                            <Typography variant='body1'>{item.checkOut}</Typography>
+                                        </Grid>
+                                    </Grid>
+                                ))}
+                            </Stack>
+
+                        </Box>
+                    )}
+                </Box>
+            </Box>
+        </Modal>
+    )
+}
+
+export { DialogCustom, DialogCustom2 };

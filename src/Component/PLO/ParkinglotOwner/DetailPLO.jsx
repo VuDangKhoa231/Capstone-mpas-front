@@ -162,7 +162,7 @@ export default function DetailPLO() {
                                         <Typography variant='h5' > Ban ngày</Typography>
                                         <Box display={'flex'} justifyContent={'space-between'} paddingRight={'200px'} mt={'25px'}>
                                             <Typography> Mức phí</Typography>
-                                            <Typography> {plo?.plo?.data?.morningFee}</Typography>
+                                            <Typography> {plo?.plo?.data?.morningFee} VNĐ</Typography>
                                         </Box>
                                         <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                             <Typography> Thời gian hoạt động</Typography>

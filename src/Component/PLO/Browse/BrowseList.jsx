@@ -40,7 +40,7 @@ const title = [
     
   },
   {
-    field: 'approval', headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 170, getActions: (params) => [
+    field: 'approval', type: 'actions', width: 170, getActions: (params) => [
       <Link to={`/Browse/${params.row.ploID}`} >
         <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none' }}  >
           Xem
