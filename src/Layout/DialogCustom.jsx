@@ -148,14 +148,14 @@ function DialogCustom2({ open, setOpen, accessToken }) {
         if (searchValue) {
             getHistoryByLicencePlate(searchValue, accessToken).then((res) => {
                 console.log('res1', res);
-                if(res !== 'lỗi 404'){
-                    setSearchResult(searchValue);
-                    setData(res)
-                    setError(null);
-                } else {
+                if(res == 1 || res == 2){
                     setData(null);
-                    setError('Không tìm thấy thông tin!!');
+                    setError(res);
+                } else {
+                    setData(res)
+                    setError(null); 
                 }
+                setSearchResult(searchValue);
             })
         }
     }
@@ -201,7 +201,7 @@ function DialogCustom2({ open, setOpen, accessToken }) {
                 <Box mt={2}>
                     {data === null ? (
                         <Box textAlign="center" alignSelf="center" height="200px">
-                               {error === null ? ( <Typography variant="h5">Hiện chưa nhập biển số</Typography>) : ( <Typography variant="h5">{error}</Typography>)}
+                               {error === null ? ( <Typography variant="h5">Hiện chưa nhập biển số</Typography>) : ( <Typography variant="h5">{error == 1 ? `Không tìm thấy biển ${searchResult} trong hệ thống!` : `Biển só ${searchResult} chưa có thông tin đặt chỗ nào!`}</Typography>)}
                         </Box>
                     ) : (
                         <Box height={'300px'}>
