@@ -63,10 +63,13 @@ export const getHistoryByLicencePlate = async (licencePlate, accessToken) => {
       },
     })
     if(res.data.status === 200) {
-      console.log(res.data.data);
       return res.data.data;
     } 
-    return 'lỗi 404';
+    if(res.data.message == 'License Plate Not Exist In System'){
+      return 1;
+    }
+    
+    return 2;
   } catch (error) {
     console.log(error);
   }
