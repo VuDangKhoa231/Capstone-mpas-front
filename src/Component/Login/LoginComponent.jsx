@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 import { loginUser } from '../../api/login';
 import ToastMessage from '../../Layout/ToastMessage';
+import { Scale } from '@mui/icons-material';
 const schema = yup.object().shape({
     username: yup.string().required('username là bắt buộc'),
     password: yup.string().required('Mật khẩu là bắt buộc'),
@@ -35,9 +36,9 @@ export default function LoginComponent() {
 
             <Grid container width={'100%'} height={'100%'} alignContent={'center'} textAlign={'center'} display={'flex'} >
                 <Grid item xs={6} color='white'>
-                    <Typography variant='h3'> Welcome To</Typography>
+                    <Typography variant='h3'> Chào Mừng Đến</Typography>
                     <Box>
-                        <img src='../image/Parking-rafiki.png' width={'75%'} />
+                        <img src='../image/Parking-rafiki.png' width={'75%'} style={{transform: 'scale(1.3)'}}/>
                     </Box>
 
                     <Typography variant='h3'> PARCO</Typography>
@@ -53,7 +54,7 @@ export default function LoginComponent() {
                                 fullWidth
                                 sx={{ mt: '20px' }}
                                 variant="outlined"
-                                label="Username"
+                                label="Tên đăng nhập"
 
                                 {...register('username')}
                                 error={!!errors.username}
@@ -64,7 +65,7 @@ export default function LoginComponent() {
                                 fullWidth
                                 sx={{ mt: '20px' }}
                                 variant="outlined"
-                                label="Password"
+                                label="Mật khẩu"
                                 type="password"
                                 {...register('password')}
                                 error={!!errors.password}

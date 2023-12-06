@@ -92,19 +92,20 @@ export default function DashboardPLO({ dispatch, accessToken }) {
                     <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px' ,minHeight: '280px'  }} >
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 bãi đỗ có lượng đặt cao nhất {selectedDate.format('MM/YYYY')}</Typography>
                         {dashboardPLOParking?.data?.map((item, index) => (
-                            <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
-                                <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                            <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.backgroundColor, color: 'white' } }}>
+                                <Grid item xs={6} display={'flex'}>
                                     <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
                                     <Tooltip title={`${item.parkingName}`} placement="top">
-                                    <Typography variant='h6'>{item.parkingName}</Typography>
+                                    <Typography variant='h6'  sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.parkingName}</Typography>
                                     </Tooltip>
                                 </Grid>
-                                <Grid item xs={5} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                <Grid item xs={4.8} display={'flex'} alignItems={'center'} >
                                     <AccountCircleIcon fontSize='medium' />
                                     <Tooltip title={`${item.fullName}`} placement="top">
-                                    <Typography variant='h6' ml={'5px'}> {item.fullName}</Typography>
+                                    <Typography variant='h6' ml={'5px'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}> {item.fullName}</Typography>
                                     </Tooltip>
                                 </Grid>
+                                <Grid xs={0.2}/>
                                 <Grid item xs={1} display={'flex'} alignItems={'center'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'}> 
                                     <WorkspacePremiumIcon fontSize='medium' />
                                     <Typography variant='h6' ml={'5px'}> {item.total}</Typography>
@@ -123,7 +124,7 @@ export default function DashboardPLO({ dispatch, accessToken }) {
                     <Paper elevation={6} sx={{ borderRadius: '10px', p: '20px', minHeight: '280px' }}>
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 bãi đỗ có doanh thu cao nhất {selectedDate.format('MM/YYYY')}</Typography>
                         {dashboardPLOParkingRevenue?.data?.map((item, index) => (
-                            <Grid container key={index} display={'flex'} justifyContent={'space-between'} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.red.light } }}>
+                            <Grid container key={index} display={'flex'} justifyContent={'space-between'} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.backgroundColor, color: 'white' } }}>
                                 <Grid item xs={5} display={'flex'}>
                                     <Typography variant='h6' mr={'15px'}>{index + 1}</Typography>
                                     <Tooltip title={`${item.parkingName}`} placement="top">

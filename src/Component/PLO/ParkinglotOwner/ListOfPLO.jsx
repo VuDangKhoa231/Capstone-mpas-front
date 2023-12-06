@@ -103,8 +103,8 @@ export default function ListOfPLO() {
 
     {
       headerName: <Typography variant='h5' fontWeight={'bold'}>Trạng thái</Typography>, type: 'actions', width: 190, getActions: (params) => [
-        <Link to={`/PLO/${params.row.ploID}`}>
-          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', overflowWrap: 'break-word', textOverflow: 'ellipsis', maxLines: 3 }}  >
+        <Link to={`/PLO/${params.row.ploID}`} style={{textDecoration: 'none'}}>
+          <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white' }}  >
             Xem
           </Typography>
         </Link>
