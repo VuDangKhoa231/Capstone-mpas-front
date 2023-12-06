@@ -41,7 +41,7 @@ const title = [
   },
   {
     field: 'approval', type: 'actions', width: 170, getActions: (params) => [
-      <Link to={`/Browse/${params.row.ploID}`} >
+      <Link to={`/Browse/${params.row.ploID}`} style={{textDecoration: 'none'}} >
         <Typography sx={{ p: '10px 25px', borderRadius: '10px', backgroundColor: 'green', color: 'white', textDecoration: 'none' }}  >
           Xem
         </Typography>

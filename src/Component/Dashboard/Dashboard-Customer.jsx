@@ -97,7 +97,7 @@ export default function DashboardCustomer({ dispatch, accessToken }) {
                         <Typography variant='h5' sx={{ fontWeight: 'bold' }}> Top 5 khách hàng có nhiều lượt đặt chỗ nhiều nhất {selectedDate.format('MM/YYYY')}</Typography>
                     </Box>
                     {dashboardCustom?.data?.data.map((item, index) => (
-                        <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.palette.green.light } }}>
+                        <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.backgroundColor, color: 'white' } }}>
                             <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <Typography variant='h5' mr={'20px'}>{index + 1}</Typography>
                                 <Tooltip title={`${item.fullName}`} placement="top">
