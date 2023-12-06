@@ -4,8 +4,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { Paper } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import {DialogCustom} from '../../../Layout/DialogCustom'
-import { confirmBrowse, getDetailBrowse } from '../../../api/browse'
+import { DialogBrowse, DialogCustom } from '../../../Layout/DialogCustom'
+import { confirmBrowse, confirmBrowseAccept, confirmBrowseDeny, getDetailBrowse } from '../../../api/browse'
 import themes from '../../../theme/themes'
 
 
@@ -24,13 +24,13 @@ export default function DetailBrowse() {
   const navigate = useNavigate()
   const [contractLink, setContractLink] = useState('');
   const [contractDuration, setContractDuration] = useState(3);
-
+  const [accept, setAccept] = useState(true);
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    navigate('/Browse')
   };
 
 
@@ -43,27 +43,29 @@ export default function DetailBrowse() {
 
 
   const handleClickConfirm = () => {
-    const data = {
-      contractDuration: contractDuration,
-      contractLink: contractLink,
-      newStatus: 3,
-      ploId: id,
-    }
-    if (contractLink && isURLValid(contractLink)) {
-      confirmBrowse(data, dispatch, user?.login.accessToken).then((res) => {
+    if(accept){
+      const data = {
+        contractDuration: contractDuration,
+        contractLink: contractLink,
+        newStatus: 3,
+        ploId: id,
+      }
+      if (contractLink && isURLValid(contractLink)) {
+        confirmBrowseAccept(data, dispatch, user?.login.accessToken).then((res) => {
+          navigate('/Browse')
+        })
+      }
+    }else {
+      confirmBrowseDeny(id, dispatch, user?.login.accessToken).then((res) => {
         navigate('/Browse')
       })
-    } 
-    
+    }
   }
 
   const isURLValid = (url) => {
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
     return urlPattern.test(url);
   };
-
-
-
 
 
   return (
@@ -140,12 +142,11 @@ export default function DetailBrowse() {
           <Box px={'20px'} maxWidth={'1540px'} mt={''} >
             <Typography variant='h4' fontWeight={'bold'}> Hình ảnh bãi xe </Typography>
 
-            {browseDetail?.browse?.data?.images ? (
+            {browseDetail?.browse?.data?.images.length > 0 ? (
               browseDetail?.browse?.data?.images.map((image, index) => (
                 <img key={index} src={`${image.imageLink}`} width={'400px'} height={'300px'} style={{ margin: '10px 30px 10px 0px' }} />
               ))
             ) : (
-              // Hiển thị một thông báo hoặc phản hồi khác nếu item.images là null hoặc undefined
               <Typography variant='h6'>Không có hình ảnh</Typography>
             )}
 
@@ -161,12 +162,22 @@ export default function DetailBrowse() {
           <Box display={'flex'} justifyContent={'center'}>
             <Box mt={'30px'} p={'30px'} textAlign={'center'}>
               <Typography variant='h4' mb={'40px'} fontWeight={'bold'}>Phê duyệt hoạt động?</Typography>
-              <Button variant='contained' sx={{ p: '15px', width: '300px', backgroundColor: '#E8C300' }} onClick={handleClickOpen}>
-                Duyệt
-              </Button>
+              <Box>
+                <Button variant='contained' sx={{ p: '15px', m: 3, width: '300px', border: '1px solid transparent', backgroundColor: themes.palette.green.light, ":hover": { color: themes.palette.green.light, backgroundColor: 'white', border: `1px solid ${themes.palette.green.light}` } }} onClick={() => {setOpenDialog(true); setAccept(true)}}>
+                  <Typography variant='h6'>
+                    Chấp nhận
+                  </Typography>
+                </Button>
+
+                <Button variant='contained' sx={{ p: '15px', m: 3, width: '300px', border: '1px solid transparent', backgroundColor: themes.palette.red.light, ":hover": { color: themes.palette.red.light, backgroundColor: 'white', border: `1px solid ${themes.palette.red.light}` } }} onClick={() => {setOpenDialog(true); setAccept(false)}}>
+                  <Typography variant='h6'>
+                    Hủy yêu cầu
+                  </Typography>
+                </Button>
+              </Box>
             </Box>
           </Box>
-          <DialogCustom confirm={true} data={browseDetail?.browse?.data} handleClose={handleCloseDialog} open={openDialog} status={1} handleConfirm={handleClickConfirm} url={contractLink} setUrl={setContractLink} setContractLink={setContractLink} selectedValue={contractDuration} setSelectedValue={setContractDuration} />
+          <DialogBrowse accept={accept} data={browseDetail?.browse?.data} handleClose={handleCloseDialog} open={openDialog} handleConfirm={handleClickConfirm} url={contractLink} setUrl={setContractLink} setContractLink={setContractLink} selectedValue={contractDuration} setSelectedValue={setContractDuration} />
         </Stack>
       }
     </>
