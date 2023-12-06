@@ -4,7 +4,7 @@ import SearchBar from '../../../Layout/SearchBar';
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import {DialogCustom} from '../../../Layout/DialogCustom';
+import {DialogCustom, DialogWithdrawal} from '../../../Layout/DialogCustom';
 import TableCustom from '../../../Layout/TableCustom';
 import themes from '../../../theme/themes';
 import { confirmWithdrawal, getWithdrawalList } from '../../../api/withdrawal';
@@ -260,7 +260,7 @@ function WithdrawalList({ dispatch, accessToken }) {
           </Button>
         </Stack>
       </Popover>
-      <DialogCustom open={openDialog} handleClose={handleCloseDialog} status={2} confirm={confirm} data={selectedItem} handleConfirm={handleConfirm} />
+      <DialogWithdrawal  open={openDialog} handleClose={handleCloseDialog} confirm={confirm} data={selectedItem} handleConfirm={handleConfirm} />
     </Stack>
   )
 }

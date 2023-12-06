@@ -56,7 +56,7 @@ export const getBrowseHistory = async (data, dispatch, accessToken) => {
     }
   }
 
-  export const confirmBrowse = async (data, dispatch, accessToken) => {
+  export const confirmBrowseAccept = async (data, dispatch, accessToken) => {
     dispatch(getBrowseConfirmStart());
 
     await axiosWrapper.put(`/plo/updatePloStatus`, data,{
@@ -70,3 +70,17 @@ export const getBrowseHistory = async (data, dispatch, accessToken) => {
     })
 
 }
+
+export const confirmBrowseDeny = async (id, dispatch, accessToken) => {
+  dispatch(getBrowseConfirmStart());
+  await axiosWrapper.delete(`/plo/deleteRegistrationOfPlo?ploID=${id}`,{
+      headers: {
+          Authorization: `Bearer ${accessToken}`
+      },
+  }).then((res) => {
+      dispatch(getWBrowseConfirmSuccess(res?.data));
+  }).catch((error) => {
+      dispatch(getBrowseConfirmFail());
+  })
+}
+

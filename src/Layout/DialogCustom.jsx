@@ -11,7 +11,33 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 
-function DialogCustom({ open, handleClose, confirm, data, status, handleConfirm, url, setUrl, selectedValue, setSelectedValue }) {
+function DialogWithdrawal({ open, handleClose, confirm, data, handleConfirm }) {
+    return (
+        <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-slide-description"
+        >
+            <Box p={'20px'}>
+                <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
+                    <Typography variant='h4' sx={{ fontWeight: 'bold' }} >{confirm === true ? 'Chấp nhận' : 'Từ chối'}  yêu cầu rút tiền của {data && data.fullName}</Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant='h6'>Tên bãi: {data && data.fullName}</Typography>
+                    <Typography variant='h6'>Số tiền rút: {data && data.depositAmount} VNĐ</Typography>
+                </DialogContent>
+                <Box display={'flex'} m={'30px'} justifyContent={'space-between'} width={'500px'}>
+                    <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleClose}> Hủy</Button>
+                    <Button sx={{ width: '130px', backgroundColor: confirm ? themes.palette.green.light : themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: confirm ? themes.palette.green.light : themes.palette.red.light, color: confirm ? themes.palette.green.light : themes.palette.red.light } }} onClick={() => {handleConfirm(); handleClose()}}> {confirm ? "Chấp nhận" : 'Từ chối'}</Button>
+                </Box>
+            </Box>
+        </Dialog>
+    )
+}
+
+function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedValue, setSelectedValue, handleConfirm }) {
     const [error, setError] = useState('');
 
     const handleInputChange = (event) => {
@@ -51,7 +77,6 @@ function DialogCustom({ open, handleClose, confirm, data, status, handleConfirm,
         return urlPattern.test(url);
     };
 
-
     return (
         <Dialog
             open={open}
@@ -61,14 +86,15 @@ function DialogCustom({ open, handleClose, confirm, data, status, handleConfirm,
             aria-describedby="alert-dialog-slide-description"
         >
             <Box p={'20px'}>
-                {status === 1 ?
-                    (<>
-                        <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
-                            <Typography variant='h4' sx={{ fontWeight: 'bold' }} >Xác nhận phê duyệt hồ sơ thành chủ bãi xe?</Typography>
-                        </DialogTitle>
-                        <DialogContent>
-                            <Typography variant='h6'>Tên chủ bãi: {data && data.fullName}</Typography>
-                            <Typography variant='h6'>Tên bãi: {data && data.parkingName}</Typography>
+                <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
+                    <Typography variant='h4' sx={{ fontWeight: 'bold' }}> {accept ? 'Xác nhận phê duyệt hồ sơ thành chủ bãi xe?' : 'Hủy yêu cầu phê duyệt bãi đỗ do không đạt yêu cầu?'}</Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant='h6'>Tên chủ bãi: {data && data.fullName}</Typography>
+                    <Typography variant='h6'>Tên bãi: {data && data.parkingName}</Typography>
+
+                    {accept &&
+                        <>
                             <TextField
                                 color={error ? 'error' : 'primary'}
                                 sx={{ mt: '20px' }}
@@ -95,30 +121,12 @@ function DialogCustom({ open, handleClose, confirm, data, status, handleConfirm,
                                     </Select>
                                 </FormControl>
                             </Box>
-                        </DialogContent>
-                    </>) : (<>
-                        <DialogTitle p={'20px'} sx={{ display: 'flex', textAlign: 'center', mb: '30px' }}>
-                            <Typography variant='h4' sx={{ fontWeight: 'bold' }} >{confirm === true ? 'Chấp nhận' : 'Từ chối'}  yêu cầu rút tiền của {data && data.fullName}</Typography>
-                        </DialogTitle>
-                        <DialogContent>
-                            <Typography variant='h6'>Tên bãi: {data && data.fullName}</Typography>
-                            <Typography variant='h6'>Số tiền rút: {data && data.depositAmount} VNĐ</Typography>
-                        </DialogContent>
-                    </>)}
-
-
+                        </>}
+                </DialogContent>
                 <Box display={'flex'} m={'30px'} justifyContent={'space-between'} width={'500px'}>
                     <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleClose}> Hủy</Button>
-                    {confirm === true ? (<>
-                        {status === 1 ?
-                            <Button sx={{ width: '130px', backgroundColor: themes.palette.green.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.green.light, color: themes.palette.green.light } }} onClick={() => { handleApproval() }}> Chấp nhận</Button>
-                            :
-                            <Button sx={{ width: '130px', backgroundColor: themes.palette.green.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.green.light, color: themes.palette.green.light } }} onClick={() => { handleConfirm(); handleConfirmAction() }}> Chấp nhận</Button>
-                        }
-                    </>) : (<>
-                        <Button sx={{ width: '130px', backgroundColor: themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.red.light, color: themes.palette.red.light } }} onClick={() => { handleConfirm(); handleConfirmAction() }}> Từ chối</Button>
-                    </>)}
 
+                    <Button sx={{ width: '130px', backgroundColor: accept ? themes.palette.green.light : themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: accept ? themes.palette.green.light : themes.palette.red.light, color: accept ? themes.palette.green.light : themes.palette.red.light } }} onClick={() => accept ? handleApproval() : handleConfirm()}> {accept ? 'Chấp nhận' : 'Từ chối'}</Button>
                 </Box>
                 <Box sx={{ width: '100%' }}>
                     {showSpinning && <LinearProgress size={20} />}
@@ -148,12 +156,12 @@ function DialogCustom2({ open, setOpen, accessToken }) {
         if (searchValue) {
             getHistoryByLicencePlate(searchValue, accessToken).then((res) => {
                 console.log('res1', res);
-                if(res == 1 || res == 2){
+                if (res == 1 || res == 2) {
                     setData(null);
                     setError(res);
                 } else {
                     setData(res)
-                    setError(null); 
+                    setError(null);
                 }
                 setSearchResult(searchValue);
             })
@@ -201,7 +209,7 @@ function DialogCustom2({ open, setOpen, accessToken }) {
                 <Box mt={2}>
                     {data === null ? (
                         <Box textAlign="center" alignSelf="center" height="200px">
-                               {error === null ? ( <Typography variant="h5">Hiện chưa nhập biển số</Typography>) : ( <Typography variant="h5">{error == 1 ? `Không tìm thấy biển ${searchResult} trong hệ thống!` : `Biển só ${searchResult} chưa có thông tin đặt chỗ nào!`}</Typography>)}
+                            {error === null ? (<Typography variant="h5">Hiện chưa nhập biển số</Typography>) : (<Typography variant="h5">{error == 1 ? `Không tìm thấy biển ${searchResult} trong hệ thống!` : `Biển só ${searchResult} chưa có thông tin đặt chỗ nào!`}</Typography>)}
                         </Box>
                     ) : (
                         <Box height={'300px'}>
@@ -259,4 +267,4 @@ function DialogCustom2({ open, setOpen, accessToken }) {
     )
 }
 
-export { DialogCustom, DialogCustom2 };
+export { DialogWithdrawal, DialogBrowse, DialogCustom2 };
