@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
 import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import {getStorage} from 'firebase/storage'
 const firebaseConfig = {
     apiKey: "AIzaSyA1soMDIMI5JErEfd-t1TqXO4_JtnthxL4",
     authDomain: "capstone-project-edcc0.firebaseapp.com",
@@ -14,7 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const database = getFirestore(app);
-
+export const storage = getStorage(app);
 export function requestPermission() {
   console.log("Requesting permission...");
   Notification.requestPermission().then((permission) => {

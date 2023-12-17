@@ -1,11 +1,12 @@
-import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, LinearProgress, MenuItem, Modal, Select, Slide, Stack, TextField, Typography } from '@mui/material';
-import React, { forwardRef, useState } from 'react';
-import themes from '../theme/themes';
-import { useSelector } from 'react-redux';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SearchIcon from '@mui/icons-material/Search';
-import TableCustom from './TableCustom';
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, Input, LinearProgress, MenuItem, Modal, Select, Slide, Stack, TextField, Typography } from '@mui/material';
+import React, { forwardRef, useRef, useState } from 'react';
 import { getHistoryByLicencePlate } from '../api/plo';
-import { set } from 'lodash';
+import themes from '../theme/themes';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { storage } from './../firebase/messaging_init_in_sw'
+import { uniqueId } from 'lodash';
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -30,7 +31,7 @@ function DialogWithdrawal({ open, handleClose, confirm, data, handleConfirm }) {
                 </DialogContent>
                 <Box display={'flex'} m={'30px'} justifyContent={'space-between'} width={'500px'}>
                     <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleClose}> Hủy</Button>
-                    <Button sx={{ width: '130px', backgroundColor: confirm ? themes.palette.green.light : themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: confirm ? themes.palette.green.light : themes.palette.red.light, color: confirm ? themes.palette.green.light : themes.palette.red.light } }} onClick={() => {handleConfirm(); handleClose()}}> {confirm ? "Chấp nhận" : 'Từ chối'}</Button>
+                    <Button sx={{ width: '130px', backgroundColor: confirm ? themes.palette.green.light : themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: confirm ? themes.palette.green.light : themes.palette.red.light, color: confirm ? themes.palette.green.light : themes.palette.red.light } }} onClick={() => { handleConfirm(); handleClose() }}> {confirm ? "Chấp nhận" : 'Từ chối'}</Button>
                 </Box>
             </Box>
         </Dialog>
@@ -40,18 +41,36 @@ function DialogWithdrawal({ open, handleClose, confirm, data, handleConfirm }) {
 function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedValue, setSelectedValue, handleConfirm }) {
     const [error, setError] = useState('');
 
-    const handleInputChange = (event) => {
-        setUrl(event.target.value);
+    // const handleInputChange = (event) => {
+    //     setUrl(event.target.value);
+    // };
+
+    const fileInputRef = useRef(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileName, setFileName] = useState('');
+    const [fileKey, setFileKey] = useState(0);
+    const [fileURL, setFileURL] = useState(null);
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            setSelectedFile(file);
+            setFileName(file.name);
+            setFileKey((prevKey) => prevKey + 1);
+
+        } else {
+            setFileName('Lỗi File rồi')
+        }
     };
 
-
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
     const [showSpinning, setShowSpinning] = useState(false);
-
     const handleConfirmAction = () => {
         setShowSpinning(true);
         setTimeout(() => {
             setShowSpinning(false);
-            handleClose();
+            handleCloseDialog();
         }, 1000);
     };
 
@@ -60,29 +79,49 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
     };
 
     const handleApproval = () => {
-        if (isURLValid(url)) {
-            handleConfirm()
-            handleConfirmAction()
+        if (selectedFile) {
+            // handleConfirm()
+            const imageRef = ref(storage, `Contract/${fileName.slice(0, -4) + uniqueId()}.pdf`)
+            uploadBytes(imageRef, selectedFile).then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    setUrl(downloadURL);
+                    console.log('File đã được upload và đường dẫn download URL là:', downloadURL);
+                }).catch((error) => {
+                    console.error('Lỗi khi lấy đường dẫn download URL:', error);
+                });
+            }).catch((error) => {
+                console.error('Lỗi khi upload file:', error);
+            }).then( () => {
+                console.log('hú');
+                handleConfirm()
+                handleConfirmAction();
+            });
         } else {
-            if (url.trim().length > 0) {
-                setError('*Đường dẫn URL không hợp lệ')
-            } else {
-                setError('*Bắt buộc nhập đường dẫn')
-            }
+            setError('*Bắt buộc nhập đường dẫn')
         }
     }
 
-    const isURLValid = (url) => {
-        const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
-        return urlPattern.test(url);
-    };
+    // const isURLValid = (url) => {
+    //     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+    //     return urlPattern.test(url);
+    // };
+
+
+
+    //Close 
+    const handleCloseDialog = () => {
+        handleClose();
+        setSelectedFile(null);
+        setFileName(null);
+        setError(null);
+    }
 
     return (
         <Dialog
             open={open}
             TransitionComponent={Transition}
             keepMounted
-            onClose={handleClose}
+            onClose={handleCloseDialog}
             aria-describedby="alert-dialog-slide-description"
         >
             <Box p={'20px'}>
@@ -95,17 +134,48 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
 
                     {accept &&
                         <>
-                            <TextField
-                                color={error ? 'error' : 'primary'}
-                                sx={{ mt: '20px' }}
-                                label="Đường dẫn của hợp đồng"
-                                variant="outlined"
-                                fullWidth
-                                value={url}
-                                onChange={handleInputChange}
-                            />
-                            {error && <Typography variant='body1' color={'red'}>{error}</Typography>}
-                            <Box alignItems={'center'} mt={'20px'} display={'flex'} justifyContent={'space-between'}>
+                            {/* <TextField
+                                    color={error ? 'error' : 'primary'}
+                                    sx={{ mt: '20px' }}
+                                    label="Đường dẫn của hợp đồng"
+                                    variant="outlined"
+                                    fullWidth
+                                    value={url}
+                                    onChange={handleInputChange}
+                                />
+                                {error && <Typography variant='body1' color={'red'}>{error}</Typography>} */}
+                            {selectedFile && (
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <iframe
+                                            title="Selected PDF"
+                                            src={URL.createObjectURL(selectedFile)}
+                                            width="90%"
+                                            key={fileKey}
+                                            height={'350px'}
+                                        ></iframe>
+                                    </div>
+                                </div>
+                            )}
+                            <Box textAlign={'center'} mt={1.5}>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".pdf"  // Chỉ chấp nhận file có định dạng PDF
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                                {fileName ? <p>File PDF được chọn: {fileName}</p> : fileName === 'Lỗi File rồi' ? 'File lỗi' : null}
+                                <Button
+                                    variant="contained"
+                                    startIcon={<CloudUploadIcon />}
+                                    onClick={handleButtonClick}
+                                >
+                                    Upload
+                                </Button>
+                                {error && <Typography variant='body1' color={'red'}>{error}</Typography>}
+                            </Box>
+                            <Box alignItems={'center'} mt={'10px'} display={'flex'} justifyContent={'space-between'}>
                                 <Typography variant='h6'>Hạn của hợp đồng (Tháng) : </Typography>
                                 <FormControl>
                                     <Select
@@ -123,8 +193,8 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
                             </Box>
                         </>}
                 </DialogContent>
-                <Box display={'flex'} m={'30px'} justifyContent={'space-between'} width={'500px'}>
-                    <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleClose}> Hủy</Button>
+                <Box display={'flex'} m={'30px'} mt={'10px'} justifyContent={'space-between'} width={'500px'}>
+                    <Button sx={{ width: '130px', backgroundColor: themes.palette.grey.dark, border: '1px solid transparent', color: 'white', ':hover': { borderColor: themes.palette.grey.dark, color: themes.palette.grey.dark } }} onClick={handleCloseDialog}> Hủy</Button>
 
                     <Button sx={{ width: '130px', backgroundColor: accept ? themes.palette.green.light : themes.palette.red.light, border: '1px solid transparent', color: 'white', ':hover': { borderColor: accept ? themes.palette.green.light : themes.palette.red.light, color: accept ? themes.palette.green.light : themes.palette.red.light } }} onClick={() => accept ? handleApproval() : handleConfirm()}> {accept ? 'Chấp nhận' : 'Từ chối'}</Button>
                 </Box>
@@ -267,4 +337,4 @@ function DialogCustom2({ open, setOpen, accessToken }) {
     )
 }
 
-export { DialogWithdrawal, DialogBrowse, DialogCustom2 };
+export { DialogBrowse, DialogCustom2, DialogWithdrawal };
