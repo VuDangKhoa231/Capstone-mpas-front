@@ -100,13 +100,13 @@ export default function DashboardCustomer({ dispatch, accessToken }) {
                         <Grid container key={index} sx={{ backgroundColor: themes.palette.grey.light, p: '5px 10px', borderRadius: '10px', mt: '10px', ':hover': { backgroundColor: themes.backgroundColor, color: 'white' } }}>
                             <Grid item xs={6} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <Typography variant='h5' mr={'20px'}>{index + 1}</Typography>
-                                <Tooltip title={`${item.fullName}`} placement="top">
-                                <Typography variant='h5'>{item.fullName}</Typography>
+                                <Tooltip title={ item.fullName === '0000000000' ? 'Nguyễn Văn Tuấn' : `${item.fullName}` } placement="top">
+                                <Typography variant='h5'>{ item.phoneNumber === '0000000000' ? 'Nguyễn Văn Tuấn' : `${item.fullName}`}</Typography>
                                 </Tooltip>
                             </Grid>
                             <Grid item xs={5} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} alignItems={'center'}>
                                 <PhoneIcon fontSize='medium' />
-                                <Typography variant='h5' ml={'5px'}> {item.phoneNumber}</Typography>
+                                <Typography variant='h5' ml={'5px'}> { item.phoneNumber === '0000000000' ? '0987687623' : `${item.phoneNumber}`}</Typography>
                             </Grid>
                             <Grid item xs={1} display={'flex'} sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} justifyContent={'space-between'} alignItems={'center'}> 
                                 <WorkspacePremiumIcon fontSize='medium' />

@@ -18,10 +18,21 @@ function TableCustom({ rows, columns, m, fontSize, rowHeight, sizeOption, page, 
   const data = rows || [];
   let dataWithId = [];
   if (data && data.length > 0) {
-    dataWithId = data.map((record, index) => ({
-      ...record,
-      id: (page - 1) * rowPerPage + index + 1, 
-    }));
+    dataWithId = data.map((record, index) => {
+      if (record.phoneNumber === "0000000000") {
+        return {
+          ...record,
+          id: (page - 1) * rowPerPage + index + 1,
+          fullName: "Nguyễn Văn Tuấn",
+          phoneNumber: "0987687623",
+        };
+      } else {
+        return {
+          ...record,
+          id: (page - 1) * rowPerPage + index + 1,
+        };
+      }
+    });
   }
  
   return (

@@ -39,7 +39,10 @@ export default function DetailBrowse() {
     getDetailBrowse(id, dispatch, user?.login.accessToken)
   }, [])
 
-
+  useEffect(() => {
+    console.log('test', contractLink);
+    handleClickConfirm();
+  }, [contractLink]);
 
 
   const handleClickConfirm = () => {
@@ -50,7 +53,7 @@ export default function DetailBrowse() {
         newStatus: 3,
         ploId: id,
       }
-      if (contractLink && isURLValid(contractLink)) {
+      if (contractLink) {
         confirmBrowseAccept(data, dispatch, user?.login.accessToken).then((res) => {
           navigate('/Browse')
         })

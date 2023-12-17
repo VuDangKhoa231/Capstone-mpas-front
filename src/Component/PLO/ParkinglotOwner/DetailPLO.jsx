@@ -117,7 +117,7 @@ export default function DetailPLO() {
 
 
                                         <Paper elevation={3} square={false} sx={{ p: '20px', textAlign: 'center', backgroundColor: themes.palette.grey.medium, width: '22%', height: '100px' }}>
-                                            <Typography variant='h5'>Chiều rộng (m)</Typography>
+                                            <Typography variant='h5'>Số chỗ</Typography>
                                             <Typography variant='h4' fontWeight={'bold'} mt={'20px'}>{plo?.plo?.data?.length}</Typography>
                                         </Paper>
 
@@ -228,18 +228,18 @@ export default function DetailPLO() {
                                 {rating?.data?.data?.content?.length > 0 ?
                                     <>
                                         {rating?.data?.data?.content?.map((item, index) => {
-                                            const dateObject = new Date(item.feedbackDate);
+                                            // const dateObject = new Date(item.feedbackDate);
 
-                                            // Lấy giờ, phút và giây
-                                            const hours = dateObject.getUTCHours();
-                                            const minutes = dateObject.getUTCMinutes();
-                                            const seconds = dateObject.getUTCSeconds();
+                                            // // Lấy giờ, phút và giây
+                                            // const hours = dateObject.getUTCHours();
+                                            // const minutes = dateObject.getUTCMinutes();
+                                            // const seconds = dateObject.getUTCSeconds();
 
-                                            // Lấy ngày, tháng và năm
-                                            const day = dateObject.getUTCDate();
-                                            const month = dateObject.getUTCMonth() + 1; // Tháng bắt đầu từ 0
-                                            const year = dateObject.getUTCFullYear();
-                                            const formattedDate = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+                                            // // Lấy ngày, tháng và năm
+                                            // const day = dateObject.getUTCDate();
+                                            // const month = dateObject.getUTCMonth() + 1; // Tháng bắt đầu từ 0
+                                            // const year = dateObject.getUTCFullYear();
+                                            // const formattedDate = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
                                             return (
                                                 <Box key={index} sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
                                                     <Grid container>
@@ -248,13 +248,13 @@ export default function DetailPLO() {
                                                             <Rating props={item.star} />
                                                         </Grid>
                                                         <Grid item xs={5} textAlign={'end'}>
-                                                            <Typography variant='h6'>{formattedDate}</Typography>
+                                                            <Typography variant='h6'>{item.feedbackDate}</Typography>
                                                         </Grid>
                                                     </Grid>
                                                 
                                                     <Box display={'flex'} flexDirection={'row'}>
                                                         <Typography variant='h6' mr={'10px'}>Nội dung:</Typography>
-                                                        <Typography variant='h6' color={themes.palette.grey.dark}>{item.content}</Typography>
+                                                        <Typography variant='h6' color={themes.palette.grey[600]} >{item.content}</Typography>
                                                     </Box>
                                                 </Box>
                                             )
