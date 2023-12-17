@@ -84,7 +84,7 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
             uploadBytes(imageRef, selectedFile).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then((downloadURL) => {
                     setUrl(downloadURL);
-                    handleConfirmAction();
+                    handleConfirmAction(); 
                 }).catch((error) => {
                     console.error('Lỗi khi lấy đường dẫn download URL:', error);
                 })
