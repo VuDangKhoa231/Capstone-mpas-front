@@ -49,10 +49,10 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileName, setFileName] = useState('');
     const [fileKey, setFileKey] = useState(0);
-    const [fileURL, setFileURL] = useState(null);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
+            setError(null);
             setSelectedFile(file);
             setFileName(file.name);
             setFileKey((prevKey) => prevKey + 1);
@@ -80,32 +80,21 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
 
     const handleApproval = () => {
         if (selectedFile) {
-            // handleConfirm()
             const imageRef = ref(storage, `Contract/${fileName.slice(0, -4) + uniqueId()}.pdf`)
             uploadBytes(imageRef, selectedFile).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then((downloadURL) => {
                     setUrl(downloadURL);
-                    console.log('File đã được upload và đường dẫn download URL là:', downloadURL);
+                    handleConfirmAction();
                 }).catch((error) => {
                     console.error('Lỗi khi lấy đường dẫn download URL:', error);
-                });
+                })
             }).catch((error) => {
                 console.error('Lỗi khi upload file:', error);
-            }).then( () => {
-                console.log('hú');
-                handleConfirm()
-                handleConfirmAction();
-            });
+            })
         } else {
-            setError('*Bắt buộc nhập đường dẫn')
+            setError('Bắt buộc phải chọn file')
         }
     }
-
-    // const isURLValid = (url) => {
-    //     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
-    //     return urlPattern.test(url);
-    // };
-
 
 
     //Close 
@@ -134,16 +123,6 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
 
                     {accept &&
                         <>
-                            {/* <TextField
-                                    color={error ? 'error' : 'primary'}
-                                    sx={{ mt: '20px' }}
-                                    label="Đường dẫn của hợp đồng"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={url}
-                                    onChange={handleInputChange}
-                                />
-                                {error && <Typography variant='body1' color={'red'}>{error}</Typography>} */}
                             {selectedFile && (
                                 <div>
                                     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -161,7 +140,7 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
                                 <input
                                     ref={fileInputRef}
                                     type="file"
-                                    accept=".pdf"  // Chỉ chấp nhận file có định dạng PDF
+                                    accept=".pdf" 
                                     onChange={handleFileChange}
                                     style={{ display: 'none' }}
                                 />
