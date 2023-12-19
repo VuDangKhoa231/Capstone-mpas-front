@@ -133,19 +133,7 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
                             {selectedFile && (
                                 <div>
                                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                        {isFullScreen && (
-                                            <div
-                                                style={{
-                                                    top: 0,
-                                                    left: 0,
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                                    zIndex: 1000,
-                                                }}
-                                                onClick={toggleFullScreen}
-                                            ></div>
-                                        )}
+                                      
                                         <iframe
                                             title="Selected PDF"
                                             src={URL.createObjectURL(selectedFile)}
@@ -154,19 +142,7 @@ function DialogBrowse({ accept, open, handleClose, data, url, setUrl, selectedVa
                                             height={'350px'}
                                             ref={iframeRef}
                                         ></iframe>
-                                        {!isFullScreen && (
-                                            <div
-                                                style={{
-                                                    bottom: 10,
-                                                    right: 10,
-                                                    cursor: 'pointer',
-                                                    color: 'red',
-                                                }}
-                                                onClick={toggleFullScreen}
-                                            >
-                                                Xem Full Màn Hình
-                                            </div>
-                                        )}
+                                    
                                     </div>
                                 </div>
                             )}
