@@ -168,7 +168,7 @@ export default function DetailPLO() {
                                             <Typography> Thời gian hoạt động</Typography>
                                             <Typography>6 AM </Typography>
                                             <ArrowRightAltIcon fontSize='large' />
-                                            <Typography>18 PM </Typography>
+                                            <Typography>17 PM </Typography>
                                         </Box>
                                     </Box>
                                 }
@@ -182,9 +182,9 @@ export default function DetailPLO() {
                                         </Box>
                                         <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                             <Typography> Thời gian hoạt động</Typography>
-                                            <Typography>18 PM </Typography>
+                                            <Typography>17 PM </Typography>
                                             <ArrowRightAltIcon fontSize='large' />
-                                            <Typography>6 AM </Typography>
+                                            <Typography>23 PM </Typography>
                                         </Box>
                                     </Box>
                                 }
@@ -198,7 +198,9 @@ export default function DetailPLO() {
                                         </Box>
                                         <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} paddingRight={'200px'}>
                                             <Typography> Thời gian hoạt động</Typography>
-                                            <Typography>24h </Typography>
+                                            <Typography>23 PM </Typography>
+                                            <ArrowRightAltIcon fontSize='large' />
+                                            <Typography>6 AM </Typography>
                                         </Box>
                                     </Box>
                                 }
@@ -262,9 +264,9 @@ export default function DetailPLO() {
                                         <PaginationCustom page={page} setPage={setPage} rowPerPage={rowPerPage} setRowPerPage={setRowPerPage} totalPage={rating?.data?.data?.totalPages} />
                                     </>
                                     : (
-                                        <Box>
-                                            <Typography variant='h6'>Không có bình luận</Typography>
-                                        </Box>
+                                        <Box sx={{ backgroundColor: themes.palette.grey.light, borderRadius: '10px', p: '20px', mt: '20px' }} >
+                                        <Typography variant='h6'>Không có bình luận</Typography>
+                                      </Box>
                                     )}
                             </>)}
                     </Box>
